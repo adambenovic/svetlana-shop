@@ -77,7 +77,7 @@ test.describe('Configurator', () => {
     test.skip(status !== 200, 'No products in DB')
 
     await page.waitForSelector('[role="tab"]')
-    await expect(page.getByRole('button', { name: /share|zdiel/i })).toBeVisible()
+    await expect(page.getByTestId('share-button')).toBeVisible()
   })
 
   test('EN configurator shows English tab labels', async ({ page }) => {

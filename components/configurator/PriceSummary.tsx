@@ -22,7 +22,7 @@ export function PriceSummary({ totalPrice, currency, copied, onAddToCart, onShar
       <Button onClick={onAddToCart} size="lg">
         {t('add_to_cart')}
       </Button>
-      <Button variant="ghost" onClick={onShare}>
+      <Button variant="ghost" onClick={onShare} data-testid="share-button">
         {copied ? t('share_copied') : t('share')}
       </Button>
     </div>
