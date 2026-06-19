@@ -1,0 +1,31 @@
+:root {
+  /* Dark mode (default) */
+  --color-bg: #1A1A1A;
+  --color-surface: #252525;
+  --color-text: #F5F0EB;
+  --color-text-muted: #9A9490;
+  --color-accent: #E8734A;
+  --color-accent-hover: #F08C68;
+  --color-success: #7BC47F;
+  --color-border: #333333;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+
+  --page-width: 1200px;
+  --gutter: 24px;
+
+  --transition: 150ms ease;
+}
+
+.light {
+  --color-bg: #F5F0EB;
+  --color-surface: #FFFFFF;
+  --color-text: #1A1A1A;
+  --color-text-muted: #5A5450;
+  --color-border: #E0DAD4;
+}

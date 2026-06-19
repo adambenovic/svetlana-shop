@@ -1,0 +1,57 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-svetlana}
+      POSTGRES_USER: ${POSTGRES_USER:-svetlana}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-svetlana}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: svetlana-shop:latest
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URI: postgresql://${POSTGRES_USER:-svetlana}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-svetlana}
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
+      GOPAY_API_URL: ${GOPAY_API_URL}
+      GOPAY_CLIENT_ID: ${GOPAY_CLIENT_ID}
+      GOPAY_CLIENT_SECRET: ${GOPAY_CLIENT_SECRET}
+      GOPAY_GO_ID: ${GOPAY_GO_ID}
+      PACKETA_API_KEY: ${PACKETA_API_KEY}
+      PACKETA_WIDGET_KEY: ${PACKETA_WIDGET_KEY}
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      EMAIL_FROM: ${EMAIL_FROM}
+    volumes:
+      - media:/app/public/media
+    expose:
+      - "3000"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+
+volumes:
+  pgdata:
+  media:
+  caddy_data:
+  caddy_config:
