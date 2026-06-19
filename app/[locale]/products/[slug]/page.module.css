@@ -1,0 +1,8 @@
+.wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding-top: 48px; padding-bottom: 48px; }
+@media (max-width: 768px) { .wrap { grid-template-columns: 1fr; } }
+.images { display: flex; flex-direction: column; gap: 16px; }
+.imageSlot { position: relative; aspect-ratio: 1; border-radius: var(--radius-md); overflow: hidden; background: var(--color-surface); }
+.img { object-fit: contain; }
+.info { display: flex; flex-direction: column; gap: 24px; }
+.title { font-size: 32px; }
+.price { font-size: 28px; color: var(--color-accent); font-weight: 700; }
