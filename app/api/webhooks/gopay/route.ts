@@ -45,6 +45,9 @@ export async function POST(req: NextRequest) {
     await payload.update({ collection: 'orders', id: order.id, data: { shipmentError: msg } })
   }
 
+  // Sent regardless of Packeta success: this is an order confirmation, not a shipment
+  // notification. The pickup point is informational; if Packeta failed the operator
+  // retries manually via the shipmentError field before the customer collects.
   try {
     await sendOrderConfirmation({
       to: (order.customer as { email: string }).email,

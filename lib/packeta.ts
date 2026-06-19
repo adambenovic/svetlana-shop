@@ -1,5 +1,3 @@
-const KEY = process.env.PACKETA_API_KEY!
-
 export function escapeXml(s: string): string {
   return s
     .replace(/&/g, '&amp;')
@@ -27,7 +25,7 @@ export async function createShipment(p: {
 }): Promise<PacketaResult> {
   const xml = `<?xml version="1.0" encoding="utf-8"?>
 <createPacket>
-  <apiPassword>${KEY}</apiPassword>
+  <apiPassword>${escapeXml(process.env.PACKETA_API_KEY!)}</apiPassword>
   <packetAttributes>
     <number>${p.orderNumber}</number>
     <name>${escapeXml(p.name)}</name>

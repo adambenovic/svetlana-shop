@@ -16,7 +16,8 @@ export async function POST(req: NextRequest) {
 
   const { customer, items, shipping, currency, locale } = body
 
-  if (!customer?.email || !customer?.name || !items?.length || !shipping?.packetaPointId) {
+  const ALLOWED_CURRENCIES = ['EUR', 'CZK']
+  if (!customer?.email || !customer?.name || !items?.length || !shipping?.packetaPointId || !ALLOWED_CURRENCIES.includes(currency)) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
   }
 
