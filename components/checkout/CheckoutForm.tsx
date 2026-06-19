@@ -9,10 +9,9 @@ import styles from './CheckoutForm.module.css'
 
 interface CheckoutFormProps {
   locale: string
-  packetaApiKey: string
 }
 
-export function CheckoutForm({ locale, packetaApiKey }: CheckoutFormProps) {
+export function CheckoutForm({ locale }: CheckoutFormProps) {
   const t = useTranslations('checkout')
   const router = useRouter()
   const { items, total, clear } = useCart()
@@ -58,7 +57,8 @@ export function CheckoutForm({ locale, packetaApiKey }: CheckoutFormProps) {
 
       if (!res.ok) throw new Error('Order creation failed')
       const { gopayUrl } = await res.json() as { gopayUrl: string }
-      clear()
+      // Clear cart only after successful return from GoPay (on success page), not here.
+      // If the redirect fails the user would lose their cart with no way to retry.
       window.location.href = gopayUrl
     } catch {
       setError(t('error_generic'))
@@ -81,7 +81,7 @@ export function CheckoutForm({ locale, packetaApiKey }: CheckoutFormProps) {
         <input id="phone" type="tel" required value={phone} onChange={e => setPhone(e.target.value)} />
       </div>
 
-      <PacketaWidget apiKey={packetaApiKey} selected={point} onChange={setPoint} />
+      <PacketaWidget selected={point} onChange={setPoint} />
 
       <div className={styles.summary}>
         <span>{t('total')}: <strong>{(total() / 100).toFixed(2)} {items[0]?.currency}</strong></span>

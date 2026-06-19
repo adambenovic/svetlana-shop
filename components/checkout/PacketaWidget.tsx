@@ -20,12 +20,12 @@ declare global {
 }
 
 interface PacketaWidgetProps {
-  apiKey: string
   selected: PacketaPoint | null
   onChange: (point: PacketaPoint) => void
 }
 
-export function PacketaWidget({ apiKey, selected, onChange }: PacketaWidgetProps) {
+export function PacketaWidget({ selected, onChange }: PacketaWidgetProps) {
+  const apiKey = process.env.NEXT_PUBLIC_PACKETA_WIDGET_KEY ?? ''
   const t = useTranslations('checkout')
 
   useEffect(() => {

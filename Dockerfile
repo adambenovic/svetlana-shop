@@ -20,13 +20,12 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-# Payload needs sharp for image processing
-RUN npm install -g sharp
-
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/entrypoint.sh ./entrypoint.sh
+# sharp must be local (not global) so standalone server can resolve it
+COPY --from=builder /app/node_modules/sharp ./node_modules/sharp
 
 # Media uploads persist here — mount a volume in production
 RUN mkdir -p /app/public/media

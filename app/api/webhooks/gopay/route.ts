@@ -10,20 +10,21 @@ export async function POST(req: NextRequest) {
   const gopayId = searchParams.get('id')
   if (!gopayId) return NextResponse.json({ error: 'missing id' }, { status: 400 })
 
+  const payload = await getPayload({ config })
+
+  // Pre-check: verify gopayId maps to a pending order before hitting GoPay API.
+  // Prevents API abuse and unnecessary token usage from arbitrary webhook POSTs.
+  const { docs } = await payload.find({
+    collection: 'orders',
+    where: { and: [{ gopayId: { equals: gopayId } }, { status: { equals: 'pending' } }] },
+    limit: 1,
+  })
+  if (!docs.length) return NextResponse.json({ ok: true })
+
   const payment = await getPayment(gopayId)
   if (payment.state !== 'PAID') return NextResponse.json({ ok: true })
 
-  const payload = await getPayload({ config })
-
-  const { docs } = await payload.find({
-    collection: 'orders',
-    where: { gopayId: { equals: gopayId } },
-    limit: 1,
-  })
-
   const order = docs[0]
-  // Idempotency: skip if already processed
-  if (!order || order.status !== 'pending') return NextResponse.json({ ok: true })
 
   await payload.update({ collection: 'orders', id: order.id, data: { status: 'paid' } })
 
@@ -39,8 +40,9 @@ export async function POST(req: NextRequest) {
     })
     await payload.update({ collection: 'orders', id: order.id, data: { packetaId: shipment.id, status: 'shipped' } })
   } catch (err) {
-    // Shipment failure is non-fatal — order is paid, manual retry possible from admin
-    console.error('Packeta shipment failed:', err)
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('Packeta shipment failed:', msg)
+    await payload.update({ collection: 'orders', id: order.id, data: { shipmentError: msg } })
   }
 
   try {

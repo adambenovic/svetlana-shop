@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 export const Orders: CollectionConfig = {
   slug: 'orders',
-  admin: { useAsTitle: 'orderNumber', defaultColumns: ['orderNumber', 'status', 'customer', 'totalAmount', 'createdAt'] },
+  admin: { useAsTitle: 'orderNumber', defaultColumns: ['orderNumber', 'status', 'customer', 'totalAmount', 'shipmentError', 'createdAt'] },
   fields: [
     { name: 'orderNumber', type: 'text', required: true, unique: true },
     {
@@ -51,6 +51,7 @@ export const Orders: CollectionConfig = {
     { name: 'currency', type: 'text', defaultValue: 'EUR' },
     { name: 'gopayId', type: 'text' },
     { name: 'packetaId', type: 'text' },
+    { name: 'shipmentError', type: 'text', admin: { description: 'Set when Packeta shipment creation fails — needs manual retry' } },
   ],
   timestamps: true,
 }

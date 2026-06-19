@@ -1,5 +1,14 @@
 const KEY = process.env.PACKETA_API_KEY!
 
+function escapeXml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+}
+
 export interface PacketaResult {
   id: string
   barcode: string
@@ -21,9 +30,9 @@ export async function createShipment(p: {
   <apiPassword>${KEY}</apiPassword>
   <packetAttributes>
     <number>${p.orderNumber}</number>
-    <name>${p.name}</name>
-    <email>${p.email}</email>
-    <phone>${p.phone}</phone>
+    <name>${escapeXml(p.name)}</name>
+    <email>${escapeXml(p.email)}</email>
+    <phone>${escapeXml(p.phone)}</phone>
     <addressId>${p.addressId}</addressId>
     <weight>${p.weight ?? 1.5}</weight>
     <value>${p.value}</value>

@@ -30,7 +30,7 @@ services:
       GOPAY_GO_ID: ${GOPAY_GO_ID}
       PACKETA_API_KEY: ${PACKETA_API_KEY}
       PACKETA_WIDGET_KEY: ${PACKETA_WIDGET_KEY}
-      RESEND_API_KEY: ${RESEND_API_KEY}
+      BREVO_API_KEY: ${BREVO_API_KEY}
       EMAIL_FROM: ${EMAIL_FROM}
     volumes:
       - media:/app/public/media
