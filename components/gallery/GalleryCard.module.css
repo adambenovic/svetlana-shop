@@ -1,0 +1,38 @@
+.card {
+  display: block;
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-surface);
+  break-inside: avoid;
+  margin-bottom: 16px;
+  aspect-ratio: 3/4;
+}
+
+.imageWrap { position: absolute; inset: 0; }
+
+.image {
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.hasBg .image { object-fit: cover; }
+
+.card:hover .image { transform: scale(1.03); }
+
+.label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.card:hover .label { opacity: 1; }
+
+.title { color: #fff; font-weight: 700; font-size: 14px; }
+.price { color: var(--color-accent); font-size: 13px; font-weight: 700; }

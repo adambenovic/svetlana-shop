@@ -1,0 +1,8 @@
+.grid {
+  columns: 2;
+  column-gap: 16px;
+  padding: 0;
+}
+
+@media (min-width: 768px) { .grid { columns: 3; } }
+@media (min-width: 1200px) { .grid { columns: 4; } }
