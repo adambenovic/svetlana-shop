@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "test": "jest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "fixtures:seed": "node -e \"const s=process.env.PAYLOAD_SECRET||'change-this-in-production';fetch('http://localhost:3000/api/test-fixtures?action=seed&secret='+encodeURIComponent(s)).then(r=>r.json()).then(d=>console.log('[fixtures]',d))\"",
+    "fixtures:clean": "node -e \"const s=process.env.PAYLOAD_SECRET||'change-this-in-production';fetch('http://localhost:3000/api/test-fixtures?action=clean&secret='+encodeURIComponent(s)).then(r=>r.json()).then(d=>console.log('[fixtures]',d))\"",
+    "fixtures:status": "node -e \"const s=process.env.PAYLOAD_SECRET||'change-this-in-production';fetch('http://localhost:3000/api/test-fixtures?action=status&secret='+encodeURIComponent(s)).then(r=>r.json()).then(d=>console.log('[fixtures]',d))\""
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.85.1",

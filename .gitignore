@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Playwright fixture state
+e2e/.fixture-state.json
+test-results/
+playwright-report/
