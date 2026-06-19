@@ -1,11 +1,7 @@
-import { Resend } from 'resend'
+const BREVO_URL = 'https://api.brevo.com/v3/smtp/email'
 
-function getResend() {
-  return new Resend(process.env.RESEND_API_KEY!)
-}
-
-function getFrom() {
-  return process.env.EMAIL_FROM!
+function apiKey() {
+  return process.env.BREVO_API_KEY!
 }
 
 export interface OrderEmailParams {
@@ -31,20 +27,32 @@ export async function sendOrderConfirmation(p: OrderEmailParams): Promise<void> 
     })
     .join('')
 
-  await getResend().emails.send({
-    from: getFrom(),
-    to: p.to,
-    subject: `Order ${p.orderNumber} confirmed — Svetlana Lampe`,
-    html: `
-      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h1 style="color: #E8734A;">Thank you for your order!</h1>
-        <p>Order number: <strong>${p.orderNumber}</strong></p>
-        <ul style="line-height: 2;">${itemsHtml}</ul>
-        <p style="font-size: 20px;">Total: <strong>${(p.totalAmount / 100).toFixed(2)} ${p.currency}</strong></p>
-        <p>Pickup point: <strong>${p.packetaPointName}</strong></p>
-        <hr />
-        <p style="color: #999; font-size: 12px;">Svetlana Lampe — 3D printed table lamps</p>
-      </div>
-    `,
+  const res = await fetch(BREVO_URL, {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'api-key': apiKey(),
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      sender: { name: 'Svetlana Lampe', email: process.env.EMAIL_FROM! },
+      to: [{ email: p.to }],
+      subject: `Order ${p.orderNumber} confirmed — Svetlana Lampe`,
+      htmlContent: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+          <h1 style="color: #E8734A;">Thank you for your order!</h1>
+          <p>Order number: <strong>${p.orderNumber}</strong></p>
+          <ul style="line-height: 2;">${itemsHtml}</ul>
+          <p style="font-size: 20px;">Total: <strong>${(p.totalAmount / 100).toFixed(2)} ${p.currency}</strong></p>
+          <p>Pickup point: <strong>${p.packetaPointName}</strong></p>
+          <hr />
+          <p style="color: #999; font-size: 12px;">Svetlana Lampe — 3D printed table lamps</p>
+        </div>
+      `,
+    }),
   })
+
+  if (!res.ok) {
+    throw new Error(`Brevo send failed: ${res.status} ${await res.text()}`)
+  }
 }

@@ -1,40 +1,49 @@
 import { sendOrderConfirmation } from './email'
-import { Resend } from 'resend'
 
-const mockEmailSend = jest.fn().mockResolvedValue({ id: 'email-1' })
-
-jest.mock('resend', () => {
-  // factory runs at hoist time — can't reference outer variables
-  // so we store send on the constructor so tests can reach it
-  const sendFn = jest.fn().mockResolvedValue({ id: 'email-1' })
-  const MockResend = jest.fn().mockImplementation(() => ({
-    emails: { send: sendFn },
-  }))
-  ;(MockResend as unknown as { _sendFn: jest.Mock })._sendFn = sendFn
-  return { Resend: MockResend }
-})
+const mockFetch = jest.fn()
+global.fetch = mockFetch
 
 beforeEach(() => {
-  process.env.RESEND_API_KEY = 'test-key'
+  mockFetch.mockReset()
+  process.env.BREVO_API_KEY = 'test-key'
   process.env.EMAIL_FROM = 'shop@test.com'
 })
 
-test('sendOrderConfirmation calls resend with correct subject', async () => {
-  await sendOrderConfirmation({
-    to: 'customer@test.com',
-    orderNumber: 'SL-001',
-    items: [{ title: 'LEAH', configuration: { base: 'coral' }, quantity: 1, unitPrice: 8900 }],
-    totalAmount: 8900,
-    currency: 'EUR',
-    packetaPointName: 'Praha 1 - Náměstí',
-    locale: 'sk',
-  })
+const baseParams = {
+  to: 'customer@test.com',
+  orderNumber: 'SL-001',
+  items: [{ title: 'LEAH', configuration: { base: 'coral' }, quantity: 1, unitPrice: 8900 }],
+  totalAmount: 8900,
+  currency: 'EUR',
+  packetaPointName: 'Praha 1 - Náměstí',
+  locale: 'sk',
+}
 
-  // Retrieve the send fn attached to the constructor by the mock factory
-  const MockedResend = Resend as unknown as { _sendFn: jest.Mock }
-  expect(MockedResend._sendFn).toHaveBeenCalledWith(
-    expect.objectContaining({ subject: expect.stringContaining('SL-001') })
+test('sendOrderConfirmation POSTs to Brevo with correct subject', async () => {
+  mockFetch.mockResolvedValueOnce({ ok: true, text: async () => '' })
+
+  await sendOrderConfirmation(baseParams)
+
+  expect(mockFetch).toHaveBeenCalledWith(
+    'https://api.brevo.com/v3/smtp/email',
+    expect.objectContaining({ method: 'POST' })
   )
+  const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+  expect(body.subject).toContain('SL-001')
+  expect(body.to[0].email).toBe('customer@test.com')
 })
 
-void mockEmailSend // suppress unused warning
+test('sendOrderConfirmation sends api-key header', async () => {
+  mockFetch.mockResolvedValueOnce({ ok: true, text: async () => '' })
+
+  await sendOrderConfirmation(baseParams)
+
+  const headers = mockFetch.mock.calls[0][1].headers
+  expect(headers['api-key']).toBe('test-key')
+})
+
+test('sendOrderConfirmation throws on non-ok response', async () => {
+  mockFetch.mockResolvedValueOnce({ ok: false, status: 401, text: async () => 'Unauthorized' })
+
+  await expect(sendOrderConfirmation(baseParams)).rejects.toThrow('Brevo send failed: 401')
+})
