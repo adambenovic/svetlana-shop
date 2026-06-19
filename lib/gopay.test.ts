@@ -51,3 +51,40 @@ test('getPayment returns payment state', async () => {
   const result = await getPayment('pay-1')
   expect(result.state).toBe('PAID')
 })
+
+test('token is reused within expiry window', async () => {
+  mockFetch
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ access_token: 'cached-tok', expires_in: 3600 }) })
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ id: 'pay-1', gw_url: 'https://gw', state: 'CREATED' }) })
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ id: 'pay-1', gw_url: '', state: 'PAID' }) })
+
+  await createPayment({
+    orderId: 'SL-001', amount: 8900, currency: 'EUR', description: 'Test',
+    email: 'a@b.com', returnUrl: 'http://localhost/success',
+    notifyUrl: 'http://localhost/webhook', locale: 'sk',
+  })
+  await getPayment('pay-1')
+
+  expect(mockFetch).toHaveBeenCalledTimes(3) // 1 token + 1 createPayment + 1 getPayment (no second token)
+  expect(mockFetch.mock.calls[0][0]).toContain('/oauth2/token')
+  expect(mockFetch.mock.calls[2][0]).not.toContain('/oauth2/token')
+})
+
+test('token is refreshed when expired', async () => {
+  // expires_in=0 → expiresAt=now → cache check (now < now-60000) always false → never cached
+  mockFetch
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ access_token: 'tok1', expires_in: 0 }) })
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ id: 'pay-1', gw_url: '', state: 'CREATED' }) })
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ access_token: 'tok2', expires_in: 0 }) })
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ id: 'pay-1', gw_url: '', state: 'PAID' }) })
+
+  await createPayment({
+    orderId: 'SL-001', amount: 100, currency: 'EUR', description: 'Test',
+    email: 'a@b.com', returnUrl: '', notifyUrl: '', locale: 'sk',
+  })
+  await getPayment('pay-1')
+
+  expect(mockFetch).toHaveBeenCalledTimes(4) // 2 tokens + 1 createPayment + 1 getPayment
+  expect(mockFetch.mock.calls[0][0]).toContain('/oauth2/token')
+  expect(mockFetch.mock.calls[2][0]).toContain('/oauth2/token')
+})

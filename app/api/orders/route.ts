@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { randomBytes } from 'crypto'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
-import { createPayment } from '@/lib/gopay'
+import { createPayment, type GoPayPayment } from '@/lib/gopay'
 
 export async function POST(req: NextRequest) {
   const body = await req.json() as {
@@ -49,16 +49,26 @@ export async function POST(req: NextRequest) {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL!
   const localePrefix = locale === 'sk' ? '' : `/${locale}`
 
-  const payment = await createPayment({
-    orderId: orderNumber,
-    amount: totalAmount,
-    currency,
-    description: `Svetlana Lampe — ${orderNumber}`,
-    email: customer.email,
-    returnUrl: `${appUrl}${localePrefix}/checkout/success?gopayId={payment_id}`,
-    notifyUrl: `${appUrl}/api/webhooks/gopay`,
-    locale,
-  })
+  let payment: GoPayPayment
+  try {
+    payment = await createPayment({
+      orderId: orderNumber,
+      amount: totalAmount,
+      currency,
+      description: `Svetlana Lampe — ${orderNumber}`,
+      email: customer.email,
+      returnUrl: `${appUrl}${localePrefix}/checkout/success?gopayId={payment_id}`,
+      notifyUrl: `${appUrl}/api/webhooks/gopay`,
+      locale,
+    })
+  } catch {
+    await payload.update({
+      collection: 'orders',
+      id: order.id,
+      data: { status: 'failed' },
+    }).catch(() => {})
+    return NextResponse.json({ error: 'Payment gateway unavailable' }, { status: 502 })
+  }
 
   await payload.update({
     collection: 'orders',

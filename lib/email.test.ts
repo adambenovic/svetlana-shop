@@ -47,3 +47,29 @@ test('sendOrderConfirmation throws on non-ok response', async () => {
 
   await expect(sendOrderConfirmation(baseParams)).rejects.toThrow('Brevo send failed: 401')
 })
+
+test.each([
+  ['de', 'Bestellung'],
+  ['pl', 'Zamówienie'],
+  ['hu', 'rendelés'],
+  ['uk', 'Замовлення'],
+  ['cs', 'Objednávka'],
+])('sendOrderConfirmation uses %s locale subject', async (locale, expectedWord) => {
+  mockFetch.mockResolvedValueOnce({ ok: true, text: async () => '' })
+
+  await sendOrderConfirmation({ ...baseParams, locale })
+
+  const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+  expect(body.subject).toContain(expectedWord)
+  expect(body.subject).toContain('SL-001')
+})
+
+test('sendOrderConfirmation falls back to English for unknown locale', async () => {
+  mockFetch.mockResolvedValueOnce({ ok: true, text: async () => '' })
+
+  await sendOrderConfirmation({ ...baseParams, locale: 'zz' })
+
+  const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+  expect(body.subject).toContain('confirmed')
+  expect(body.subject).toContain('SL-001')
+})

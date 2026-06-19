@@ -2,6 +2,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { CartHydration } from '@/components/CartHydration'
 import '@/styles/globals.css'
 
 export default async function LocaleLayout({
@@ -18,6 +19,7 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
+          <CartHydration />
           <Header locale={locale} />
           <main>{children}</main>
           <Footer />

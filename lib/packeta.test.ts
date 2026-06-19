@@ -1,4 +1,4 @@
-import { createShipment } from './packeta'
+import { createShipment, escapeXml } from './packeta'
 
 const mockFetch = jest.fn()
 global.fetch = mockFetch
@@ -31,4 +31,24 @@ test('createShipment throws on error response', async () => {
   await expect(createShipment({
     orderNumber: 'SL-BAD', name: '', email: '', phone: '', addressId: 0, value: 0, currency: 'EUR',
   })).rejects.toThrow('Packeta createShipment failed')
+})
+
+test('escapeXml handles special XML characters', () => {
+  expect(escapeXml("O'Brien & <Co>")).toBe("O&apos;Brien &amp; &lt;Co&gt;")
+  expect(escapeXml('"quoted"')).toBe('&quot;quoted&quot;')
+  expect(escapeXml('plain')).toBe('plain')
+})
+
+test('createShipment XML body escapes special chars in name', async () => {
+  mockFetch.mockResolvedValueOnce({
+    text: async () => `<response><status>ok</status><result><id>1234</id><barcode>Z999</barcode></result></response>`,
+  })
+
+  await createShipment({
+    orderNumber: 'SL-002', name: "O'Brien & <Test>", email: 'test@example.com',
+    phone: '+1234567890', addressId: 1, value: 100, currency: 'EUR',
+  })
+
+  const sentBody = mockFetch.mock.calls[0][1].body as string
+  expect(sentBody).toContain('O&apos;Brien &amp; &lt;Test&gt;')
 })

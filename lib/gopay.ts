@@ -4,23 +4,29 @@ const CLIENT_SECRET = process.env.GOPAY_CLIENT_SECRET!
 const GO_ID = process.env.GOPAY_GO_ID!
 
 let tokenCache: { token: string; expiresAt: number } | null = null
+let tokenPromise: Promise<string> | null = null
 
-export function _resetTokenCache() { tokenCache = null }
+export function _resetTokenCache() { tokenCache = null; tokenPromise = null }
 
 async function getToken(): Promise<string> {
   if (tokenCache && Date.now() < tokenCache.expiresAt - 60_000) return tokenCache.token
-  const res = await fetch(`${API}/oauth2/token`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
-    },
-    body: 'grant_type=client_credentials&scope=payment-all',
-  })
-  if (!res.ok) throw new Error(`GoPay token failed: ${res.status}`)
-  const data = await res.json() as { access_token: string; expires_in: number }
-  tokenCache = { token: data.access_token, expiresAt: Date.now() + data.expires_in * 1000 }
-  return data.access_token
+  if (tokenPromise) return tokenPromise
+  tokenPromise = (async () => {
+    if (tokenCache && Date.now() < tokenCache.expiresAt - 60_000) return tokenCache.token
+    const res = await fetch(`${API}/oauth2/token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
+      },
+      body: 'grant_type=client_credentials&scope=payment-all',
+    })
+    if (!res.ok) throw new Error(`GoPay token failed: ${res.status}`)
+    const data = await res.json() as { access_token: string; expires_in: number }
+    tokenCache = { token: data.access_token, expiresAt: Date.now() + data.expires_in * 1000 }
+    return data.access_token
+  })().finally(() => { tokenPromise = null })
+  return tokenPromise
 }
 
 export type GoPayState = 'CREATED' | 'PAID' | 'CANCELED' | 'TIMEOUTED' | 'REFUNDED' | 'PARTIALLY_REFUNDED'
