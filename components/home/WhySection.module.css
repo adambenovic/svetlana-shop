@@ -1,0 +1,50 @@
+.section {
+  padding: 80px 0;
+  background: var(--color-bg);
+}
+
+.heading {
+  text-align: center;
+  font-size: clamp(24px, 3vw, 36px);
+  margin-bottom: 48px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 32px 24px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.icon {
+  font-size: 40px;
+}
+
+.cardTitle {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.cardBody {
+  font-size: 15px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}

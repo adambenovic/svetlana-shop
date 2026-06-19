@@ -1,0 +1,19 @@
+.gallerySection {
+  padding: 64px 0;
+}
+
+.viewAll {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.viewAll a {
+  color: var(--color-accent);
+  font-weight: 500;
+  font-size: 16px;
+  transition: opacity var(--transition);
+}
+
+.viewAll a:hover {
+  opacity: 0.8;
+}
