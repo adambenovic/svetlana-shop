@@ -1,5 +1,8 @@
+import createNextIntlPlugin from 'next-intl/plugin'
 import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
+
+const withNextIntl = createNextIntlPlugin('./i18n.ts')
 
 const nextConfig: NextConfig = {
   output: 'standalone',
@@ -10,4 +13,4 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default withPayload(nextConfig)
+export default withNextIntl(withPayload(nextConfig))

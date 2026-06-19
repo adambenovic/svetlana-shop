@@ -1,24 +1,33 @@
 import styles from './Button.module.css'
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+type ButtonProps = {
   variant?: 'primary' | 'secondary' | 'ghost'
   size?: 'sm' | 'md' | 'lg'
-  as?: 'button' | 'a'
-  href?: string
-}
+  children?: React.ReactNode
+  className?: string
+} & (
+  | ({ as?: 'button' } & React.ButtonHTMLAttributes<HTMLButtonElement>)
+  | ({ as: 'a'; href: string } & React.AnchorHTMLAttributes<HTMLAnchorElement>)
+)
 
 export function Button({
+  as: Tag = 'button',
   variant = 'primary',
   size = 'md',
   children,
   className,
   ...props
 }: ButtonProps) {
+  const cls = [styles.btn, styles[variant], styles[size], className].filter(Boolean).join(' ')
+  if (Tag === 'a') {
+    return (
+      <a className={cls} {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
+        {children}
+      </a>
+    )
+  }
   return (
-    <button
-      className={[styles.btn, styles[variant], styles[size], className].filter(Boolean).join(' ')}
-      {...props}
-    >
+    <button className={cls} {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}>
       {children}
     </button>
   )
