@@ -4,7 +4,7 @@ export interface ProductImage {
 }
 
 export interface Product {
-  id: string
+  id: string | number
   slug: string
   title: string
   basePrice: number

@@ -15,14 +15,11 @@ export default async function ConfiguratorPage({
   const { product: partsKey } = await searchParams
   const payload = await getPayload({ config })
 
-  // Default to first published product (optionally filtered by partsKey query param)
-  const where = partsKey
-    ? { partsKey: { equals: partsKey }, status: { equals: 'published' } }
-    : { status: { equals: 'published' } }
-
   const { docs } = await payload.find({
     collection: 'products',
-    where,
+    where: partsKey
+      ? { and: [{ partsKey: { equals: partsKey } }, { status: { equals: 'published' } }] }
+      : { status: { equals: 'published' } },
     locale,
     limit: 1,
   })
@@ -39,7 +36,7 @@ export default async function ConfiguratorPage({
           partsKey={product.partsKey ?? ''}
           basePrice={product.basePrice as number}
           currency={product.currency as string}
-          productId={product.id}
+          productId={String(product.id)}
           productTitle={typeof product.title === 'string' ? product.title : ''}
         />
       </Suspense>

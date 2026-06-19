@@ -1,7 +1,12 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY!)
-const FROM = process.env.EMAIL_FROM!
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY!)
+}
+
+function getFrom() {
+  return process.env.EMAIL_FROM!
+}
 
 export interface OrderEmailParams {
   to: string
@@ -26,8 +31,8 @@ export async function sendOrderConfirmation(p: OrderEmailParams): Promise<void> 
     })
     .join('')
 
-  await resend.emails.send({
-    from: FROM,
+  await getResend().emails.send({
+    from: getFrom(),
     to: p.to,
     subject: `Order ${p.orderNumber} confirmed — Svetlana Lampe`,
     html: `

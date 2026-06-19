@@ -50,15 +50,4 @@ export default async function ProductPage({
   )
 }
 
-export async function generateStaticParams() {
-  const payload = await getPayload({ config })
-  const { docs } = await payload.find({
-    collection: 'products',
-    where: { status: { equals: 'published' } },
-    limit: 1000,
-  })
-  const locales = ['sk', 'en', 'cs', 'de', 'es', 'fr', 'hu', 'it', 'pl', 'uk']
-  return locales.flatMap(locale =>
-    docs.map(p => ({ locale, slug: p.slug as string }))
-  )
-}
+export const dynamic = 'force-dynamic'
