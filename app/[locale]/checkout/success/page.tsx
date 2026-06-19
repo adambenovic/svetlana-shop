@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server'
+import { ClearCartOnMount } from '@/components/checkout/ClearCartOnMount'
 
 export default async function SuccessPage({
   params,
@@ -13,6 +14,7 @@ export default async function SuccessPage({
 
   return (
     <div className="page-width" style={{ paddingTop: 96, textAlign: 'center' }}>
+      <ClearCartOnMount />
       <h1 style={{ marginBottom: 16 }}>{t('success_title')}</h1>
       <p style={{ color: 'var(--color-text-muted)' }}>
         {t('success_body', { orderNumber: gopayId ?? '—' })}

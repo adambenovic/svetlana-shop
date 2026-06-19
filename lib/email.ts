@@ -1,5 +1,19 @@
 const BREVO_URL = 'https://api.brevo.com/v3/smtp/email'
 
+const i18n: Record<string, { subject: string; thanks: string; order: string; total: string; pickup: string }> = {
+  sk: { subject: 'Objednávka {n} potvrdená — Svetlana Lampe', thanks: 'Ďakujeme za vašu objednávku!', order: 'Číslo objednávky', total: 'Celková suma', pickup: 'Výdajné miesto' },
+  cs: { subject: 'Objednávka {n} potvrzena — Svetlana Lampe', thanks: 'Děkujeme za vaši objednávku!', order: 'Číslo objednávky', total: 'Celková částka', pickup: 'Výdejní místo' },
+  de: { subject: 'Bestellung {n} bestätigt — Svetlana Lampe', thanks: 'Vielen Dank für Ihre Bestellung!', order: 'Bestellnummer', total: 'Gesamtbetrag', pickup: 'Abholort' },
+  pl: { subject: 'Zamówienie {n} potwierdzone — Svetlana Lampe', thanks: 'Dziękujemy za zamówienie!', order: 'Numer zamówienia', total: 'Suma', pickup: 'Punkt odbioru' },
+  hu: { subject: '{n} rendelés visszaigazolva — Svetlana Lampe', thanks: 'Köszönjük a rendelését!', order: 'Rendelésszám', total: 'Összeg', pickup: 'Átvételi pont' },
+  uk: { subject: 'Замовлення {n} підтверджено — Svetlana Lampe', thanks: 'Дякуємо за замовлення!', order: 'Номер замовлення', total: 'Сума', pickup: 'Пункт видачі' },
+  en: { subject: 'Order {n} confirmed — Svetlana Lampe', thanks: 'Thank you for your order!', order: 'Order number', total: 'Total', pickup: 'Pickup point' },
+}
+
+function t(locale: string) {
+  return i18n[locale] ?? i18n.en
+}
+
 function apiKey() {
   return process.env.BREVO_API_KEY!
 }
@@ -27,6 +41,7 @@ export async function sendOrderConfirmation(p: OrderEmailParams): Promise<void> 
     })
     .join('')
 
+  const tr = t(p.locale)
   const res = await fetch(BREVO_URL, {
     method: 'POST',
     headers: {
@@ -37,14 +52,14 @@ export async function sendOrderConfirmation(p: OrderEmailParams): Promise<void> 
     body: JSON.stringify({
       sender: { name: 'Svetlana Lampe', email: process.env.EMAIL_FROM! },
       to: [{ email: p.to }],
-      subject: `Order ${p.orderNumber} confirmed — Svetlana Lampe`,
+      subject: tr.subject.replace('{n}', p.orderNumber),
       htmlContent: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #E8734A;">Thank you for your order!</h1>
-          <p>Order number: <strong>${p.orderNumber}</strong></p>
+          <h1 style="color: #E8734A;">${tr.thanks}</h1>
+          <p>${tr.order}: <strong>${p.orderNumber}</strong></p>
           <ul style="line-height: 2;">${itemsHtml}</ul>
-          <p style="font-size: 20px;">Total: <strong>${(p.totalAmount / 100).toFixed(2)} ${p.currency}</strong></p>
-          <p>Pickup point: <strong>${p.packetaPointName}</strong></p>
+          <p style="font-size: 20px;">${tr.total}: <strong>${(p.totalAmount / 100).toFixed(2)} ${p.currency}</strong></p>
+          <p>${tr.pickup}: <strong>${p.packetaPointName}</strong></p>
           <hr />
           <p style="color: #999; font-size: 12px;">Svetlana Lampe — 3D printed table lamps</p>
         </div>

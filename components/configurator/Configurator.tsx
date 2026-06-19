@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { SwatchPicker } from './SwatchPicker'
@@ -41,11 +41,14 @@ export function Configurator({ partsKey, basePrice, currency, productId, product
   const [bulb, setBulb] = useState<BulbType>((searchParams.get('bulb') as BulbType) ?? 'warm')
   const [copied, setCopied] = useState(false)
 
+  const [partsError, setPartsError] = useState(false)
+
   // Load parts.json once
   useEffect(() => {
     fetch('/parts.json')
-      .then(r => r.json())
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
       .then((data: PartsData) => setParts(data))
+      .catch(() => setPartsError(true))
   }, [])
 
   // Set defaults after parts load (only if not already set from URL)
@@ -61,11 +64,15 @@ export function Configurator({ partsKey, basePrice, currency, productId, product
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parts])
 
+  const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const syncUrl = useCallback(
     (updates: Record<string, string>) => {
-      const params = new URLSearchParams(searchParams.toString())
-      Object.entries(updates).forEach(([k, v]) => params.set(k, v))
-      router.replace(`?${params.toString()}`, { scroll: false })
+      if (syncTimer.current) clearTimeout(syncTimer.current)
+      syncTimer.current = setTimeout(() => {
+        const params = new URLSearchParams(searchParams.toString())
+        Object.entries(updates).forEach(([k, v]) => params.set(k, v))
+        router.replace(`?${params.toString()}`, { scroll: false })
+      }, 150)
     },
     [router, searchParams]
   )
@@ -116,6 +123,10 @@ export function Configurator({ partsKey, basePrice, currency, productId, product
     { id: 'cable', label: t('tab_cable') },
     { id: 'bulb', label: t('tab_bulb') },
   ]
+
+  if (partsError) {
+    return <div className={styles.loading} style={{ color: 'var(--color-accent)' }}>{t('error_loading') ?? 'Failed to load configurator data. Please refresh.'}</div>
+  }
 
   if (!parts) {
     return <div className={styles.loading}>{t('loading') ?? 'Loading...'}</div>
