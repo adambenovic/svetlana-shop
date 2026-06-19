@@ -1,0 +1,155 @@
+{
+  "general": {
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "continue_shopping": "Continue shopping"
+  },
+  "sections": {
+    "header": {
+      "menu_home": "Home",
+      "menu_configurator": "Build your lamp",
+      "menu_gallery": "Gallery",
+      "menu_contact": "Contact",
+      "cart": "Cart"
+    },
+    "footer": {
+      "copyright": "© {year} Svetlana Lampe. All rights reserved."
+    }
+  },
+  "products": {
+    "add_to_cart": "Add to cart",
+    "sold_out": "Sold out",
+    "unavailable": "Unavailable",
+    "on_sale": "Sale",
+    "description": "Description",
+    "share": "Share this product",
+    "dims_height": "Height",
+    "dims_diameter": "Width"
+  },
+  "configurator": {
+    "tab_base": "Base",
+    "tab_shade": "Shade",
+    "tab_cable": "Cable",
+    "tab_bulb": "Bulb",
+    "pick_color": "Color",
+    "pick_shape": "Shape",
+    "pick_cable_color": "Cable color",
+    "pick_switch": "Switch",
+    "pick_plug": "Plug",
+    "pick_bulb": "Choose bulb type",
+    "pick_base": "Pick a base",
+    "pick_base_color": "Base color",
+    "pick_shade": "Pick a shade",
+    "pick_shade_color": "Shade color",
+    "bulb_warm": "Warm White (3000K)",
+    "bulb_cold": "Cold White (6500K)",
+    "bulb_none": "No bulb",
+    "label_base": "Base",
+    "label_base_color": "Base Color",
+    "label_shade": "Shade",
+    "label_shade_color": "Shade Color",
+    "label_cable_color": "Cable Color",
+    "label_switch": "Switch",
+    "label_plug": "Plug",
+    "label_bulb": "Bulb",
+    "label_total": "Total price",
+    "label_height": "Height",
+    "label_diameter": "Width",
+    "label_total_dimensions": "Dimensions",
+    "label_combination": "Combination",
+    "add_to_cart": "Add to cart",
+    "share": "Share configuration",
+    "share_copied": "Link copied!",
+    "share_link": "Share this configuration",
+    "share_link_copied": "Link copied!",
+    "configure_your_lamp": "Open in Configurator",
+    "configure_hint": "This combination is pre-filled — adjust any detail before ordering",
+    "select_parts": "Choose a base and shade to start",
+    "render_disclaimer": "Images are 3D renders — actual colors and textures may vary.",
+    "info_specs": "Specifications",
+    "specs_content": "Light source: LED E27 (included) · Voltage: 220–240V · Cable length: ~200 cm · Switch: Inline on/off",
+    "info_shipping": "Shipping & Returns",
+    "shipping_content": "Free shipping on all orders · Home delivery: 3–7 business days · Pickup point: 2–5 business days",
+    "info_safety": "Safety & Certification",
+    "safety_content": "All Svetlana lamps are CE certified and meet European safety standards",
+    "info_care": "Care Instructions",
+    "care_content": "Wipe gently with a dry or slightly damp cloth · Avoid harsh chemicals · Use only LED bulbs (max 10W E27)"
+  },
+  "configurator_product": {
+    "notice_heading": "Custom configuration required",
+    "notice_body": "This lamp is built to order. Use the configurator to choose your base shape, shade shape, colors, cable, and bulb — then add it to your cart.",
+    "cta": "Configure your lamp →"
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "remove": "Remove",
+    "total": "Total",
+    "checkout": "Proceed to checkout",
+    "continue_shopping": "Continue shopping"
+  },
+  "cart_delivery": {
+    "title": "Delivery method",
+    "address_label": "Deliver to my address",
+    "address_desc": "Standard delivery to your door",
+    "pickup_label": "Pick up at Packeta point",
+    "pickup_desc": "Choose from thousands of pickup points",
+    "select_point": "Select pickup point",
+    "change_point": "Change",
+    "free_shipping": "Free shipping on all orders",
+    "go_to_cart": "Go to cart"
+  },
+  "checkout": {
+    "title": "Order",
+    "name": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "select_packeta": "Select Packeta pickup point",
+    "selected_point": "Pickup point",
+    "change_point": "Change",
+    "order_summary": "Order summary",
+    "total": "Total",
+    "submit": "Pay with GoPay",
+    "submitting": "Processing...",
+    "success_title": "Thank you for your order!",
+    "success_body": "Order {orderNumber} received. Confirmation sent to your email.",
+    "error_generic": "Something went wrong. Please try again."
+  },
+  "gallery": {
+    "title": "Lamp Gallery",
+    "view_all": "View all lamps →",
+    "no_products": "No products",
+    "customize_cta": "Customize this lamp",
+    "add_to_cart": "Add to cart",
+    "page_title": "Our Lamps",
+    "load_more": "Load more"
+  },
+  "hero": {
+    "tagline": "One price · Endless combinations"
+  },
+  "policies": {
+    "legal_notice": "Legal Notice",
+    "privacy_policy": "Privacy Policy",
+    "shipping_policy": "Shipping Policy",
+    "refund_policy": "Refund Policy",
+    "terms_of_service": "Terms of Service",
+    "contact_information": "Contact Information"
+  },
+  "announcement": {
+    "discount_applied": "Discount applied!"
+  },
+  "cookies": {
+    "title": "We value your privacy",
+    "intro": "We use cookies to make this website work and, with your consent, to analyse traffic and personalise content.",
+    "accept_all": "Accept all",
+    "reject_all": "Reject non-essential",
+    "manage": "Cookie preferences"
+  },
+  "accessibility": {
+    "skip_to_text": "Skip to content",
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "Error"
+  }
+}

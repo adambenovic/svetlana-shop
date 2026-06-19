@@ -1,0 +1,155 @@
+{
+  "general": {
+    "close": "Chiudi",
+    "loading": "Caricamento in corso...",
+    "error": "Si è verificato un errore",
+    "continue_shopping": "Continua lo shopping"
+  },
+  "sections": {
+    "header": {
+      "menu_home": "Home",
+      "menu_configurator": "Crea la tua lampada",
+      "menu_gallery": "Galleria",
+      "menu_contact": "Contatto",
+      "cart": "Carrello"
+    },
+    "footer": {
+      "copyright": "© {year} Svetlana Lampe. Tutti i diritti riservati."
+    }
+  },
+  "products": {
+    "add_to_cart": "Aggiungi al carrello",
+    "sold_out": "Esaurito",
+    "unavailable": "Non disponibile",
+    "on_sale": "In offerta",
+    "description": "Descrizione",
+    "share": "Condividi questo prodotto",
+    "dims_height": "Altezza",
+    "dims_diameter": "Larghezza"
+  },
+  "configurator": {
+    "tab_base": "Base",
+    "tab_shade": "Paralume",
+    "tab_cable": "Cavo",
+    "tab_bulb": "Lampadina",
+    "pick_color": "Colore",
+    "pick_shape": "Forma",
+    "pick_cable_color": "Colore del cavo",
+    "pick_switch": "Interruttore",
+    "pick_plug": "Spina",
+    "pick_bulb": "Scegli il tipo di lampadina",
+    "pick_base": "Scegli la base",
+    "pick_base_color": "Colore della base",
+    "pick_shade": "Scegli il paralume",
+    "pick_shade_color": "Colore del paralume",
+    "bulb_warm": "Bianco caldo (3000K)",
+    "bulb_cold": "Bianco freddo (6500K)",
+    "bulb_none": "Senza lampadina",
+    "label_base": "Base",
+    "label_base_color": "Colore della base",
+    "label_shade": "Paralume",
+    "label_shade_color": "Colore del paralume",
+    "label_cable_color": "Colore del cavo",
+    "label_switch": "Interruttore",
+    "label_plug": "Spina",
+    "label_bulb": "Lampadina",
+    "label_total": "Prezzo totale",
+    "label_height": "Altezza",
+    "label_diameter": "Larghezza",
+    "label_total_dimensions": "Dimensioni",
+    "label_combination": "Combinazione",
+    "add_to_cart": "Aggiungi al carrello",
+    "share": "Condividi configurazione",
+    "share_copied": "Link copiato!",
+    "share_link": "Condividi questa configurazione",
+    "share_link_copied": "Link copiato!",
+    "configure_your_lamp": "Apri nel Configuratore",
+    "configure_hint": "Questa combinazione è preconfigurata — personalizza ogni dettaglio prima di ordinare",
+    "select_parts": "Scegli una base e un paralume",
+    "render_disclaimer": "Le immagini sono render 3D — colori e texture reali potrebbero variare.",
+    "info_specs": "Specifiche",
+    "specs_content": "Sorgente luminosa: LED E27 (inclusa) · Tensione: 220–240V · Lunghezza cavo: ~200 cm · Interruttore: Inline on/off",
+    "info_shipping": "Spedizione e resi",
+    "shipping_content": "Spedizione gratuita su tutti gli ordini · Consegna a domicilio: 3–7 giorni lavorativi · Punto di ritiro: 2–5 giorni lavorativi",
+    "info_safety": "Sicurezza e certificazione",
+    "safety_content": "Tutte le lampade Svetlana sono certificate CE e rispettano gli standard di sicurezza europei",
+    "info_care": "Istruzioni per la cura",
+    "care_content": "Pulire delicatamente con un panno asciutto o leggermente umido · Evitare prodotti chimici aggressivi · Usare solo lampadine LED (max 10W E27)"
+  },
+  "configurator_product": {
+    "notice_heading": "Configurazione personalizzata richiesta",
+    "notice_body": "Questa lampada è realizzata su ordinazione. Usa il configuratore per scegliere forma, colori, cavo e lampadina — poi aggiungi al carrello.",
+    "cta": "Configura la tua lampada →"
+  },
+  "cart": {
+    "title": "Carrello",
+    "empty": "Il tuo carrello è vuoto",
+    "remove": "Rimuovi",
+    "total": "Totale",
+    "checkout": "Procedi all'ordine",
+    "continue_shopping": "Continua lo shopping"
+  },
+  "cart_delivery": {
+    "title": "Metodo di consegna",
+    "address_label": "Consegna al mio indirizzo",
+    "address_desc": "Consegna standard a domicilio",
+    "pickup_label": "Ritiro al punto Packeta",
+    "pickup_desc": "Scegli tra migliaia di punti di ritiro",
+    "select_point": "Seleziona punto di ritiro",
+    "change_point": "Cambia",
+    "free_shipping": "Spedizione gratuita su tutti gli ordini",
+    "go_to_cart": "Vai al carrello"
+  },
+  "checkout": {
+    "title": "Ordine",
+    "name": "Nome e cognome",
+    "email": "Indirizzo email",
+    "phone": "Telefono",
+    "select_packeta": "Seleziona punto di ritiro Packeta",
+    "selected_point": "Punto di ritiro",
+    "change_point": "Cambia",
+    "order_summary": "Riepilogo ordine",
+    "total": "Totale",
+    "submit": "Paga con GoPay",
+    "submitting": "Elaborazione in corso...",
+    "success_title": "Grazie per il tuo ordine!",
+    "success_body": "L'ordine {orderNumber} è stato ricevuto. La conferma è stata inviata alla tua email.",
+    "error_generic": "Si è verificato un errore. Per favore riprova."
+  },
+  "gallery": {
+    "title": "Galleria lampade",
+    "view_all": "Vedi tutte le lampade →",
+    "no_products": "Nessun prodotto",
+    "customize_cta": "Personalizza questa lampada",
+    "add_to_cart": "Aggiungi al carrello",
+    "page_title": "Le nostre lampade",
+    "load_more": "Carica altro"
+  },
+  "hero": {
+    "tagline": "Un prezzo · Combinazioni infinite"
+  },
+  "policies": {
+    "legal_notice": "Note legali",
+    "privacy_policy": "Informativa sulla privacy",
+    "shipping_policy": "Politica di spedizione",
+    "refund_policy": "Politica di rimborso",
+    "terms_of_service": "Termini di servizio",
+    "contact_information": "Informazioni di contatto"
+  },
+  "announcement": {
+    "discount_applied": "Sconto applicato!"
+  },
+  "cookies": {
+    "title": "Rispettiamo la tua privacy",
+    "intro": "Utilizziamo i cookie per far funzionare il sito e, con il tuo consenso, per analizzare il traffico e personalizzare i contenuti.",
+    "accept_all": "Accetta tutto",
+    "reject_all": "Rifiuta i non essenziali",
+    "manage": "Preferenze cookie"
+  },
+  "accessibility": {
+    "skip_to_text": "Vai direttamente ai contenuti",
+    "close": "Chiudi",
+    "loading": "Caricamento in corso...",
+    "error": "Errore"
+  }
+}

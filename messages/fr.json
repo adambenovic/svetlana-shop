@@ -1,0 +1,155 @@
+{
+  "general": {
+    "close": "Fermer",
+    "loading": "Chargement en cours...",
+    "error": "Une erreur est survenue",
+    "continue_shopping": "Continuer les achats"
+  },
+  "sections": {
+    "header": {
+      "menu_home": "Accueil",
+      "menu_configurator": "Créez votre lampe",
+      "menu_gallery": "Galerie",
+      "menu_contact": "Contact",
+      "cart": "Panier"
+    },
+    "footer": {
+      "copyright": "© {year} Svetlana Lampe. Tous droits réservés."
+    }
+  },
+  "products": {
+    "add_to_cart": "Ajouter au panier",
+    "sold_out": "Épuisé",
+    "unavailable": "Non disponible",
+    "on_sale": "Promotion",
+    "description": "Description",
+    "share": "Partager ce produit",
+    "dims_height": "Hauteur",
+    "dims_diameter": "Largeur"
+  },
+  "configurator": {
+    "tab_base": "Base",
+    "tab_shade": "Abat-jour",
+    "tab_cable": "Câble",
+    "tab_bulb": "Ampoule",
+    "pick_color": "Couleur",
+    "pick_shape": "Forme",
+    "pick_cable_color": "Couleur du câble",
+    "pick_switch": "Interrupteur",
+    "pick_plug": "Prise",
+    "pick_bulb": "Choisir le type d'ampoule",
+    "pick_base": "Choisir la base",
+    "pick_base_color": "Couleur de la base",
+    "pick_shade": "Choisir l'abat-jour",
+    "pick_shade_color": "Couleur de l'abat-jour",
+    "bulb_warm": "Blanc chaud (3000K)",
+    "bulb_cold": "Blanc froid (6500K)",
+    "bulb_none": "Sans ampoule",
+    "label_base": "Base",
+    "label_base_color": "Couleur de la base",
+    "label_shade": "Abat-jour",
+    "label_shade_color": "Couleur de l'abat-jour",
+    "label_cable_color": "Couleur du câble",
+    "label_switch": "Interrupteur",
+    "label_plug": "Prise",
+    "label_bulb": "Ampoule",
+    "label_total": "Prix total",
+    "label_height": "Hauteur",
+    "label_diameter": "Largeur",
+    "label_total_dimensions": "Dimensions",
+    "label_combination": "Combinaison",
+    "add_to_cart": "Ajouter au panier",
+    "share": "Partager la configuration",
+    "share_copied": "Lien copié !",
+    "share_link": "Partager cette configuration",
+    "share_link_copied": "Lien copié !",
+    "configure_your_lamp": "Ouvrir dans le Configurateur",
+    "configure_hint": "Cette combinaison est préconfigurée — ajustez chaque détail avant de commander",
+    "select_parts": "Choisissez une base et un abat-jour",
+    "render_disclaimer": "Les images sont des rendus 3D — les couleurs et textures réelles peuvent varier.",
+    "info_specs": "Spécifications",
+    "specs_content": "Source lumineuse : LED E27 (incluse) · Tension : 220–240V · Longueur du câble : ~200 cm · Interrupteur : Inline marche/arrêt",
+    "info_shipping": "Livraison et retours",
+    "shipping_content": "Livraison gratuite sur toutes les commandes · Livraison à domicile : 3–7 jours ouvrés · Point relais : 2–5 jours ouvrés",
+    "info_safety": "Sécurité et certification",
+    "safety_content": "Toutes les lampes Svetlana sont certifiées CE et respectent les normes de sécurité européennes",
+    "info_care": "Instructions d'entretien",
+    "care_content": "Essuyer délicatement avec un chiffon sec ou légèrement humide · Éviter les produits chimiques agressifs · Utiliser uniquement des ampoules LED (max 10W E27)"
+  },
+  "configurator_product": {
+    "notice_heading": "Configuration personnalisée requise",
+    "notice_body": "Cette lampe est fabriquée sur commande. Utilisez le configurateur pour choisir la forme, les couleurs, le câble et l'ampoule — puis ajoutez au panier.",
+    "cta": "Configurer votre lampe →"
+  },
+  "cart": {
+    "title": "Panier",
+    "empty": "Votre panier est vide",
+    "remove": "Supprimer",
+    "total": "Total",
+    "checkout": "Procéder au paiement",
+    "continue_shopping": "Continuer les achats"
+  },
+  "cart_delivery": {
+    "title": "Mode de livraison",
+    "address_label": "Livrer à mon adresse",
+    "address_desc": "Livraison standard à domicile",
+    "pickup_label": "Retirer en point Packeta",
+    "pickup_desc": "Choisissez parmi des milliers de points relais",
+    "select_point": "Sélectionner un point relais",
+    "change_point": "Modifier",
+    "free_shipping": "Livraison gratuite sur toutes les commandes",
+    "go_to_cart": "Aller au panier"
+  },
+  "checkout": {
+    "title": "Commande",
+    "name": "Nom et prénom",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "select_packeta": "Sélectionner un point relais Packeta",
+    "selected_point": "Point relais",
+    "change_point": "Modifier",
+    "order_summary": "Récapitulatif de la commande",
+    "total": "Total",
+    "submit": "Payer avec GoPay",
+    "submitting": "Traitement en cours...",
+    "success_title": "Merci pour votre commande !",
+    "success_body": "La commande {orderNumber} a été reçue. La confirmation a été envoyée à votre e-mail.",
+    "error_generic": "Une erreur est survenue. Veuillez réessayer."
+  },
+  "gallery": {
+    "title": "Galerie de lampes",
+    "view_all": "Voir toutes les lampes →",
+    "no_products": "Aucun produit",
+    "customize_cta": "Personnaliser cette lampe",
+    "add_to_cart": "Ajouter au panier",
+    "page_title": "Nos lampes",
+    "load_more": "Charger plus"
+  },
+  "hero": {
+    "tagline": "Un prix · Des combinaisons infinies"
+  },
+  "policies": {
+    "legal_notice": "Mentions légales",
+    "privacy_policy": "Politique de confidentialité",
+    "shipping_policy": "Politique d'expédition",
+    "refund_policy": "Politique de remboursement",
+    "terms_of_service": "Conditions d'utilisation",
+    "contact_information": "Coordonnées"
+  },
+  "announcement": {
+    "discount_applied": "Remise appliquée !"
+  },
+  "cookies": {
+    "title": "Nous respectons votre vie privée",
+    "intro": "Nous utilisons des cookies pour le fonctionnement du site et, avec votre consentement, pour analyser le trafic et personnaliser le contenu.",
+    "accept_all": "Tout accepter",
+    "reject_all": "Refuser non-essentiels",
+    "manage": "Préférences de cookies"
+  },
+  "accessibility": {
+    "skip_to_text": "Ignorer et passer au contenu",
+    "close": "Fermer",
+    "loading": "Chargement en cours...",
+    "error": "Erreur"
+  }
+}

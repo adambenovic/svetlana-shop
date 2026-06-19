@@ -1,0 +1,155 @@
+{
+  "general": {
+    "close": "Zavrieť",
+    "loading": "Načítavam...",
+    "error": "Nastala chyba",
+    "continue_shopping": "Pokračovať v nákupe"
+  },
+  "sections": {
+    "header": {
+      "menu_home": "Domov",
+      "menu_configurator": "Vytvorte si lampu",
+      "menu_gallery": "Galéria",
+      "menu_contact": "Kontakt",
+      "cart": "Košík"
+    },
+    "footer": {
+      "copyright": "© {year} Svetlana Lampe. Všetky práva vyhradené."
+    }
+  },
+  "products": {
+    "add_to_cart": "Pridať do košíka",
+    "sold_out": "Vypredané",
+    "unavailable": "Nedostupné",
+    "on_sale": "Zľava",
+    "description": "Popis",
+    "share": "Zdieľať tento produkt",
+    "dims_height": "Výška",
+    "dims_diameter": "Šírka"
+  },
+  "configurator": {
+    "tab_base": "Podstavec",
+    "tab_shade": "Tienidlo",
+    "tab_cable": "Kábel",
+    "tab_bulb": "Žiarovka",
+    "pick_color": "Farba",
+    "pick_shape": "Tvar",
+    "pick_cable_color": "Farba kábla",
+    "pick_switch": "Vypínač",
+    "pick_plug": "Zástrčka",
+    "pick_bulb": "Vyberte typ žiarovky",
+    "pick_base": "Vyberte podstavec",
+    "pick_base_color": "Farba podstavca",
+    "pick_shade": "Vyberte tienidlo",
+    "pick_shade_color": "Farba tienidla",
+    "bulb_warm": "Teplá biela (3000K)",
+    "bulb_cold": "Studená biela (6500K)",
+    "bulb_none": "Bez žiarovky",
+    "label_base": "Podstavec",
+    "label_base_color": "Farba podstavca",
+    "label_shade": "Tienidlo",
+    "label_shade_color": "Farba tienidla",
+    "label_cable_color": "Farba kábla",
+    "label_switch": "Vypínač",
+    "label_plug": "Zástrčka",
+    "label_bulb": "Žiarovka",
+    "label_total": "Celková cena",
+    "label_height": "Výška",
+    "label_diameter": "Šírka",
+    "label_total_dimensions": "Rozmery",
+    "label_combination": "Kombinácia",
+    "add_to_cart": "Pridať do košíka",
+    "share": "Zdieľať konfiguráciu",
+    "share_copied": "Odkaz skopírovaný!",
+    "share_link": "Zdieľať túto konfiguráciu",
+    "share_link_copied": "Odkaz skopírovaný!",
+    "configure_your_lamp": "Otvoriť v konfigurátore",
+    "configure_hint": "Táto kombinácia je prednastavená — upravte si čokoľvek pred objednaním",
+    "select_parts": "Vyberte si podstavec a tienidlo",
+    "render_disclaimer": "Obrázky sú 3D vizualizácie — skutočné farby a textúry sa môžu líšiť.",
+    "info_specs": "Špecifikácie",
+    "specs_content": "Zdroj svetla: LED E27 (v balení) · Napätie: 220–240V · Dĺžka kábla: ~200 cm · Vypínač: Inline zapnutie/vypnutie",
+    "info_shipping": "Doprava a vrátenie",
+    "shipping_content": "Doprava zadarmo na všetky objednávky · Doručenie na adresu: 3–7 pracovných dní · Výdajné miesto: 2–5 pracovných dní",
+    "info_safety": "Bezpečnosť a certifikácia",
+    "safety_content": "Všetky lampy Svetlana sú CE certifikované a spĺňajú európske bezpečnostné normy",
+    "info_care": "Pokyny na údržbu",
+    "care_content": "Jemne utrite suchou alebo mierne vlhkou handričkou · Nepoužívajte agresívne chemikálie · Používajte len LED žiarovky (max. 10W E27)"
+  },
+  "configurator_product": {
+    "notice_heading": "Vyžaduje vlastnú konfiguráciu",
+    "notice_body": "Táto lampa sa vyrába na objednávku. Použite konfigurátor na výber tvaru, farieb, kábla a žiarovky — potom pridajte do košíka.",
+    "cta": "Konfigurovať lampu →"
+  },
+  "cart": {
+    "title": "Košík",
+    "empty": "Váš košík je prázdny",
+    "remove": "Odstrániť",
+    "total": "Spolu",
+    "checkout": "Pokračovať k platbe",
+    "continue_shopping": "Pokračovať v nákupe"
+  },
+  "cart_delivery": {
+    "title": "Spôsob doručenia",
+    "address_label": "Doručiť na adresu",
+    "address_desc": "Štandardné doručenie na vašu adresu",
+    "pickup_label": "Vyzdvihnúť na Packeta bode",
+    "pickup_desc": "Vyberte z tisícov výdajných miest",
+    "select_point": "Vybrať výdajné miesto",
+    "change_point": "Zmeniť",
+    "free_shipping": "Doprava zadarmo na všetky objednávky",
+    "go_to_cart": "Prejsť do košíka"
+  },
+  "checkout": {
+    "title": "Objednávka",
+    "name": "Meno a priezvisko",
+    "email": "E-mail",
+    "phone": "Telefón",
+    "select_packeta": "Vybrať výdajné miesto Packeta",
+    "selected_point": "Výdajné miesto",
+    "change_point": "Zmeniť",
+    "order_summary": "Zhrnutie objednávky",
+    "total": "Celková suma",
+    "submit": "Zaplatiť cez GoPay",
+    "submitting": "Spracovávam...",
+    "success_title": "Ďakujeme za objednávku!",
+    "success_body": "Objednávka {orderNumber} bola prijatá. Potvrdenie sme poslali na váš e-mail.",
+    "error_generic": "Nastala chyba. Skúste to prosím znova."
+  },
+  "gallery": {
+    "title": "Galéria lámp",
+    "view_all": "Zobraziť všetky lampy →",
+    "no_products": "Žiadne produkty",
+    "customize_cta": "Nakonfigurovať túto lampu",
+    "add_to_cart": "Pridať do košíka",
+    "page_title": "Naše lampy",
+    "load_more": "Načítať viac"
+  },
+  "hero": {
+    "tagline": "Jedna cena · Nekonečné kombinácie"
+  },
+  "policies": {
+    "legal_notice": "Právne upozornenie",
+    "privacy_policy": "Ochrana osobných údajov",
+    "shipping_policy": "Zásady doručenia",
+    "refund_policy": "Zásady vrátenia",
+    "terms_of_service": "Podmienky služby",
+    "contact_information": "Kontaktné informácie"
+  },
+  "announcement": {
+    "discount_applied": "Zľava uplatnená!"
+  },
+  "cookies": {
+    "title": "Vážime si vaše súkromie",
+    "intro": "Používame cookies, aby táto stránka fungovala, a s vaším súhlasom aj na analýzu návštevnosti a personalizáciu obsahu.",
+    "accept_all": "Prijať všetky",
+    "reject_all": "Odmietnuť nepovinné",
+    "manage": "Nastavenia cookies"
+  },
+  "accessibility": {
+    "skip_to_text": "Prejsť na obsah",
+    "close": "Zavrieť",
+    "loading": "Načítava sa...",
+    "error": "Chyba"
+  }
+}

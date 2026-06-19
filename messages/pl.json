@@ -1,0 +1,155 @@
+{
+  "general": {
+    "close": "Zamknij",
+    "loading": "Ładowanie...",
+    "error": "Wystąpił błąd",
+    "continue_shopping": "Kontynuuj zakupy"
+  },
+  "sections": {
+    "header": {
+      "menu_home": "Strona główna",
+      "menu_configurator": "Zaprojektuj lampę",
+      "menu_gallery": "Galeria",
+      "menu_contact": "Kontakt",
+      "cart": "Koszyk"
+    },
+    "footer": {
+      "copyright": "© {year} Svetlana Lampe. Wszelkie prawa zastrzeżone."
+    }
+  },
+  "products": {
+    "add_to_cart": "Dodaj do koszyka",
+    "sold_out": "Wyprzedane",
+    "unavailable": "Niedostępny",
+    "on_sale": "W promocji",
+    "description": "Opis",
+    "share": "Udostępnij ten produkt",
+    "dims_height": "Wysokość",
+    "dims_diameter": "Szerokość"
+  },
+  "configurator": {
+    "tab_base": "Podstawa",
+    "tab_shade": "Klosz",
+    "tab_cable": "Kabel",
+    "tab_bulb": "Żarówka",
+    "pick_color": "Kolor",
+    "pick_shape": "Kształt",
+    "pick_cable_color": "Kolor kabla",
+    "pick_switch": "Włącznik",
+    "pick_plug": "Wtyczka",
+    "pick_bulb": "Wybierz typ żarówki",
+    "pick_base": "Wybierz podstawę",
+    "pick_base_color": "Kolor podstawy",
+    "pick_shade": "Wybierz klosz",
+    "pick_shade_color": "Kolor klosza",
+    "bulb_warm": "Ciepła biel (3000K)",
+    "bulb_cold": "Zimna biel (6500K)",
+    "bulb_none": "Bez żarówki",
+    "label_base": "Podstawa",
+    "label_base_color": "Kolor podstawy",
+    "label_shade": "Klosz",
+    "label_shade_color": "Kolor klosza",
+    "label_cable_color": "Kolor kabla",
+    "label_switch": "Włącznik",
+    "label_plug": "Wtyczka",
+    "label_bulb": "Żarówka",
+    "label_total": "Cena całkowita",
+    "label_height": "Wysokość",
+    "label_diameter": "Szerokość",
+    "label_total_dimensions": "Wymiary",
+    "label_combination": "Kombinacja",
+    "add_to_cart": "Dodaj do koszyka",
+    "share": "Udostępnij konfigurację",
+    "share_copied": "Link skopiowany!",
+    "share_link": "Udostępnij tę konfigurację",
+    "share_link_copied": "Link skopiowany!",
+    "configure_your_lamp": "Otwórz w Konfiguratorze",
+    "configure_hint": "Ta kombinacja jest wstępnie ustawiona — zmień dowolny szczegół przed zamówieniem",
+    "select_parts": "Wybierz podstawę i klosz",
+    "render_disclaimer": "Zdjęcia są renderami 3D — rzeczywiste kolory i tekstury mogą się różnić.",
+    "info_specs": "Specyfikacja",
+    "specs_content": "Źródło światła: LED E27 (w zestawie) · Napięcie: 220–240V · Długość kabla: ~200 cm · Wyłącznik: Inline wł./wył.",
+    "info_shipping": "Dostawa i zwroty",
+    "shipping_content": "Darmowa dostawa na wszystkie zamówienia · Dostawa pod adres: 3–7 dni roboczych · Punkt odbioru: 2–5 dni roboczych",
+    "info_safety": "Bezpieczeństwo i certyfikacja",
+    "safety_content": "Wszystkie lampy Svetlana posiadają certyfikat CE i spełniają europejskie normy bezpieczeństwa",
+    "info_care": "Instrukcja pielęgnacji",
+    "care_content": "Delikatnie wytrzeć suchą lub lekko wilgotną szmatką · Unikać agresywnych chemikaliów · Używać tylko żarówek LED (maks. 10W E27)"
+  },
+  "configurator_product": {
+    "notice_heading": "Wymagana indywidualna konfiguracja",
+    "notice_body": "Ta lampa jest wykonywana na zamówienie. Użyj konfiguratora, aby wybrać kształt, kolory, kabel i żarówkę — a następnie dodaj do koszyka.",
+    "cta": "Skonfiguruj swoją lampę →"
+  },
+  "cart": {
+    "title": "Koszyk",
+    "empty": "Twój koszyk jest pusty",
+    "remove": "Usuń",
+    "total": "Suma",
+    "checkout": "Przejdź do płatności",
+    "continue_shopping": "Kontynuuj zakupy"
+  },
+  "cart_delivery": {
+    "title": "Sposób dostawy",
+    "address_label": "Dostarczyć na mój adres",
+    "address_desc": "Standardowa dostawa pod drzwi",
+    "pickup_label": "Odbiór w punkcie Packeta",
+    "pickup_desc": "Wybierz spośród tysięcy punktów odbioru",
+    "select_point": "Wybierz punkt odbioru",
+    "change_point": "Zmień",
+    "free_shipping": "Darmowa dostawa na wszystkie zamówienia",
+    "go_to_cart": "Przejdź do koszyka"
+  },
+  "checkout": {
+    "title": "Zamówienie",
+    "name": "Imię i nazwisko",
+    "email": "E-mail",
+    "phone": "Telefon",
+    "select_packeta": "Wybierz punkt odbioru Packeta",
+    "selected_point": "Punkt odbioru",
+    "change_point": "Zmień",
+    "order_summary": "Podsumowanie zamówienia",
+    "total": "Suma",
+    "submit": "Zapłać przez GoPay",
+    "submitting": "Przetwarzam...",
+    "success_title": "Dziękujemy za zamówienie!",
+    "success_body": "Zamówienie {orderNumber} zostało przyjęte. Potwierdzenie zostało wysłane na Twój e-mail.",
+    "error_generic": "Wystąpił błąd. Proszę spróbować ponownie."
+  },
+  "gallery": {
+    "title": "Galeria lamp",
+    "view_all": "Zobacz wszystkie lampy →",
+    "no_products": "Brak produktów",
+    "customize_cta": "Dostosuj tę lampę",
+    "add_to_cart": "Dodaj do koszyka",
+    "page_title": "Nasze lampy",
+    "load_more": "Załaduj więcej"
+  },
+  "hero": {
+    "tagline": "Jedna cena · Nieskończone kombinacje"
+  },
+  "policies": {
+    "legal_notice": "Informacja prawna",
+    "privacy_policy": "Polityka prywatności",
+    "shipping_policy": "Polityka wysyłki",
+    "refund_policy": "Polityka zwrotów",
+    "terms_of_service": "Regulamin",
+    "contact_information": "Dane kontaktowe"
+  },
+  "announcement": {
+    "discount_applied": "Rabat zastosowany!"
+  },
+  "cookies": {
+    "title": "Cenimy Twoją prywatność",
+    "intro": "Używamy plików cookie, aby ta strona działała, a za Twoją zgodą także do analizy ruchu i personalizacji treści.",
+    "accept_all": "Akceptuj wszystkie",
+    "reject_all": "Odrzuć opcjonalne",
+    "manage": "Preferencje plików cookie"
+  },
+  "accessibility": {
+    "skip_to_text": "Przejdź do treści",
+    "close": "Zamknij",
+    "loading": "Ładowanie...",
+    "error": "Błąd"
+  }
+}

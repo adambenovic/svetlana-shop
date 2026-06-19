@@ -1,0 +1,155 @@
+{
+  "general": {
+    "close": "Bezárás",
+    "loading": "Betöltés folyamatban…",
+    "error": "Hiba történt",
+    "continue_shopping": "Vásárlás folytatása"
+  },
+  "sections": {
+    "header": {
+      "menu_home": "Főoldal",
+      "menu_configurator": "Tervezze meg lámpáját",
+      "menu_gallery": "Galéria",
+      "menu_contact": "Kapcsolat",
+      "cart": "Kosár"
+    },
+    "footer": {
+      "copyright": "© {year} Svetlana Lampe. Minden jog fenntartva."
+    }
+  },
+  "products": {
+    "add_to_cart": "Hozzáadás a kosárhoz",
+    "sold_out": "Elfogyott",
+    "unavailable": "Nincs készleten",
+    "on_sale": "Akciós",
+    "description": "Leírás",
+    "share": "A termék megosztása",
+    "dims_height": "Magasság",
+    "dims_diameter": "Szélesség"
+  },
+  "configurator": {
+    "tab_base": "Talp",
+    "tab_shade": "Ernyő",
+    "tab_cable": "Kábel",
+    "tab_bulb": "Izzó",
+    "pick_color": "Szín",
+    "pick_shape": "Forma",
+    "pick_cable_color": "Kábel színe",
+    "pick_switch": "Kapcsoló",
+    "pick_plug": "Dugó",
+    "pick_bulb": "Válassz izzótípust",
+    "pick_base": "Válassz talpat",
+    "pick_base_color": "Talp színe",
+    "pick_shade": "Válassz ernyőt",
+    "pick_shade_color": "Ernyő színe",
+    "bulb_warm": "Meleg fehér (3000K)",
+    "bulb_cold": "Hideg fehér (6500K)",
+    "bulb_none": "Izzó nélkül",
+    "label_base": "Talp",
+    "label_base_color": "Talp színe",
+    "label_shade": "Ernyő",
+    "label_shade_color": "Ernyő színe",
+    "label_cable_color": "Kábel színe",
+    "label_switch": "Kapcsoló",
+    "label_plug": "Dugó",
+    "label_bulb": "Izzó",
+    "label_total": "Teljes ár",
+    "label_height": "Magasság",
+    "label_diameter": "Szélesség",
+    "label_total_dimensions": "Méretek",
+    "label_combination": "Kombináció",
+    "add_to_cart": "Kosárba",
+    "share": "Konfiguráció megosztása",
+    "share_copied": "Link másolva!",
+    "share_link": "Konfiguráció megosztása",
+    "share_link_copied": "Link másolva!",
+    "configure_your_lamp": "Megnyitás a Konfigurátorban",
+    "configure_hint": "Ez a kombináció előre be van állítva — módosítsd bármelyik részletet rendelés előtt",
+    "select_parts": "Válassz egy talpat és egy ernyőt",
+    "render_disclaimer": "A képek 3D-s renderelések — a tényleges színek és textúrák eltérhetnek.",
+    "info_specs": "Műszaki adatok",
+    "specs_content": "Fényforrás: LED E27 (mellékelve) · Feszültség: 220–240V · Kábelhossz: ~200 cm · Kapcsoló: Inline be/ki",
+    "info_shipping": "Szállítás és visszaküldés",
+    "shipping_content": "Ingyenes szállítás minden rendelésre · Házhozszállítás: 3–7 munkanap · Átvételi pont: 2–5 munkanap",
+    "info_safety": "Biztonság és tanúsítvány",
+    "safety_content": "Minden Svetlana lámpa CE tanúsítvánnyal rendelkezik és megfelel az európai biztonsági szabványoknak",
+    "info_care": "Ápolási útmutató",
+    "care_content": "Óvatosan töröld le száraz vagy enyhén nedves ruhával · Kerüld az agresszív vegyszereket · Csak LED izzókat használj (max. 10W E27)"
+  },
+  "configurator_product": {
+    "notice_heading": "Egyéni konfiguráció szükséges",
+    "notice_body": "Ez a lámpa rendelésre készül. Használja a konfigurátort az alap, búra, színek, kábel és izzó kiválasztásához — majd adja a kosárhoz.",
+    "cta": "Lámpa konfigurálása →"
+  },
+  "cart": {
+    "title": "Kosár",
+    "empty": "A kosarad üres",
+    "remove": "Eltávolítás",
+    "total": "Végösszeg",
+    "checkout": "Megrendelés",
+    "continue_shopping": "Vásárlás folytatása"
+  },
+  "cart_delivery": {
+    "title": "Szállítási mód",
+    "address_label": "Szállítás a címemre",
+    "address_desc": "Standard kézbesítés az ajtódig",
+    "pickup_label": "Átvétel Packeta ponton",
+    "pickup_desc": "Válasszon ezer átvételi pont közül",
+    "select_point": "Átvételi pont választása",
+    "change_point": "Módosítás",
+    "free_shipping": "Ingyenes szállítás minden rendelésre",
+    "go_to_cart": "Kosárhoz"
+  },
+  "checkout": {
+    "title": "Rendelés",
+    "name": "Teljes név",
+    "email": "E-mail-cím",
+    "phone": "Telefonszám",
+    "select_packeta": "Packeta átvételi pont kiválasztása",
+    "selected_point": "Átvételi pont",
+    "change_point": "Módosítás",
+    "order_summary": "Rendelés összegzése",
+    "total": "Végösszeg",
+    "submit": "Fizetés GoPay-jel",
+    "submitting": "Feldolgozás...",
+    "success_title": "Köszönjük a rendelést!",
+    "success_body": "A(z) {orderNumber} rendelés beérkezett. A visszaigazolást elküldtük e-mailben.",
+    "error_generic": "Hiba történt. Kérjük, próbálja újra."
+  },
+  "gallery": {
+    "title": "Lámpa galéria",
+    "view_all": "Az összes lámpa →",
+    "no_products": "Nincs termék",
+    "customize_cta": "Lámpa személyre szabása",
+    "add_to_cart": "Kosárba",
+    "page_title": "Lámpáink",
+    "load_more": "Több betöltése"
+  },
+  "hero": {
+    "tagline": "Egy ár · Végtelen kombinációk"
+  },
+  "policies": {
+    "legal_notice": "Jogi közlemény",
+    "privacy_policy": "Adatvédelmi irányelvek",
+    "shipping_policy": "Szállítási szabályzat",
+    "refund_policy": "Visszatérítési szabályzat",
+    "terms_of_service": "Felhasználási feltételek",
+    "contact_information": "Elérhetőségek"
+  },
+  "announcement": {
+    "discount_applied": "Kedvezmény érvényesítve!"
+  },
+  "cookies": {
+    "title": "Tiszteletben tartjuk a magánéletét",
+    "intro": "Sütiket használunk a weboldal működéséhez, és az Ön hozzájárulásával az analitikához és a tartalom személyre szabásához is.",
+    "accept_all": "Összes elfogadása",
+    "reject_all": "Nem szükségesek elutasítása",
+    "manage": "Cookie-beállítások"
+  },
+  "accessibility": {
+    "skip_to_text": "Ugrás a tartalomhoz",
+    "close": "Bezárás",
+    "loading": "Betöltés folyamatban…",
+    "error": "Hiba"
+  }
+}

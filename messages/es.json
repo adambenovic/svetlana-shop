@@ -1,0 +1,155 @@
+{
+  "general": {
+    "close": "Cerrar",
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "continue_shopping": "Seguir comprando"
+  },
+  "sections": {
+    "header": {
+      "menu_home": "Inicio",
+      "menu_configurator": "Diseña tu lámpara",
+      "menu_gallery": "Galería",
+      "menu_contact": "Contacto",
+      "cart": "Carrito"
+    },
+    "footer": {
+      "copyright": "© {year} Svetlana Lampe. Todos los derechos reservados."
+    }
+  },
+  "products": {
+    "add_to_cart": "Añadir al carrito",
+    "sold_out": "Agotado",
+    "unavailable": "No disponible",
+    "on_sale": "Oferta",
+    "description": "Descripción",
+    "share": "Compartir este producto",
+    "dims_height": "Altura",
+    "dims_diameter": "Anchura"
+  },
+  "configurator": {
+    "tab_base": "Base",
+    "tab_shade": "Pantalla",
+    "tab_cable": "Cable",
+    "tab_bulb": "Bombilla",
+    "pick_color": "Color",
+    "pick_shape": "Forma",
+    "pick_cable_color": "Color del cable",
+    "pick_switch": "Interruptor",
+    "pick_plug": "Enchufe",
+    "pick_bulb": "Elige el tipo de bombilla",
+    "pick_base": "Elegir base",
+    "pick_base_color": "Color de la base",
+    "pick_shade": "Elegir pantalla",
+    "pick_shade_color": "Color de la pantalla",
+    "bulb_warm": "Blanco cálido (3000K)",
+    "bulb_cold": "Blanco frío (6500K)",
+    "bulb_none": "Sin bombilla",
+    "label_base": "Base",
+    "label_base_color": "Color de la base",
+    "label_shade": "Pantalla",
+    "label_shade_color": "Color de la pantalla",
+    "label_cable_color": "Color del cable",
+    "label_switch": "Interruptor",
+    "label_plug": "Enchufe",
+    "label_bulb": "Bombilla",
+    "label_total": "Precio total",
+    "label_height": "Altura",
+    "label_diameter": "Anchura",
+    "label_total_dimensions": "Dimensiones",
+    "label_combination": "Combinación",
+    "add_to_cart": "Añadir al carrito",
+    "share": "Compartir configuración",
+    "share_copied": "¡Enlace copiado!",
+    "share_link": "Compartir esta configuración",
+    "share_link_copied": "¡Enlace copiado!",
+    "configure_your_lamp": "Abrir en el Configurador",
+    "configure_hint": "Esta combinación viene preconfigurada — ajusta cualquier detalle antes de pedir",
+    "select_parts": "Elige una base y una pantalla",
+    "render_disclaimer": "Las imágenes son renders 3D — los colores y texturas reales pueden variar.",
+    "info_specs": "Especificaciones",
+    "specs_content": "Fuente de luz: LED E27 (incluida) · Voltaje: 220–240V · Longitud del cable: ~200 cm · Interruptor: Inline encendido/apagado",
+    "info_shipping": "Envío y devoluciones",
+    "shipping_content": "Envío gratuito en todos los pedidos · Entrega a domicilio: 3–7 días laborables · Punto de recogida: 2–5 días laborables",
+    "info_safety": "Seguridad y certificación",
+    "safety_content": "Todas las lámparas Svetlana tienen certificación CE y cumplen con los estándares de seguridad europeos",
+    "info_care": "Instrucciones de cuidado",
+    "care_content": "Limpiar suavemente con un paño seco o ligeramente húmedo · Evitar productos químicos agresivos · Usar solo bombillas LED (máx. 10W E27)"
+  },
+  "configurator_product": {
+    "notice_heading": "Requiere configuración personalizada",
+    "notice_body": "Esta lámpara se fabrica bajo pedido. Usa el configurador para elegir forma, colores, cable y bombilla — luego añade al carrito.",
+    "cta": "Configurar tu lámpara →"
+  },
+  "cart": {
+    "title": "Carrito",
+    "empty": "Tu carrito está vacío",
+    "remove": "Eliminar",
+    "total": "Total",
+    "checkout": "Proceder al pago",
+    "continue_shopping": "Seguir comprando"
+  },
+  "cart_delivery": {
+    "title": "Método de envío",
+    "address_label": "Enviar a mi dirección",
+    "address_desc": "Entrega estándar a tu puerta",
+    "pickup_label": "Recoger en punto Packeta",
+    "pickup_desc": "Elige entre miles de puntos de recogida",
+    "select_point": "Seleccionar punto de recogida",
+    "change_point": "Cambiar",
+    "free_shipping": "Envío gratuito en todos los pedidos",
+    "go_to_cart": "Ir al carrito"
+  },
+  "checkout": {
+    "title": "Pedido",
+    "name": "Nombre completo",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "select_packeta": "Seleccionar punto de recogida Packeta",
+    "selected_point": "Punto de recogida",
+    "change_point": "Cambiar",
+    "order_summary": "Resumen del pedido",
+    "total": "Total",
+    "submit": "Pagar con GoPay",
+    "submitting": "Procesando...",
+    "success_title": "¡Gracias por tu pedido!",
+    "success_body": "El pedido {orderNumber} ha sido recibido. La confirmación ha sido enviada a tu correo.",
+    "error_generic": "Algo salió mal. Por favor, inténtalo de nuevo."
+  },
+  "gallery": {
+    "title": "Galería de lámparas",
+    "view_all": "Ver todas las lámparas →",
+    "no_products": "Sin productos",
+    "customize_cta": "Personalizar esta lámpara",
+    "add_to_cart": "Añadir al carrito",
+    "page_title": "Nuestras lámparas",
+    "load_more": "Cargar más"
+  },
+  "hero": {
+    "tagline": "Un precio · Combinaciones infinitas"
+  },
+  "policies": {
+    "legal_notice": "Aviso legal",
+    "privacy_policy": "Política de privacidad",
+    "shipping_policy": "Política de envíos",
+    "refund_policy": "Política de devoluciones",
+    "terms_of_service": "Términos de servicio",
+    "contact_information": "Información de contacto"
+  },
+  "announcement": {
+    "discount_applied": "¡Descuento aplicado!"
+  },
+  "cookies": {
+    "title": "Valoramos tu privacidad",
+    "intro": "Utilizamos cookies para que este sitio funcione y, con tu consentimiento, para analizar el tráfico y personalizar contenido.",
+    "accept_all": "Aceptar todo",
+    "reject_all": "Rechazar opcionales",
+    "manage": "Preferencias de cookies"
+  },
+  "accessibility": {
+    "skip_to_text": "Ir directamente al contenido",
+    "close": "Cerrar",
+    "loading": "Cargando...",
+    "error": "Error"
+  }
+}
