@@ -1,0 +1,758 @@
+{
+  "colors": [
+    {
+      "id": "white",
+      "name": "White",
+      "hex": "#EFF0F1"
+    },
+    {
+      "id": "black",
+      "name": "Black",
+      "hex": "#212721"
+    },
+    {
+      "id": "texture-grey",
+      "name": "Texture Grey",
+      "hex": "#75787B"
+    },
+    {
+      "id": "red",
+      "name": "Red",
+      "hex": "#C8102E"
+    },
+    {
+      "id": "orange",
+      "name": "Orange",
+      "hex": "#FF7F32"
+    },
+    {
+      "id": "yellow",
+      "name": "Yellow",
+      "hex": "#F3E500"
+    },
+    {
+      "id": "forest-green",
+      "name": "Forest Green",
+      "hex": "#43523B"
+    },
+    {
+      "id": "lake-blue",
+      "name": "Lake Blue",
+      "hex": "#0084D4"
+    },
+    {
+      "id": "purple",
+      "name": "Purple",
+      "hex": "#6A6DCD"
+    },
+    {
+      "id": "pink",
+      "name": "Pink",
+      "hex": "#FB637E"
+    },
+    {
+      "id": "cream",
+      "name": "Cream",
+      "hex": "#F9DFB9"
+    },
+    {
+      "id": "beige",
+      "name": "Beige",
+      "hex": "#D4B996"
+    },
+    {
+      "id": "brown",
+      "name": "Brown",
+      "hex": "#927968"
+    },
+    {
+      "id": "peanut-brown",
+      "name": "Peanut Brown",
+      "hex": "#A9754F"
+    },
+    {
+      "id": "clear",
+      "name": "Clear",
+      "hex": "#EFF0F1",
+      "translucent": true
+    },
+    {
+      "id": "translucent-pink",
+      "name": "Translucent Pink",
+      "hex": "#F8C1B8",
+      "translucent": true
+    },
+    {
+      "id": "translucent-blue",
+      "name": "Translucent Blue",
+      "hex": "#69B3E7",
+      "translucent": true
+    },
+    {
+      "id": "translucent-olive",
+      "name": "Translucent Olive",
+      "hex": "#78874D",
+      "translucent": true
+    }
+  ],
+  "bases": [
+    {
+      "id": "Base 1",
+      "name": "1",
+      "thumbnail": "Base 1-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 114
+    },
+    {
+      "id": "Base 10",
+      "name": "10",
+      "thumbnail": "Base 10-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 139
+    },
+    {
+      "id": "Base 11",
+      "name": "11",
+      "thumbnail": "Base 11-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 139
+    },
+    {
+      "id": "Base 12",
+      "name": "12",
+      "thumbnail": "Base 12-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 139
+    },
+    {
+      "id": "Base 13",
+      "name": "13",
+      "thumbnail": "Base 13-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 113
+    },
+    {
+      "id": "Base 14",
+      "name": "14",
+      "thumbnail": "Base 14-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 113
+    },
+    {
+      "id": "Base 15",
+      "name": "15",
+      "thumbnail": "Base 15-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 113
+    },
+    {
+      "id": "Base 16",
+      "name": "16",
+      "thumbnail": "Base 16-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 113
+    },
+    {
+      "id": "Base 17",
+      "name": "17",
+      "thumbnail": "Base 17-thumb.png",
+      "height_mm": 98,
+      "diameter_mm": 116
+    },
+    {
+      "id": "Base 18",
+      "name": "18",
+      "thumbnail": "Base 18-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 116
+    },
+    {
+      "id": "Base 19",
+      "name": "19",
+      "thumbnail": "Base 19-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 116
+    },
+    {
+      "id": "Base 2",
+      "name": "2",
+      "thumbnail": "Base 2-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 115
+    },
+    {
+      "id": "Base 20",
+      "name": "20",
+      "thumbnail": "Base 20-thumb.png",
+      "height_mm": 98,
+      "diameter_mm": 116
+    },
+    {
+      "id": "Base 21",
+      "name": "21",
+      "thumbnail": "Base 21-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 114
+    },
+    {
+      "id": "Base 22",
+      "name": "22",
+      "thumbnail": "Base 22-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 120
+    },
+    {
+      "id": "Base 23",
+      "name": "23",
+      "thumbnail": "Base 23-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 114
+    },
+    {
+      "id": "Base 24",
+      "name": "24",
+      "thumbnail": "Base 24-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 124
+    },
+    {
+      "id": "Base 25",
+      "name": "25",
+      "thumbnail": "Base 25-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 124
+    },
+    {
+      "id": "Base 26",
+      "name": "26",
+      "thumbnail": "Base 26-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 124
+    },
+    {
+      "id": "Base 27",
+      "name": "27",
+      "thumbnail": "Base 27-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 115
+    },
+    {
+      "id": "Base 28",
+      "name": "28",
+      "thumbnail": "Base 28-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 115
+    },
+    {
+      "id": "Base 29",
+      "name": "29",
+      "thumbnail": "Base 29-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 115
+    },
+    {
+      "id": "Base 3",
+      "name": "3",
+      "thumbnail": "Base 3-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 115
+    },
+    {
+      "id": "Base 30",
+      "name": "30",
+      "thumbnail": "Base 30-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 115
+    },
+    {
+      "id": "Base 31",
+      "name": "31",
+      "thumbnail": "Base 31-thumb.png",
+      "height_mm": 79,
+      "diameter_mm": 138
+    },
+    {
+      "id": "Base 32",
+      "name": "32",
+      "thumbnail": "Base 32-thumb.png",
+      "height_mm": 109,
+      "diameter_mm": 139
+    },
+    {
+      "id": "Base 33",
+      "name": "33",
+      "thumbnail": "Base 33-thumb.png",
+      "height_mm": 139,
+      "diameter_mm": 139
+    },
+    {
+      "id": "Base 34",
+      "name": "34",
+      "thumbnail": "Base 34-thumb.png",
+      "height_mm": 109,
+      "diameter_mm": 139
+    },
+    {
+      "id": "Base 35",
+      "name": "35",
+      "thumbnail": "Base 35-thumb.png",
+      "height_mm": 139,
+      "diameter_mm": 139
+    },
+    {
+      "id": "Base 36",
+      "name": "36",
+      "thumbnail": "Base 36-thumb.png",
+      "height_mm": 79,
+      "diameter_mm": 138
+    },
+    {
+      "id": "Base 37",
+      "name": "37",
+      "thumbnail": "Base 37-thumb.png",
+      "height_mm": 94,
+      "diameter_mm": 120
+    },
+    {
+      "id": "Base 38",
+      "name": "38",
+      "thumbnail": "Base 38-thumb.png",
+      "height_mm": 79,
+      "diameter_mm": 120
+    },
+    {
+      "id": "Base 4",
+      "name": "4",
+      "thumbnail": "Base 4-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 109
+    },
+    {
+      "id": "Base 5",
+      "name": "5",
+      "thumbnail": "Base 5-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 109
+    },
+    {
+      "id": "Base 6",
+      "name": "6",
+      "thumbnail": "Base 6-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 109
+    },
+    {
+      "id": "Base 7",
+      "name": "7",
+      "thumbnail": "Base 7-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 114
+    },
+    {
+      "id": "Base 8",
+      "name": "8",
+      "thumbnail": "Base 8-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 114
+    },
+    {
+      "id": "Base 9",
+      "name": "9",
+      "thumbnail": "Base 9-thumb.png",
+      "height_mm": 68,
+      "diameter_mm": 114
+    }
+  ],
+  "shades": [
+    {
+      "id": "Shade 1",
+      "name": "1",
+      "thumbnail": "Shade 1-thumb.png",
+      "height_mm": 173,
+      "diameter_mm": 175
+    },
+    {
+      "id": "Shade 10",
+      "name": "10",
+      "thumbnail": "Shade 10-thumb.png",
+      "height_mm": 178,
+      "diameter_mm": 178
+    },
+    {
+      "id": "Shade 11",
+      "name": "11",
+      "thumbnail": "Shade 11-thumb.png",
+      "height_mm": 177,
+      "diameter_mm": 175
+    },
+    {
+      "id": "Shade 12",
+      "name": "12",
+      "thumbnail": "Shade 12-thumb.png",
+      "height_mm": 177,
+      "diameter_mm": 175
+    },
+    {
+      "id": "Shade 13",
+      "name": "13",
+      "thumbnail": "Shade 13-thumb.png",
+      "height_mm": 177,
+      "diameter_mm": 175
+    },
+    {
+      "id": "Shade 15",
+      "name": "15",
+      "thumbnail": "Shade 15-thumb.png",
+      "height_mm": 175,
+      "diameter_mm": 140
+    },
+    {
+      "id": "Shade 16",
+      "name": "16",
+      "thumbnail": "Shade 16-thumb.png",
+      "height_mm": 175,
+      "diameter_mm": 140
+    },
+    {
+      "id": "Shade 17",
+      "name": "17",
+      "thumbnail": "Shade 17-thumb.png",
+      "height_mm": 175,
+      "diameter_mm": 140
+    },
+    {
+      "id": "Shade 18",
+      "name": "18",
+      "thumbnail": "Shade 18-thumb.png",
+      "height_mm": 175,
+      "diameter_mm": 154
+    },
+    {
+      "id": "Shade 19",
+      "name": "19",
+      "thumbnail": "Shade 19-thumb.png",
+      "height_mm": 145,
+      "diameter_mm": 154
+    },
+    {
+      "id": "Shade 2",
+      "name": "2",
+      "thumbnail": "Shade 2-thumb.png",
+      "height_mm": 176,
+      "diameter_mm": 175
+    },
+    {
+      "id": "Shade 20",
+      "name": "20",
+      "thumbnail": "Shade 20-thumb.png",
+      "height_mm": 175,
+      "diameter_mm": 154
+    },
+    {
+      "id": "Shade 21",
+      "name": "21",
+      "thumbnail": "Shade 21-thumb.png",
+      "height_mm": 145,
+      "diameter_mm": 154
+    },
+    {
+      "id": "Shade 22",
+      "name": "22",
+      "thumbnail": "Shade 22-thumb.png",
+      "height_mm": 112,
+      "diameter_mm": 170
+    },
+    {
+      "id": "Shade 23",
+      "name": "23",
+      "thumbnail": "Shade 23-thumb.png",
+      "height_mm": 172,
+      "diameter_mm": 170
+    },
+    {
+      "id": "Shade 24",
+      "name": "24",
+      "thumbnail": "Shade 24-thumb.png",
+      "height_mm": 142,
+      "diameter_mm": 168
+    },
+    {
+      "id": "Shade 25",
+      "name": "25",
+      "thumbnail": "Shade 25-thumb.png",
+      "height_mm": 142,
+      "diameter_mm": 170
+    },
+    {
+      "id": "Shade 26",
+      "name": "26",
+      "thumbnail": "Shade 26-thumb.png",
+      "height_mm": 112,
+      "diameter_mm": 168
+    },
+    {
+      "id": "Shade 27",
+      "name": "27",
+      "thumbnail": "Shade 27-thumb.png",
+      "height_mm": 172,
+      "diameter_mm": 168
+    },
+    {
+      "id": "Shade 28",
+      "name": "28",
+      "thumbnail": "Shade 28-thumb.png",
+      "height_mm": 150,
+      "diameter_mm": 177
+    },
+    {
+      "id": "Shade 29",
+      "name": "29",
+      "thumbnail": "Shade 29-thumb.png",
+      "height_mm": 150,
+      "diameter_mm": 179
+    },
+    {
+      "id": "Shade 3",
+      "name": "3",
+      "thumbnail": "Shade 3-thumb.png",
+      "height_mm": 165,
+      "diameter_mm": 145
+    },
+    {
+      "id": "Shade 30",
+      "name": "30",
+      "thumbnail": "Shade 30-thumb.png",
+      "height_mm": 150,
+      "diameter_mm": 179
+    },
+    {
+      "id": "Shade 31",
+      "name": "31",
+      "thumbnail": "Shade 31-thumb.png",
+      "height_mm": 150,
+      "diameter_mm": 179
+    },
+    {
+      "id": "Shade 32",
+      "name": "32",
+      "thumbnail": "Shade 32-thumb.png",
+      "height_mm": 175,
+      "diameter_mm": 175
+    },
+    {
+      "id": "Shade 33",
+      "name": "33",
+      "thumbnail": "Shade 33-thumb.png",
+      "height_mm": 145,
+      "diameter_mm": 175
+    },
+    {
+      "id": "Shade 34",
+      "name": "34",
+      "thumbnail": "Shade 34-thumb.png",
+      "height_mm": 115,
+      "diameter_mm": 175
+    },
+    {
+      "id": "Shade 35",
+      "name": "35",
+      "thumbnail": "Shade 35-thumb.png",
+      "height_mm": 165,
+      "diameter_mm": 120
+    },
+    {
+      "id": "Shade 36",
+      "name": "36",
+      "thumbnail": "Shade 36-thumb.png",
+      "height_mm": 135,
+      "diameter_mm": 120
+    },
+    {
+      "id": "Shade 37",
+      "name": "37",
+      "thumbnail": "Shade 37-thumb.png",
+      "height_mm": 150,
+      "diameter_mm": 120
+    },
+    {
+      "id": "Shade 38",
+      "name": "38",
+      "thumbnail": "Shade 38-thumb.png",
+      "height_mm": 164,
+      "diameter_mm": 170
+    },
+    {
+      "id": "Shade 39",
+      "name": "39",
+      "thumbnail": "Shade 39-thumb.png",
+      "height_mm": 164,
+      "diameter_mm": 173
+    },
+    {
+      "id": "Shade 4",
+      "name": "4",
+      "thumbnail": "Shade 4-thumb.png",
+      "height_mm": 164,
+      "diameter_mm": 146
+    },
+    {
+      "id": "Shade 40",
+      "name": "40",
+      "thumbnail": "Shade 40-thumb.png",
+      "height_mm": 171,
+      "diameter_mm": 176
+    },
+    {
+      "id": "Shade 41",
+      "name": "41",
+      "thumbnail": "Shade 41-thumb.png",
+      "height_mm": 168,
+      "diameter_mm": 159
+    },
+    {
+      "id": "Shade 42",
+      "name": "42",
+      "thumbnail": "Shade 42-thumb.png",
+      "height_mm": 171,
+      "diameter_mm": 174
+    },
+    {
+      "id": "Shade 5",
+      "name": "5",
+      "thumbnail": "Shade 5-thumb.png",
+      "height_mm": 160,
+      "diameter_mm": 175
+    },
+    {
+      "id": "Shade 6",
+      "name": "6",
+      "thumbnail": "Shade 6-thumb.png",
+      "height_mm": 160,
+      "diameter_mm": 175
+    },
+    {
+      "id": "Shade 7",
+      "name": "7",
+      "thumbnail": "Shade 7-thumb.png",
+      "height_mm": 122,
+      "diameter_mm": 175
+    },
+    {
+      "id": "Shade 8",
+      "name": "8",
+      "thumbnail": "Shade 8-thumb.png",
+      "height_mm": 178,
+      "diameter_mm": 178
+    },
+    {
+      "id": "Shade 9",
+      "name": "9",
+      "thumbnail": "Shade 9-thumb.png",
+      "height_mm": 178,
+      "diameter_mm": 178
+    },
+    {
+      "id": "Shade14",
+      "name": "Shade14",
+      "thumbnail": "Shade14-thumb.png",
+      "height_mm": 175,
+      "diameter_mm": 140
+    }
+  ],
+  "product_variant_id": 61607181254986,
+  "cable_colors": [
+    {
+      "id": "fire-red",
+      "name": "Fire Red",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-fire-red-swatch.jpg"
+    },
+    {
+      "id": "classic-blue",
+      "name": "Classic Blue",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-classic-blue-swatch.jpg"
+    },
+    {
+      "id": "sage-green",
+      "name": "Sage Green",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-sage-green-swatch.jpg"
+    },
+    {
+      "id": "espresso",
+      "name": "Espresso",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-espresso-swatch.jpg"
+    },
+    {
+      "id": "indian-summer",
+      "name": "Indian Summer",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-indian-summer-swatch.jpg"
+    },
+    {
+      "id": "optical-white",
+      "name": "Optical White",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-optical-white-swatch.jpg"
+    },
+    {
+      "id": "lavender",
+      "name": "Lavender",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-lavender-swatch.jpg"
+    },
+    {
+      "id": "fuchsia",
+      "name": "Fuchsia Pink",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-fuchsia-swatch.jpg"
+    },
+    {
+      "id": "corn-yellow",
+      "name": "Corn Yellow",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-corn-yellow-swatch.jpg"
+    },
+    {
+      "id": "carbon-black",
+      "name": "Carbon Black",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-carbon-black-swatch.jpg"
+    },
+    {
+      "id": "blue-beige",
+      "name": "Blue & Beige",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-blue-beige-swatch.jpg"
+    }
+  ],
+  "bulb_options": [
+    {
+      "id": "warm",
+      "name": "Warm White (3000K)"
+    },
+    {
+      "id": "cold",
+      "name": "Cold White (6500K)"
+    },
+    {
+      "id": "none",
+      "name": "No bulb"
+    }
+  ],
+  "switch_options": [
+    {
+      "id": "switch-white",
+      "name": "White",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-switch-white-swatch.jpg"
+    },
+    {
+      "id": "switch-black",
+      "name": "Black",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-switch-black-swatch.jpg"
+    }
+  ],
+  "plug_options": [
+    {
+      "id": "plug-white",
+      "name": "White",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-plug-white-swatch.jpg"
+    },
+    {
+      "id": "plug-black",
+      "name": "Black",
+      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-plug-black-swatch.jpg"
+    }
+  ]
+}
