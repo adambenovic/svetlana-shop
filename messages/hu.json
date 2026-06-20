@@ -74,7 +74,9 @@
     "info_safety": "Biztonság és tanúsítvány",
     "safety_content": "Minden Svetlana lámpa CE tanúsítvánnyal rendelkezik és megfelel az európai biztonsági szabványoknak",
     "info_care": "Ápolási útmutató",
-    "care_content": "Óvatosan töröld le száraz vagy enyhén nedves ruhával · Kerüld az agresszív vegyszereket · Csak LED izzókat használj (max. 10W E27)"
+    "care_content": "Óvatosan töröld le száraz vagy enyhén nedves ruhával · Kerüld az agresszív vegyszereket · Csak LED izzókat használj (max. 10W E27)",
+    "loading": "Betöltés...",
+    "error_loading": "Nem sikerült betölteni a konfigurátort. Frissítse az oldalt."
   },
   "configurator_product": {
     "notice_heading": "Egyéni konfiguráció szükséges",

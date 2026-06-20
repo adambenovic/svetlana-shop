@@ -74,7 +74,9 @@
     "info_safety": "Bezpečnost a certifikace",
     "safety_content": "Všechny lampy Svetlana jsou CE certifikované a splňují evropské bezpečnostní normy",
     "info_care": "Pokyny k údržbě",
-    "care_content": "Jemně otřete suchým nebo mírně vlhkým hadříkem · Nepoužívejte agresivní chemikálie · Používejte pouze LED žárovky (max. 10W E27)"
+    "care_content": "Jemně otřete suchým nebo mírně vlhkým hadříkem · Nepoužívejte agresivní chemikálie · Používejte pouze LED žárovky (max. 10W E27)",
+    "loading": "Načítám...",
+    "error_loading": "Nepodařilo se načíst konfigurátor. Obnovte stránku."
   },
   "configurator_product": {
     "notice_heading": "Vyžaduje vlastní konfiguraci",

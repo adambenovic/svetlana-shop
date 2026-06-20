@@ -74,7 +74,9 @@
     "info_safety": "Sicurezza e certificazione",
     "safety_content": "Tutte le lampade Svetlana sono certificate CE e rispettano gli standard di sicurezza europei",
     "info_care": "Istruzioni per la cura",
-    "care_content": "Pulire delicatamente con un panno asciutto o leggermente umido · Evitare prodotti chimici aggressivi · Usare solo lampadine LED (max 10W E27)"
+    "care_content": "Pulire delicatamente con un panno asciutto o leggermente umido · Evitare prodotti chimici aggressivi · Usare solo lampadine LED (max 10W E27)",
+    "loading": "Caricamento...",
+    "error_loading": "Impossibile caricare il configuratore. Aggiornare la pagina."
   },
   "configurator_product": {
     "notice_heading": "Configurazione personalizzata richiesta",
