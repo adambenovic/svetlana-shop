@@ -40,6 +40,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Render symlinks (local dev only — point to benoshop/renders)
+/public/assets/bases
+/public/assets/shades
+
 # Playwright fixture state
 e2e/.fixture-state.json
 test-results/

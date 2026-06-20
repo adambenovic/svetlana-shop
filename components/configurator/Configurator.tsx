@@ -6,6 +6,7 @@ import { SwatchPicker } from './SwatchPicker'
 import { ShapeGrid } from './ShapeGrid'
 import { BulbPicker } from './BulbPicker'
 import { PriceSummary } from './PriceSummary'
+import { ConfiguratorPreview } from './ConfiguratorPreview'
 import { useCart } from '@/store/cart'
 import type { PartsData } from '@/types/parts'
 import styles from './Configurator.module.css'
@@ -215,6 +216,14 @@ export function Configurator({ partsKey, basePrice, currency, productId, product
           />
         )}
       </div>
+
+      {/* Live preview — right column, spans all rows */}
+      <ConfiguratorPreview
+        base={base}
+        baseColor={baseColor}
+        shade={shade}
+        shadeColor={shadeColor}
+      />
 
       {/* Price summary + actions */}
       <PriceSummary
