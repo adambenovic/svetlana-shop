@@ -664,57 +664,57 @@
     {
       "id": "fire-red",
       "name": "Fire Red",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-fire-red-swatch.jpg"
+      "swatch": "/assets/cable-fire-red-swatch.jpg"
     },
     {
       "id": "classic-blue",
       "name": "Classic Blue",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-classic-blue-swatch.jpg"
+      "swatch": "/assets/cable-classic-blue-swatch.jpg"
     },
     {
       "id": "sage-green",
       "name": "Sage Green",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-sage-green-swatch.jpg"
+      "swatch": "/assets/cable-sage-green-swatch.jpg"
     },
     {
       "id": "espresso",
       "name": "Espresso",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-espresso-swatch.jpg"
+      "swatch": "/assets/cable-espresso-swatch.jpg"
     },
     {
       "id": "indian-summer",
       "name": "Indian Summer",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-indian-summer-swatch.jpg"
+      "swatch": "/assets/cable-indian-summer-swatch.jpg"
     },
     {
       "id": "optical-white",
       "name": "Optical White",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-optical-white-swatch.jpg"
+      "swatch": "/assets/cable-optical-white-swatch.jpg"
     },
     {
       "id": "lavender",
       "name": "Lavender",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-lavender-swatch.jpg"
+      "swatch": "/assets/cable-lavender-swatch.jpg"
     },
     {
       "id": "fuchsia",
       "name": "Fuchsia Pink",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-fuchsia-swatch.jpg"
+      "swatch": "/assets/cable-fuchsia-swatch.jpg"
     },
     {
       "id": "corn-yellow",
       "name": "Corn Yellow",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-corn-yellow-swatch.jpg"
+      "swatch": "/assets/cable-corn-yellow-swatch.jpg"
     },
     {
       "id": "carbon-black",
       "name": "Carbon Black",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-carbon-black-swatch.jpg"
+      "swatch": "/assets/cable-carbon-black-swatch.jpg"
     },
     {
       "id": "blue-beige",
       "name": "Blue & Beige",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-blue-beige-swatch.jpg"
+      "swatch": "/assets/cable-blue-beige-swatch.jpg"
     }
   ],
   "bulb_options": [
@@ -735,24 +735,24 @@
     {
       "id": "switch-white",
       "name": "White",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-switch-white-swatch.jpg"
+      "swatch": "/assets/cable-switch-white-swatch.jpg"
     },
     {
       "id": "switch-black",
       "name": "Black",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-switch-black-swatch.jpg"
+      "swatch": "/assets/cable-switch-black-swatch.jpg"
     }
   ],
   "plug_options": [
     {
       "id": "plug-white",
       "name": "White",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-plug-white-swatch.jpg"
+      "swatch": "/assets/cable-plug-white-swatch.jpg"
     },
     {
       "id": "plug-black",
       "name": "Black",
-      "swatch": "https://cdn.shopify.com/s/files/1/1033/9211/7066/files/cable-plug-black-swatch.jpg"
+      "swatch": "/assets/cable-plug-black-swatch.jpg"
     }
   ]
 }
