@@ -12,14 +12,18 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug, locale } = await params
   const payload = await getPayload({ config })
-  const { docs } = await payload.find({
-    collection: 'pages',
-    where: { slug: { equals: slug } },
-    locale,
-    limit: 1,
-  })
-  const title = typeof docs[0]?.title === 'string' ? docs[0].title : ''
-  return { title }
+  try {
+    const { docs } = await payload.find({
+      collection: 'pages',
+      where: { slug: { equals: slug } },
+      locale,
+      limit: 1,
+    })
+    const title = typeof docs[0]?.title === 'string' ? docs[0].title : ''
+    return { title }
+  } catch {
+    return {}
+  }
 }
 
 export default async function PageRoute({
@@ -29,12 +33,18 @@ export default async function PageRoute({
 }) {
   const { slug, locale } = await params
   const payload = await getPayload({ config })
-  const { docs } = await payload.find({
-    collection: 'pages',
-    where: { slug: { equals: slug } },
-    locale,
-    limit: 1,
-  })
+  let docs: { title?: unknown; body?: unknown }[] = []
+  try {
+    const result = await payload.find({
+      collection: 'pages',
+      where: { slug: { equals: slug } },
+      locale,
+      limit: 1,
+    })
+    docs = result.docs
+  } catch {
+    notFound()
+  }
 
   if (!docs[0]) notFound()
   const page = docs[0]
