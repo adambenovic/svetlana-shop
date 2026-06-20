@@ -4,9 +4,8 @@ import { useTranslations } from 'next-intl'
 import styles from './Footer.module.css'
 
 const SOCIAL = [
-  { name: 'Instagram', href: 'https://www.instagram.com/svetlana.lampe/' },
-  { name: 'Facebook', href: 'https://www.facebook.com/svetlanalampe' },
-  { name: 'TikTok', href: 'https://www.tiktok.com/@svetlana.lampe' },
+  { name: 'Instagram', href: 'https://instagram.com/svetla.na.lampe' },
+  { name: 'TikTok', href: 'https://tiktok.com/@svetlana.lampe' },
 ]
 
 export function Footer({ locale }: { locale: string }) {
