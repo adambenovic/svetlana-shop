@@ -1,5 +1,4 @@
 'use client'
-import Image from 'next/image'
 import styles from './Configurator.module.css'
 
 interface ConfiguratorPreviewProps {
@@ -17,23 +16,19 @@ export function ConfiguratorPreview({ base, baseColor, shade, shadeColor }: Conf
   return (
     <div className={[styles.preview, hasContent ? styles.hasLamp : ''].join(' ')}>
       {baseImg && (
-        <Image
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
           src={baseImg}
           alt={`${base} in ${baseColor}`}
-          fill
-          className={styles.previewLayer}
-          unoptimized
-          priority
+          className={styles.previewBase}
         />
       )}
       {shadeImg && (
-        <Image
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
           src={shadeImg}
           alt={`${shade} in ${shadeColor}`}
-          fill
-          className={styles.previewLayer}
-          unoptimized
-          priority
+          className={styles.previewShade}
         />
       )}
     </div>

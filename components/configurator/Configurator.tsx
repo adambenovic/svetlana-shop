@@ -1,6 +1,5 @@
 'use client'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { SwatchPicker } from './SwatchPicker'
@@ -204,14 +203,8 @@ export function Configurator({ partsKey, basePrice, currency, productId, product
               />
               {selectedCable?.swatch && (
                 <div className={styles.cablePreview}>
-                  <Image
-                    src={selectedCable.swatch}
-                    alt={selectedCable.name}
-                    width={48}
-                    height={48}
-                    className={styles.cablePreviewImg}
-                    unoptimized
-                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={selectedCable.swatch} alt={selectedCable.name} className={styles.cablePreviewImg} />
                   <span className={styles.cablePreviewName}>{selectedCable.name}</span>
                 </div>
               )}
