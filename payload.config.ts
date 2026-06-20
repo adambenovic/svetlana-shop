@@ -5,10 +5,11 @@ import { Products } from './collections/Products'
 import { Orders } from './collections/Orders'
 import { Media } from './collections/Media'
 import { Users } from './collections/Users'
+import { Pages } from './collections/Pages'
 
 export default buildConfig({
   admin: { user: 'users' },
-  collections: [Products, Orders, Media, Users],
+  collections: [Products, Orders, Media, Users, Pages],
   editor: lexicalEditor({}),
   db: postgresAdapter({ pool: { connectionString: process.env.DATABASE_URI } }),
   secret: process.env.PAYLOAD_SECRET!,

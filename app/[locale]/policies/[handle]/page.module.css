@@ -1,0 +1,22 @@
+.wrap {
+  padding-top: 48px;
+  padding-bottom: 80px;
+  max-width: 760px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+
+.body {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--color-text);
+}
+
+.empty {
+  color: var(--color-text-muted);
+}

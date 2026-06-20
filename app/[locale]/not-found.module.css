@@ -1,0 +1,33 @@
+.wrap {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  text-align: center;
+}
+
+.code {
+  font-size: 96px;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  opacity: 0.12;
+  line-height: 1;
+  margin-bottom: 0;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.desc {
+  font-size: 16px;
+  color: var(--color-text-muted);
+  margin-bottom: 32px;
+}
+
+.back {
+  color: var(--color-accent);
+  text-decoration: underline;
+  font-size: 15px;
+}

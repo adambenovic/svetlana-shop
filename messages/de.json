@@ -14,7 +14,24 @@
       "cart": "Warenkorb"
     },
     "footer": {
-      "copyright": "© {year} Svetlana Lampe. Alle Rechte vorbehalten."
+      "copyright": "© {year} Svetlana Lampe. Alle Rechte vorbehalten.",
+      "brand_desc": "Handgefertigte 3D-gedruckte Lampen aus dem Svetlana Lampe Atelier.",
+      "shop_title": "Shop",
+      "docs_title": "Dokumente",
+      "menu_home": "Startseite",
+      "menu_configurator": "Lampe gestalten",
+      "menu_gallery": "Galerie",
+      "newsletter_label": "Newsletter",
+      "newsletter_placeholder": "Ihre E-Mail",
+      "newsletter_submit": "Anmelden",
+      "newsletter_success": "Vielen Dank für Ihre Anmeldung!",
+      "newsletter_invalid": "Bitte gültige E-Mail eingeben.",
+      "policy_privacy": "Datenschutz",
+      "policy_shipping": "Versand & Rückgabe",
+      "policy_refund": "Rückerstattung",
+      "policy_terms": "AGB",
+      "policy_legal": "Impressum",
+      "cookie_prefs": "Cookie-Einstellungen"
     }
   },
   "products": {
@@ -139,19 +156,53 @@
     "contact_information": "Kontaktinformationen"
   },
   "announcement": {
-    "discount_applied": "Rabatt aktiviert!"
+    "discount_applied": "Rabatt aktiviert!",
+    "text": "🎉 20 % Rabatt für die ersten 10 Bestellungen — Code:",
+    "code": "EARLYBIRD",
+    "dismiss": "Schließen"
   },
   "cookies": {
-    "title": "Wir respektieren Ihre Privatsphäre",
+    "title": "Wir verwenden Cookies",
     "intro": "Wir verwenden Cookies, damit diese Website funktioniert, und mit Ihrer Einwilligung auch für Statistik und personalisierte Inhalte.",
     "accept_all": "Alle akzeptieren",
     "reject_all": "Nicht erforderliche ablehnen",
-    "manage": "Cookie-Einstellungen"
+    "manage": "Cookie-Einstellungen",
+    "desc": "Wir verwenden Cookies, um Ihr Erlebnis zu verbessern.",
+    "accept": "Alle akzeptieren",
+    "decline": "Ablehnen",
+    "necessary": "Notwendig",
+    "necessary_desc": "Für den Betrieb der Website erforderlich."
   },
   "accessibility": {
     "skip_to_text": "Direkt zum Inhalt",
     "close": "Schließen",
     "loading": "Wird geladen...",
     "error": "Fehler"
+  },
+  "locales": {
+    "sk": "Slovenčina",
+    "en": "English",
+    "cs": "Čeština",
+    "de": "Deutsch",
+    "es": "Español",
+    "fr": "Français",
+    "hu": "Magyar",
+    "it": "Italiano",
+    "pl": "Polski",
+    "uk": "Українська"
+  },
+  "cart_drawer": {
+    "title": "Warenkorb",
+    "empty": "Ihr Warenkorb ist leer.",
+    "checkout": "Zur Kasse",
+    "remove": "Entfernen",
+    "view_cart": "Warenkorb anzeigen",
+    "continue": "Weiter einkaufen",
+    "label_total": "Gesamt"
+  },
+  "not_found": {
+    "title": "Seite nicht gefunden",
+    "desc": "Die gesuchte Seite existiert nicht.",
+    "back": "Zurück zur Startseite"
   }
 }

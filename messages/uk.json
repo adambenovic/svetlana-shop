@@ -14,7 +14,24 @@
       "cart": "Кошик"
     },
     "footer": {
-      "copyright": "© {year} Svetlana Lampe. Всі права захищено."
+      "copyright": "© {year} Svetlana Lampe. Всі права захищено.",
+      "brand_desc": "Ручно виготовлені 3D-друковані лампи від студії Svetlana Lampe.",
+      "shop_title": "Магазин",
+      "docs_title": "Документи",
+      "menu_home": "Головна",
+      "menu_configurator": "Створіть свою лампу",
+      "menu_gallery": "Галерея",
+      "newsletter_label": "Розсилка",
+      "newsletter_placeholder": "Ваш email",
+      "newsletter_submit": "Підписатися",
+      "newsletter_success": "Дякуємо за підписку!",
+      "newsletter_invalid": "Введіть дійсний email.",
+      "policy_privacy": "Політика конфіденційності",
+      "policy_shipping": "Політика доставки",
+      "policy_refund": "Політика повернення",
+      "policy_terms": "Умови обслуговування",
+      "policy_legal": "Правова інформація",
+      "cookie_prefs": "Налаштування cookie"
     }
   },
   "products": {
@@ -139,19 +156,53 @@
     "contact_information": "Контактна інформація"
   },
   "announcement": {
-    "discount_applied": "Знижку застосовано!"
+    "discount_applied": "Знижку застосовано!",
+    "text": "🎉 20% знижка для перших 10 замовлень — код:",
+    "code": "EARLYBIRD",
+    "dismiss": "Закрити"
   },
   "cookies": {
-    "title": "Ми цінуємо вашу конфіденційність",
+    "title": "Ми використовуємо файли cookie",
     "intro": "Ми використовуємо файли cookie для роботи цього сайту та, за вашої згоди, для аналізу трафіку та персоналізації вмісту.",
     "accept_all": "Прийняти всі",
     "reject_all": "Відхилити необов'язкові",
-    "manage": "Налаштування cookie"
+    "manage": "Налаштування cookie",
+    "desc": "Ми використовуємо файли cookie для покращення вашого досвіду.",
+    "accept": "Прийняти всі",
+    "decline": "Відхилити",
+    "necessary": "Необхідні",
+    "necessary_desc": "Необхідні для роботи сайту."
   },
   "accessibility": {
     "skip_to_text": "Перейти до вмісту",
     "close": "Закрити",
     "loading": "Завантаження…",
     "error": "Помилка"
+  },
+  "locales": {
+    "sk": "Slovenčina",
+    "en": "English",
+    "cs": "Čeština",
+    "de": "Deutsch",
+    "es": "Español",
+    "fr": "Français",
+    "hu": "Magyar",
+    "it": "Italiano",
+    "pl": "Polski",
+    "uk": "Українська"
+  },
+  "cart_drawer": {
+    "title": "Кошик",
+    "empty": "Ваш кошик порожній.",
+    "checkout": "Перейти до оформлення",
+    "remove": "Видалити",
+    "view_cart": "Переглянути кошик",
+    "continue": "Продовжити покупки",
+    "label_total": "Разом"
+  },
+  "not_found": {
+    "title": "Сторінку не знайдено",
+    "desc": "Сторінка, яку ви шукаєте, не існує.",
+    "back": "Назад на головну"
   }
 }

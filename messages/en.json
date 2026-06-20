@@ -14,7 +14,24 @@
       "cart": "Cart"
     },
     "footer": {
-      "copyright": "© {year} Svetlana Lampe. All rights reserved."
+      "copyright": "© {year} Svetlana Lampe. All rights reserved.",
+      "brand_desc": "Handcrafted 3D-printed lamps from Svetlana Lampe studio.",
+      "shop_title": "Shop",
+      "docs_title": "Documents",
+      "menu_home": "Home",
+      "menu_configurator": "Build Your Lamp",
+      "menu_gallery": "Gallery",
+      "newsletter_label": "Newsletter",
+      "newsletter_placeholder": "Your email",
+      "newsletter_submit": "Subscribe",
+      "newsletter_success": "Thank you for subscribing!",
+      "newsletter_invalid": "Please enter a valid email.",
+      "policy_privacy": "Privacy Policy",
+      "policy_shipping": "Shipping Policy",
+      "policy_refund": "Refund Policy",
+      "policy_terms": "Terms of Service",
+      "policy_legal": "Legal Notice",
+      "cookie_prefs": "Cookie Preferences"
     }
   },
   "products": {
@@ -139,19 +156,53 @@
     "contact_information": "Contact Information"
   },
   "announcement": {
-    "discount_applied": "Discount applied!"
+    "discount_applied": "Discount applied!",
+    "text": "🎉 20% off for the first 10 orders — code:",
+    "code": "EARLYBIRD",
+    "dismiss": "Close"
   },
   "cookies": {
-    "title": "We value your privacy",
+    "title": "We use cookies",
     "intro": "We use cookies to make this website work and, with your consent, to analyse traffic and personalise content.",
     "accept_all": "Accept all",
     "reject_all": "Reject non-essential",
-    "manage": "Cookie preferences"
+    "manage": "Cookie preferences",
+    "desc": "We use cookies to improve your experience. You can accept or decline them.",
+    "accept": "Accept all",
+    "decline": "Decline",
+    "necessary": "Necessary",
+    "necessary_desc": "Required for the website to function."
   },
   "accessibility": {
     "skip_to_text": "Skip to content",
     "close": "Close",
     "loading": "Loading...",
     "error": "Error"
+  },
+  "locales": {
+    "sk": "Slovenčina",
+    "en": "English",
+    "cs": "Čeština",
+    "de": "Deutsch",
+    "es": "Español",
+    "fr": "Français",
+    "hu": "Magyar",
+    "it": "Italiano",
+    "pl": "Polski",
+    "uk": "Українська"
+  },
+  "cart_drawer": {
+    "title": "Cart",
+    "empty": "Your cart is empty.",
+    "checkout": "Proceed to checkout",
+    "remove": "Remove",
+    "view_cart": "View cart",
+    "continue": "Continue shopping",
+    "label_total": "Total"
+  },
+  "not_found": {
+    "title": "Page not found",
+    "desc": "The page you are looking for does not exist.",
+    "back": "Back to home"
   }
 }

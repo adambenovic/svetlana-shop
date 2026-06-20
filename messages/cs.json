@@ -14,7 +14,24 @@
       "cart": "Košík"
     },
     "footer": {
-      "copyright": "© {year} Svetlana Lampe. Všechna práva vyhrazena."
+      "copyright": "© {year} Svetlana Lampe. Všechna práva vyhrazena.",
+      "brand_desc": "Ručně navrhované 3D tištěné lampy ze studia Svetlana Lampe.",
+      "shop_title": "Obchod",
+      "docs_title": "Dokumenty",
+      "menu_home": "Domů",
+      "menu_configurator": "Vytvořte si lampu",
+      "menu_gallery": "Galerie",
+      "newsletter_label": "Newsletter",
+      "newsletter_placeholder": "Váš e-mail",
+      "newsletter_submit": "Přihlásit",
+      "newsletter_success": "Děkujeme za přihlášení!",
+      "newsletter_invalid": "Zadejte platný e-mail.",
+      "policy_privacy": "Ochrana osobních údajů",
+      "policy_shipping": "Doprava a vrácení",
+      "policy_refund": "Reklamace",
+      "policy_terms": "Obchodní podmínky",
+      "policy_legal": "Právní upozornění",
+      "cookie_prefs": "Nastavení cookies"
     }
   },
   "products": {
@@ -139,19 +156,53 @@
     "contact_information": "Kontaktní informace"
   },
   "announcement": {
-    "discount_applied": "Sleva uplatněna!"
+    "discount_applied": "Sleva uplatněna!",
+    "text": "🎉 20 % sleva pro prvních 10 objednávek — kód:",
+    "code": "EARLYBIRD",
+    "dismiss": "Zavřít"
   },
   "cookies": {
-    "title": "Vážíme si vašeho soukromí",
+    "title": "Používáme cookies",
     "intro": "Používáme cookies, aby tato stránka fungovala, a s vaším souhlasem také pro analýzu návštěvnosti a personalizaci obsahu.",
     "accept_all": "Přijmout vše",
     "reject_all": "Odmítnout nepovinné",
-    "manage": "Nastavení cookies"
+    "manage": "Nastavení cookies",
+    "desc": "Používáme cookies pro zlepšení vašeho zážitku.",
+    "accept": "Přijmout vše",
+    "decline": "Odmítnout",
+    "necessary": "Nezbytné",
+    "necessary_desc": "Nezbytné pro fungování stránky."
   },
   "accessibility": {
     "skip_to_text": "Přejít k obsahu",
     "close": "Zavřít",
     "loading": "Načítání...",
     "error": "Chyba"
+  },
+  "locales": {
+    "sk": "Slovenčina",
+    "en": "English",
+    "cs": "Čeština",
+    "de": "Deutsch",
+    "es": "Español",
+    "fr": "Français",
+    "hu": "Magyar",
+    "it": "Italiano",
+    "pl": "Polski",
+    "uk": "Українська"
+  },
+  "cart_drawer": {
+    "title": "Košík",
+    "empty": "Váš košík je prázdný.",
+    "checkout": "Pokračovat k objednávce",
+    "remove": "Odebrat",
+    "view_cart": "Zobrazit košík",
+    "continue": "Pokračovat v nákupu",
+    "label_total": "Celkem"
+  },
+  "not_found": {
+    "title": "Stránka nenalezena",
+    "desc": "Stránka, kterou hledáte, neexistuje.",
+    "back": "Zpět na úvod"
   }
 }

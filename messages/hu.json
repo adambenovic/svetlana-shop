@@ -14,7 +14,24 @@
       "cart": "Kosár"
     },
     "footer": {
-      "copyright": "© {year} Svetlana Lampe. Minden jog fenntartva."
+      "copyright": "© {year} Svetlana Lampe. Minden jog fenntartva.",
+      "brand_desc": "Kézzel tervezett 3D nyomtatott lámpák a Svetlana Lampe műhelyéből.",
+      "shop_title": "Bolt",
+      "docs_title": "Dokumentumok",
+      "menu_home": "Főoldal",
+      "menu_configurator": "Tervezze meg lámpáját",
+      "menu_gallery": "Galéria",
+      "newsletter_label": "Hírlevél",
+      "newsletter_placeholder": "E-mail cím",
+      "newsletter_submit": "Feliratkozás",
+      "newsletter_success": "Köszönjük a feliratkozást!",
+      "newsletter_invalid": "Kérjük, adjon meg érvényes e-mail címet.",
+      "policy_privacy": "Adatvédelmi irányelvek",
+      "policy_shipping": "Szállítási szabályzat",
+      "policy_refund": "Visszatérítési szabályzat",
+      "policy_terms": "Általános szerződési feltételek",
+      "policy_legal": "Jogi közlemény",
+      "cookie_prefs": "Cookie-beállítások"
     }
   },
   "products": {
@@ -139,19 +156,53 @@
     "contact_information": "Elérhetőségek"
   },
   "announcement": {
-    "discount_applied": "Kedvezmény érvényesítve!"
+    "discount_applied": "Kedvezmény érvényesítve!",
+    "text": "🎉 20% kedvezmény az első 10 rendelésre — kód:",
+    "code": "EARLYBIRD",
+    "dismiss": "Bezárás"
   },
   "cookies": {
-    "title": "Tiszteletben tartjuk a magánéletét",
+    "title": "Cookie-kat használunk",
     "intro": "Sütiket használunk a weboldal működéséhez, és az Ön hozzájárulásával az analitikához és a tartalom személyre szabásához is.",
     "accept_all": "Összes elfogadása",
     "reject_all": "Nem szükségesek elutasítása",
-    "manage": "Cookie-beállítások"
+    "manage": "Cookie-beállítások",
+    "desc": "Cookie-kat használunk a felhasználói élmény javítása érdekében.",
+    "accept": "Összes elfogadása",
+    "decline": "Elutasítás",
+    "necessary": "Szükséges",
+    "necessary_desc": "A weboldal működéséhez szükséges."
   },
   "accessibility": {
     "skip_to_text": "Ugrás a tartalomhoz",
     "close": "Bezárás",
     "loading": "Betöltés folyamatban…",
     "error": "Hiba"
+  },
+  "locales": {
+    "sk": "Slovenčina",
+    "en": "English",
+    "cs": "Čeština",
+    "de": "Deutsch",
+    "es": "Español",
+    "fr": "Français",
+    "hu": "Magyar",
+    "it": "Italiano",
+    "pl": "Polski",
+    "uk": "Українська"
+  },
+  "cart_drawer": {
+    "title": "Kosár",
+    "empty": "A kosara üres.",
+    "checkout": "Tovább a fizetéshez",
+    "remove": "Eltávolítás",
+    "view_cart": "Kosár megtekintése",
+    "continue": "Vásárlás folytatása",
+    "label_total": "Összesen"
+  },
+  "not_found": {
+    "title": "Az oldal nem található",
+    "desc": "A keresett oldal nem létezik.",
+    "back": "Vissza a főoldalra"
   }
 }

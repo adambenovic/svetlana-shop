@@ -14,7 +14,24 @@
       "cart": "Koszyk"
     },
     "footer": {
-      "copyright": "© {year} Svetlana Lampe. Wszelkie prawa zastrzeżone."
+      "copyright": "© {year} Svetlana Lampe. Wszelkie prawa zastrzeżone.",
+      "brand_desc": "Ręcznie projektowane lampy drukowane w 3D ze studia Svetlana Lampe.",
+      "shop_title": "Sklep",
+      "docs_title": "Dokumenty",
+      "menu_home": "Strona główna",
+      "menu_configurator": "Zaprojektuj lampę",
+      "menu_gallery": "Galeria",
+      "newsletter_label": "Newsletter",
+      "newsletter_placeholder": "Twój email",
+      "newsletter_submit": "Zapisz się",
+      "newsletter_success": "Dziękujemy za zapisanie się!",
+      "newsletter_invalid": "Podaj prawidłowy adres email.",
+      "policy_privacy": "Polityka prywatności",
+      "policy_shipping": "Polityka wysyłki",
+      "policy_refund": "Polityka zwrotów",
+      "policy_terms": "Warunki korzystania",
+      "policy_legal": "Informacja prawna",
+      "cookie_prefs": "Ustawienia plików cookie"
     }
   },
   "products": {
@@ -139,19 +156,53 @@
     "contact_information": "Dane kontaktowe"
   },
   "announcement": {
-    "discount_applied": "Rabat zastosowany!"
+    "discount_applied": "Rabat zastosowany!",
+    "text": "🎉 20% zniżki na pierwsze 10 zamówień — kod:",
+    "code": "EARLYBIRD",
+    "dismiss": "Zamknij"
   },
   "cookies": {
-    "title": "Cenimy Twoją prywatność",
+    "title": "Używamy plików cookie",
     "intro": "Używamy plików cookie, aby ta strona działała, a za Twoją zgodą także do analizy ruchu i personalizacji treści.",
     "accept_all": "Akceptuj wszystkie",
     "reject_all": "Odrzuć opcjonalne",
-    "manage": "Preferencje plików cookie"
+    "manage": "Preferencje plików cookie",
+    "desc": "Używamy plików cookie, aby poprawić Twoje doświadczenia.",
+    "accept": "Zaakceptuj wszystkie",
+    "decline": "Odrzuć",
+    "necessary": "Niezbędne",
+    "necessary_desc": "Wymagane do działania strony."
   },
   "accessibility": {
     "skip_to_text": "Przejdź do treści",
     "close": "Zamknij",
     "loading": "Ładowanie...",
     "error": "Błąd"
+  },
+  "locales": {
+    "sk": "Slovenčina",
+    "en": "English",
+    "cs": "Čeština",
+    "de": "Deutsch",
+    "es": "Español",
+    "fr": "Français",
+    "hu": "Magyar",
+    "it": "Italiano",
+    "pl": "Polski",
+    "uk": "Українська"
+  },
+  "cart_drawer": {
+    "title": "Koszyk",
+    "empty": "Twój koszyk jest pusty.",
+    "checkout": "Przejdź do kasy",
+    "remove": "Usuń",
+    "view_cart": "Zobacz koszyk",
+    "continue": "Kontynuuj zakupy",
+    "label_total": "Razem"
+  },
+  "not_found": {
+    "title": "Strona nie znaleziona",
+    "desc": "Strona, której szukasz, nie istnieje.",
+    "back": "Wróć do strony głównej"
   }
 }

@@ -1,0 +1,49 @@
+.bar {
+  background: var(--color-accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 48px;
+  position: relative;
+}
+
+.text {
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.code {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 1px 6px;
+  transition: background 0.15s;
+}
+
+.code:hover { background: rgba(255, 255, 255, 0.35); }
+
+.dismiss {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0.7;
+  padding: 4px;
+  line-height: 1;
+}
+
+.dismiss:hover { opacity: 1; }

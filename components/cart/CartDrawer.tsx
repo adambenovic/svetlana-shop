@@ -1,26 +1,42 @@
 'use client'
+import Link from 'next/link'
+import { useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { useCart } from '@/store/cart'
 import styles from './CartDrawer.module.css'
 
-interface CartDrawerProps {
-  open: boolean
-  onClose: () => void
-  locale: string
-}
-
-export function CartDrawer({ open, onClose, locale }: CartDrawerProps) {
-  const t = useTranslations('cart')
-  const { items, removeItem, updateQuantity, total } = useCart()
+export function CartDrawer({ locale }: { locale: string }) {
+  const t = useTranslations('cart_drawer')
+  const items = useCart(s => s.items)
+  const total = useCart(s => s.total)
+  const remove = useCart(s => s.removeItem)
+  const updateQuantity = useCart(s => s.updateQuantity)
+  const open = useCart(s => s.drawerOpen)
+  const close = useCart(s => s.closeDrawer)
   const prefix = locale === 'sk' ? '' : `/${locale}`
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') close() }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [close])
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [open])
+
+  if (!open) return null
+
+  const currency = items[0]?.currency ?? 'EUR'
 
   return (
     <>
-      {open && <div className={styles.overlay} onClick={onClose} />}
-      <aside className={[styles.drawer, open ? styles.open : ''].join(' ')}>
+      <div className={styles.overlay} onClick={close} />
+      <aside className={styles.drawer} role="dialog" aria-modal="true" aria-label={t('title')}>
         <div className={styles.header}>
-          <h2 className={styles.title}>{t('title')}</h2>
-          <button className={styles.close} onClick={onClose} aria-label={t('title')}>✕</button>
+          <h2 className={styles.title}>{t('title')} ({items.length})</h2>
+          <button className={styles.close} onClick={close} aria-label="Close cart">✕</button>
         </div>
 
         {items.length === 0 ? (
@@ -35,30 +51,37 @@ export function CartDrawer({ open, onClose, locale }: CartDrawerProps) {
                   <div className={styles.info}>
                     <span className={styles.itemTitle}>{item.title}</span>
                     <span className={styles.itemConfig}>
-                      {Object.entries(item.configuration).map(([k, v]) => `${k}: ${v}`).join(' · ')}
+                      {Object.entries(item.configuration)
+                        .filter(([, v]) => v)
+                        .map(([k, v]) => `${k}: ${v}`)
+                        .join(' · ')}
                     </span>
                   </div>
                   <div className={styles.qty}>
-                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>−</button>
+                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)} aria-label="Decrease">−</button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)} aria-label="Increase">+</button>
                   </div>
                   <span className={styles.price}>
                     {((item.unitPrice * item.quantity) / 100).toFixed(2)} {item.currency}
                   </span>
-                  <button className={styles.remove} onClick={() => removeItem(item.id)}>
+                  <button className={styles.remove} onClick={() => remove(item.id)} aria-label={t('remove')}>
                     {t('remove')}
                   </button>
                 </li>
               ))}
             </ul>
             <div className={styles.footer}>
-              <span className={styles.total}>
-                {t('total')}: <strong>{(total() / 100).toFixed(2)}</strong>
-              </span>
-              <a href={`${prefix}/checkout`} className={styles.checkoutBtn}>
+              <div className={styles.totalRow}>
+                <span>{t('label_total')}</span>
+                <strong>{(total() / 100).toFixed(2)} {currency}</strong>
+              </div>
+              <Link href={`${prefix}/checkout`} className={styles.checkoutBtn} onClick={close}>
                 {t('checkout')}
-              </a>
+              </Link>
+              <Link href={`${prefix}/cart`} className={styles.viewCart} onClick={close}>
+                {t('view_cart')}
+              </Link>
             </div>
           </>
         )}

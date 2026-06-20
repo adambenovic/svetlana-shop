@@ -14,25 +14,32 @@ export interface CartItem {
 
 interface CartState {
   items: CartItem[]
+  drawerOpen: boolean
   addItem: (item: Omit<CartItem, 'id'>) => void
   removeItem: (id: string) => void
   updateQuantity: (id: string, quantity: number) => void
   clear: () => void
   total: () => number
+  openDrawer: () => void
+  closeDrawer: () => void
 }
 
 export const useCart = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
+      drawerOpen: false,
       addItem: (item) => {
         const id = `${item.productId}-${JSON.stringify(item.configuration)}`
         set(s => {
           const existing = s.items.find(i => i.id === id)
           if (existing) {
-            return { items: s.items.map(i => i.id === id ? { ...i, quantity: i.quantity + item.quantity } : i) }
+            return {
+              items: s.items.map(i => i.id === id ? { ...i, quantity: i.quantity + item.quantity } : i),
+              drawerOpen: true,
+            }
           }
-          return { items: [...s.items, { ...item, id }] }
+          return { items: [...s.items, { ...item, id }], drawerOpen: true }
         })
       },
       removeItem: (id) => set(s => ({ items: s.items.filter(i => i.id !== id) })),
@@ -42,7 +49,13 @@ export const useCart = create<CartState>()(
       },
       clear: () => set({ items: [] }),
       total: () => get().items.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0),
+      openDrawer: () => set({ drawerOpen: true }),
+      closeDrawer: () => set({ drawerOpen: false }),
     }),
-    { name: 'svetlana-cart', skipHydration: true }
+    {
+      name: 'svetlana-cart',
+      skipHydration: true,
+      partialize: (s) => ({ items: s.items }),
+    }
   )
 )
