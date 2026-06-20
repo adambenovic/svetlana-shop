@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test'
+import { dismissCookieBanner } from './helpers'
 
 // Configurator requires a product in the DB. Tests gracefully skip if none exists.
 async function goToConfigurator(page: Page, locale = '') {
@@ -9,6 +10,7 @@ async function goToConfigurator(page: Page, locale = '') {
 
 test.describe('Configurator', () => {
   test.beforeEach(async ({ page }) => {
+    await dismissCookieBanner(page)
     // Block external Packeta widget script
     await page.route('https://widget.packeta.com/**', route => route.abort())
   })
@@ -107,6 +109,10 @@ test.describe('Configurator', () => {
 })
 
 test.describe('Gallery page', () => {
+  test.beforeEach(async ({ page }) => {
+    await dismissCookieBanner(page)
+  })
+
   test('gallery loads in SK', async ({ page }) => {
     await page.goto('/gallery')
     await expect(page.locator('h1')).toBeVisible()

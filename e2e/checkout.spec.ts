@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test'
-import { seedCart, mockPacketaWidget } from './helpers'
+import { seedCart, dismissCookieBanner, mockPacketaWidget } from './helpers'
 
 test.describe('Checkout form — SK', () => {
   test.beforeEach(async ({ page }) => {
+    await dismissCookieBanner(page)
     // Block Packeta widget script to prevent external dependency
     await page.route('https://widget.packeta.com/**', route => route.abort())
     await seedCart(page)
@@ -38,7 +39,7 @@ test.describe('Checkout form — SK', () => {
 
     await page.getByRole('button', { name: 'Zaplatiť cez GoPay' }).click()
 
-    await expect(page.locator('form')).toContainText('Please select a Packeta pickup point.')
+    await expect(page.locator('main form')).toContainText('Please select a Packeta pickup point.')
   })
 
   test('selecting Packeta point via mocked widget shows point name', async ({ page }) => {
@@ -51,7 +52,7 @@ test.describe('Checkout form — SK', () => {
     await page.getByRole('button', { name: /Vybra|Select|select/i }).click()
 
     // Mock widget calls callback immediately — selected point should appear
-    await expect(page.locator('form')).toContainText('Praha 1 - Smíchov', { timeout: 3000 })
+    await expect(page.locator('main form')).toContainText('Praha 1 - Smíchov', { timeout: 3000 })
   })
 
   test('full form fill + mocked order creation redirects', async ({ page }) => {
@@ -66,7 +67,7 @@ test.describe('Checkout form — SK', () => {
 
     await mockPacketaWidget(page)
     await page.getByRole('button', { name: /Vybra|Select/i }).click()
-    await expect(page.locator('form')).toContainText('Praha 1 - Smíchov', { timeout: 3000 })
+    await expect(page.locator('main form')).toContainText('Praha 1 - Smíchov', { timeout: 3000 })
 
     await page.fill('#name', 'Jana Nováková')
     await page.fill('#email', 'jana@example.com')
@@ -81,6 +82,7 @@ test.describe('Checkout form — SK', () => {
 
 test.describe('Checkout form — EN', () => {
   test.beforeEach(async ({ page }) => {
+    await dismissCookieBanner(page)
     await page.route('https://widget.packeta.com/**', route => route.abort())
     await seedCart(page)
   })
@@ -95,6 +97,10 @@ test.describe('Checkout form — EN', () => {
 })
 
 test.describe('Success page', () => {
+  test.beforeEach(async ({ page }) => {
+    await dismissCookieBanner(page)
+  })
+
   test('success page shows thank-you message in SK', async ({ page }) => {
     await page.goto('/checkout/success?gopayId=TEST-123')
     await expect(page.locator('h1')).toContainText('Ďakujeme')

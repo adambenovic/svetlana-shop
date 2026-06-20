@@ -31,6 +31,17 @@ export async function seedCart(page: Page, items = [MOCK_CART_ITEM]) {
 }
 
 /**
+ * Dismiss the cookie consent banner before page load.
+ * Must be called before page.goto() — uses addInitScript so localStorage
+ * is set before React renders and the banner never mounts.
+ */
+export async function dismissCookieBanner(page: Page) {
+  await page.addInitScript(() => {
+    localStorage.setItem('sv_cookie_consent', 'accepted')
+  })
+}
+
+/**
  * Mock the Packeta widget to instantly return a fake pickup point.
  * Call after page.goto() since it injects into the live window object.
  */

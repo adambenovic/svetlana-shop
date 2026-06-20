@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { dismissCookieBanner } from './helpers'
 
 const SUPPORTED_LOCALES = [
   { path: '/', lang: 'sk' },
@@ -11,6 +12,10 @@ const SUPPORTED_LOCALES = [
 ]
 
 test.describe('Locale routing — html[lang] attribute', () => {
+  test.beforeEach(async ({ page }) => {
+    await dismissCookieBanner(page)
+  })
+
   for (const { path, lang } of SUPPORTED_LOCALES) {
     test(`${path} sets lang="${lang}"`, async ({ page }) => {
       await page.goto(path)
@@ -20,6 +25,10 @@ test.describe('Locale routing — html[lang] attribute', () => {
 })
 
 test.describe('Locale — translated content', () => {
+  test.beforeEach(async ({ page }) => {
+    await dismissCookieBanner(page)
+  })
+
   test('EN homepage has English nav', async ({ page }) => {
     await page.goto('/en')
     await expect(page.locator('header nav')).toContainText('Build your lamp')

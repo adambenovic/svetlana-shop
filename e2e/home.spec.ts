@@ -1,6 +1,11 @@
 import { test, expect } from '@playwright/test'
+import { dismissCookieBanner } from './helpers'
 
 test.describe('Homepage', () => {
+  test.beforeEach(async ({ page }) => {
+    await dismissCookieBanner(page)
+  })
+
   test('loads and shows brand logo', async ({ page }) => {
     await page.goto('/')
     await expect(page.getByText('Svetlana Lampe').first()).toBeVisible()
@@ -18,17 +23,18 @@ test.describe('Homepage', () => {
     await expect(nav).toContainText('Galéria')
   })
 
-  test('cart icon links to /cart', async ({ page }) => {
+  test('cart icon button is visible in header', async ({ page }) => {
     await page.goto('/')
-    const cartLink = page.locator('[aria-label="Cart"]')
-    await expect(cartLink).toBeVisible()
-    await expect(cartLink).toHaveAttribute('href', '/cart')
+    // Cart icon is now a button that opens the drawer (not a link to /cart)
+    const cartBtn = page.locator('button[aria-label^="Cart"]')
+    await expect(cartBtn).toBeVisible()
   })
 
-  test('clicking cart icon navigates to cart page', async ({ page }) => {
+  test('clicking cart icon opens cart drawer', async ({ page }) => {
     await page.goto('/')
-    await page.locator('[aria-label="Cart"]').click()
-    await expect(page).toHaveURL('/cart')
+    await page.locator('button[aria-label^="Cart"]').click()
+    // Drawer opens as a dialog
+    await expect(page.getByRole('dialog', { name: /košík|cart/i })).toBeVisible()
   })
 
   test('footer shows copyright with Svetlana Lampe', async ({ page }) => {

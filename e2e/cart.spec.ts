@@ -1,7 +1,11 @@
 import { test, expect } from '@playwright/test'
-import { seedCart, MOCK_CART_ITEM } from './helpers'
+import { seedCart, dismissCookieBanner, MOCK_CART_ITEM } from './helpers'
 
 test.describe('Cart page — empty state', () => {
+  test.beforeEach(async ({ page }) => {
+    await dismissCookieBanner(page)
+  })
+
   test('shows empty message in SK', async ({ page }) => {
     await page.goto('/cart')
     await expect(page.locator('main')).toContainText('Váš košík je prázdny')
@@ -20,6 +24,7 @@ test.describe('Cart page — empty state', () => {
 
 test.describe('Cart page — with seeded item', () => {
   test.beforeEach(async ({ page }) => {
+    await dismissCookieBanner(page)
     await seedCart(page)
   })
 
@@ -80,6 +85,10 @@ test.describe('Cart page — with seeded item', () => {
 })
 
 test.describe('Cart — multiple items', () => {
+  test.beforeEach(async ({ page }) => {
+    await dismissCookieBanner(page)
+  })
+
   test('two seeded items both appear', async ({ page }) => {
     await seedCart(page, [
       MOCK_CART_ITEM,
