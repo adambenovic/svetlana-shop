@@ -12,9 +12,10 @@ interface ConfiguratorPreviewProps {
 export function ConfiguratorPreview({ base, baseColor, shade, shadeColor }: ConfiguratorPreviewProps) {
   const baseImg = base && baseColor ? `/assets/bases/${base}-${baseColor}.webp` : null
   const shadeImg = shade && shadeColor ? `/assets/shades/${shade}-${shadeColor}.webp` : null
+  const hasContent = !!(baseImg || shadeImg)
 
   return (
-    <div className={styles.preview}>
+    <div className={[styles.preview, hasContent ? styles.hasLamp : ''].join(' ')}>
       {baseImg && (
         <Image
           src={baseImg}

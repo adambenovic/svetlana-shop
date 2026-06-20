@@ -1,25 +1,39 @@
 .configurator {
   display: grid;
-  grid-template-columns: 1fr 420px;
-  grid-template-rows: auto 1fr auto;
-  gap: 24px 40px;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 40px;
   align-items: start;
 }
 
-/* Preview panel — spans both rows on the right */
+/* Preview — left column, sticky */
 .preview {
-  grid-column: 2;
+  grid-column: 1;
   grid-row: 1 / -1;
-  position: relative;
+  position: sticky;
+  top: 1rem;
+  align-self: start;
   width: 100%;
-  aspect-ratio: 1 / 1;
-  background: var(--color-surface);
+  aspect-ratio: 3 / 4;
+  background: #1A1A1A;
   border-radius: var(--radius);
   overflow: hidden;
+  transition: box-shadow 0.4s ease;
+}
+
+.preview.hasLamp {
+  box-shadow: 0 0 80px 20px rgba(255, 200, 120, 0.15);
 }
 
 .previewLayer {
   object-fit: contain;
+}
+
+/* Controls — right column */
+.controls {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 @media (max-width: 900px) {
@@ -29,38 +43,48 @@
   .preview {
     grid-column: 1;
     grid-row: auto;
+    position: static;
+    aspect-ratio: 3 / 4;
     max-width: 420px;
     margin: 0 auto;
     width: 100%;
+  }
+  .controls {
+    grid-column: 1;
   }
 }
 
 /* Tab bar */
 .tabs {
   display: flex;
-  gap: 4px;
-  background: var(--color-surface);
-  border-radius: var(--radius-sm);
-  padding: 4px;
+  gap: 0;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .tab {
   flex: 1;
-  padding: 8px;
+  padding: 10px 8px;
   border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
   background: none;
-  border-radius: 6px;
   color: var(--color-text-muted);
   cursor: pointer;
-  font-family: var(--font-body);
-  font-size: 14px;
-  transition: background var(--transition), color var(--transition);
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.tab:hover {
+  color: var(--color-text);
 }
 
 .tabActive {
-  background: var(--color-bg);
   color: var(--color-text);
-  font-weight: 500;
+  border-bottom-color: var(--color-accent);
 }
 
 /* Panel */
@@ -106,12 +130,19 @@
   outline-offset: 2px;
 }
 
+/* Dimensions */
+.dims {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: -8px;
+}
+
 /* Shape grid */
 .shapeGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   gap: 8px;
-  max-height: 320px;
+  max-height: 340px;
   overflow-y: auto;
   padding-right: 4px;
 }
@@ -176,6 +207,106 @@
   border-color: var(--color-accent);
   color: var(--color-accent);
   font-weight: 500;
+}
+
+/* Cable preview */
+.cablePreview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  margin-top: -8px;
+}
+
+.cablePreviewImg {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.cablePreviewName {
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+/* Summary table */
+.summaryTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.summaryTable td {
+  padding: 3px 0;
+  vertical-align: top;
+}
+
+.summaryTable td:first-child {
+  color: var(--color-text-muted);
+  width: 40%;
+  padding-right: 8px;
+}
+
+/* Info accordions */
+.accordions {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.accordion {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.accordion summary {
+  padding: 14px 0;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text);
+  user-select: none;
+}
+
+.accordion summary::-webkit-details-marker { display: none; }
+
+.accordion summary::after {
+  content: '+';
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--color-text-muted);
+  transition: transform var(--transition);
+}
+
+.accordion[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.accordionBody {
+  padding: 0 0 16px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* Disclaimer */
+.disclaimer {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: 4px;
 }
 
 /* Summary bar */
