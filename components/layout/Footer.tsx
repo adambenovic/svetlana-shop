@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import styles from './Footer.module.css'
 
@@ -9,40 +8,6 @@ const SOCIAL = [
   { name: 'Facebook', href: 'https://www.facebook.com/svetlanalampe' },
   { name: 'TikTok', href: 'https://www.tiktok.com/@svetlana.lampe' },
 ]
-
-function NewsletterForm() {
-  const t = useTranslations('sections.footer')
-  const [email, setEmail] = useState('')
-  const [error, setError] = useState('')
-  const [done, setDone] = useState(false)
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      setError(t('newsletter_invalid'))
-      return
-    }
-    setError('')
-    setDone(true)
-  }
-
-  if (done) return <p className={styles.newsletterSuccess}>{t('newsletter_success')}</p>
-
-  return (
-    <form className={styles.newsletterForm} onSubmit={handleSubmit} noValidate>
-      <input
-        type="email"
-        value={email}
-        onChange={e => { setEmail(e.target.value); setError('') }}
-        placeholder={t('newsletter_placeholder')}
-        className={styles.newsletterInput}
-        aria-label={t('newsletter_label')}
-      />
-      <button type="submit" className={styles.newsletterBtn}>{t('newsletter_submit')}</button>
-      {error && <p className={styles.newsletterError} role="alert">{error}</p>}
-    </form>
-  )
-}
 
 export function Footer({ locale }: { locale: string }) {
   const t = useTranslations('sections.footer')
@@ -75,10 +40,6 @@ export function Footer({ locale }: { locale: string }) {
                 {s.name}
               </a>
             ))}
-          </div>
-          <div className={styles.newsletter}>
-            <p className={styles.newsletterLabel}>{t('newsletter_label')}</p>
-            <NewsletterForm />
           </div>
         </div>
 

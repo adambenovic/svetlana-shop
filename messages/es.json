@@ -93,7 +93,8 @@
     "info_care": "Instrucciones de cuidado",
     "care_content": "Limpiar suavemente con un paño seco o ligeramente húmedo · Evitar productos químicos agresivos · Usar solo bombillas LED (máx. 10W E27)",
     "loading": "Cargando...",
-    "error_loading": "Error al cargar el configurador. Por favor, recarga."
+    "error_loading": "Error al cargar el configurador. Por favor, recarga.",
+    "no_products": "Aún no hay productos configurados. Añádalos desde el panel de administración."
   },
   "configurator_product": {
     "notice_heading": "Requiere configuración personalizada",
@@ -145,7 +146,9 @@
     "load_more": "Cargar más"
   },
   "hero": {
-    "tagline": "Un precio · Combinaciones infinitas"
+    "tagline": "Un precio · Combinaciones infinitas",
+    "title": "Ilumina tu mundo",
+    "subtitle": "Lámparas de mesa coloridas para iluminar cada habitación."
   },
   "policies": {
     "legal_notice": "Aviso legal",

@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { Configurator } from '@/components/configurator/Configurator'
-import { notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 export default async function ConfiguratorPage({
   params,
@@ -24,7 +24,14 @@ export default async function ConfiguratorPage({
     limit: 1,
   })
 
-  if (!docs[0]) notFound()
+  if (!docs[0]) {
+    const t = await getTranslations({ locale, namespace: 'configurator' })
+    return (
+      <div className="page-width" style={{ padding: '96px 0', textAlign: 'center' }}>
+        <p style={{ color: 'var(--color-text-muted)', fontSize: 18 }}>{t('no_products')}</p>
+      </div>
+    )
+  }
 
   const product = docs[0]
 

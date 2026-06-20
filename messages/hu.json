@@ -93,7 +93,8 @@
     "info_care": "Ápolási útmutató",
     "care_content": "Óvatosan töröld le száraz vagy enyhén nedves ruhával · Kerüld az agresszív vegyszereket · Csak LED izzókat használj (max. 10W E27)",
     "loading": "Betöltés...",
-    "error_loading": "Nem sikerült betölteni a konfigurátort. Frissítse az oldalt."
+    "error_loading": "Nem sikerült betölteni a konfigurátort. Frissítse az oldalt.",
+    "no_products": "Még nincsenek termékek konfigurálva. Adjon hozzá termékeket az adminisztrációban."
   },
   "configurator_product": {
     "notice_heading": "Egyéni konfiguráció szükséges",
@@ -145,7 +146,9 @@
     "load_more": "Több betöltése"
   },
   "hero": {
-    "tagline": "Egy ár · Végtelen kombinációk"
+    "tagline": "Egy ár · Végtelen kombinációk",
+    "title": "Ragyogjon fel a világa",
+    "subtitle": "Színes asztali lámpák minden szobához."
   },
   "policies": {
     "legal_notice": "Jogi közlemény",

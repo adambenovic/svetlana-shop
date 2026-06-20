@@ -93,7 +93,8 @@
     "info_care": "Pokyny k údržbě",
     "care_content": "Jemně otřete suchým nebo mírně vlhkým hadříkem · Nepoužívejte agresivní chemikálie · Používejte pouze LED žárovky (max. 10W E27)",
     "loading": "Načítám...",
-    "error_loading": "Nepodařilo se načíst konfigurátor. Obnovte stránku."
+    "error_loading": "Nepodařilo se načíst konfigurátor. Obnovte stránku.",
+    "no_products": "Produkty zatím nejsou nakonfigurovány. Přidejte je přes administraci."
   },
   "configurator_product": {
     "notice_heading": "Vyžaduje vlastní konfiguraci",
@@ -145,7 +146,9 @@
     "load_more": "Načíst více"
   },
   "hero": {
-    "tagline": "Jedna cena · Nekonečné kombinace"
+    "tagline": "Jedna cena · Nekonečné kombinace",
+    "title": "Rozsvěťte svůj svět",
+    "subtitle": "Barevné stolní lampy, které rozjasní každý pokoj."
   },
   "policies": {
     "legal_notice": "Právní upozornění",

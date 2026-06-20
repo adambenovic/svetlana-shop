@@ -46,7 +46,16 @@ export default async function PolicyPage({
     notFound()
   }
 
-  if (!docs[0]) notFound()
+  if (!docs[0]) {
+    return (
+      <div className={`page-width ${styles.wrap}`}>
+        <h1 className={styles.title} style={{ textTransform: 'capitalize' }}>
+          {handle.replace(/-/g, ' ')}
+        </h1>
+        <p className={styles.empty}>—</p>
+      </div>
+    )
+  }
   const page = docs[0]
   const title = typeof page.title === 'string' ? page.title : ''
   const html = lexicalToHtml(page.body)

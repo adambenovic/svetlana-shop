@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { LocaleSwitcher } from '@/components/ui/LocaleSwitcher'
+import { CurrencySwitcher } from '@/components/ui/CurrencySwitcher'
 import { CartIcon } from '@/components/cart/CartIcon'
 import styles from './Header.module.css'
 
@@ -20,6 +21,7 @@ export function Header({ locale }: { locale: string }) {
         </nav>
         <div className={styles.actions}>
           <LocaleSwitcher currentLocale={locale} />
+          <CurrencySwitcher />
           <ThemeToggle />
           <CartIcon />
         </div>

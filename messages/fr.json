@@ -93,7 +93,8 @@
     "info_care": "Instructions d'entretien",
     "care_content": "Essuyer délicatement avec un chiffon sec ou légèrement humide · Éviter les produits chimiques agressifs · Utiliser uniquement des ampoules LED (max 10W E27)",
     "loading": "Chargement...",
-    "error_loading": "Impossible de charger le configurateur. Veuillez actualiser."
+    "error_loading": "Impossible de charger le configurateur. Veuillez actualiser.",
+    "no_products": "Aucun produit configuré. Veuillez en ajouter via l'administration."
   },
   "configurator_product": {
     "notice_heading": "Configuration personnalisée requise",
@@ -145,7 +146,9 @@
     "load_more": "Charger plus"
   },
   "hero": {
-    "tagline": "Un prix · Des combinaisons infinies"
+    "tagline": "Un prix · Des combinaisons infinies",
+    "title": "Illuminez votre monde",
+    "subtitle": "Des lampes de table colorées pour égayer chaque pièce."
   },
   "policies": {
     "legal_notice": "Mentions légales",

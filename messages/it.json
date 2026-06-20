@@ -93,7 +93,8 @@
     "info_care": "Istruzioni per la cura",
     "care_content": "Pulire delicatamente con un panno asciutto o leggermente umido · Evitare prodotti chimici aggressivi · Usare solo lampadine LED (max 10W E27)",
     "loading": "Caricamento...",
-    "error_loading": "Impossibile caricare il configuratore. Aggiornare la pagina."
+    "error_loading": "Impossibile caricare il configuratore. Aggiornare la pagina.",
+    "no_products": "Nessun prodotto configurato. Aggiungili tramite il pannello di amministrazione."
   },
   "configurator_product": {
     "notice_heading": "Configurazione personalizzata richiesta",
@@ -145,7 +146,9 @@
     "load_more": "Carica altro"
   },
   "hero": {
-    "tagline": "Un prezzo · Combinazioni infinite"
+    "tagline": "Un prezzo · Combinazioni infinite",
+    "title": "Illumina il tuo mondo",
+    "subtitle": "Lampade da tavolo colorate per ogni stanza."
   },
   "policies": {
     "legal_notice": "Note legali",

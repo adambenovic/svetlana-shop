@@ -1,6 +1,6 @@
 import { getRequestConfig } from 'next-intl/server'
 
-const SUPPORTED_LOCALES = ['sk', 'cs', 'de', 'pl', 'hu', 'uk', 'en'] as const
+const SUPPORTED_LOCALES = ['sk', 'cs', 'de', 'pl', 'hu', 'uk', 'en', 'es', 'fr', 'it'] as const
 type SupportedLocale = typeof SUPPORTED_LOCALES[number]
 
 function validateLocale(l: string | undefined): SupportedLocale {

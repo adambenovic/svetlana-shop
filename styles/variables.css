@@ -4,8 +4,8 @@
   --color-surface: #252525;
   --color-text: #F5F0EB;
   --color-text-muted: #9A9490;
-  --color-accent: #E8734A;
-  --color-accent-hover: #F08C68;
+  --color-accent: #F5F0EB;
+  --color-accent-hover: #E8E3DC;
   --color-success: #7BC47F;
   --color-border: #333333;
 
@@ -28,4 +28,6 @@
   --color-text: #1A1A1A;
   --color-text-muted: #5A5450;
   --color-border: #E0DAD4;
+  --color-accent: #1A1A1A;
+  --color-accent-hover: #2D2D2D;
 }

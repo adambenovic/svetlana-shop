@@ -93,7 +93,8 @@
     "info_care": "Pflegehinweise",
     "care_content": "Vorsichtig mit einem trockenen oder leicht feuchten Tuch abwischen · Keine aggressiven Chemikalien · Nur LED-Lampen verwenden (max. 10W E27)",
     "loading": "Wird geladen...",
-    "error_loading": "Konfigurator konnte nicht geladen werden. Bitte neu laden."
+    "error_loading": "Konfigurator konnte nicht geladen werden. Bitte neu laden.",
+    "no_products": "Noch keine Produkte konfiguriert. Bitte fügen Sie Produkte über die Verwaltung hinzu."
   },
   "configurator_product": {
     "notice_heading": "Individuelle Konfiguration erforderlich",
@@ -145,7 +146,9 @@
     "load_more": "Mehr laden"
   },
   "hero": {
-    "tagline": "Ein Preis · Endlose Kombinationen"
+    "tagline": "Ein Preis · Endlose Kombinationen",
+    "title": "Erhellen Sie Ihre Welt",
+    "subtitle": "Bunte Tischleuchten, die jeden Raum erstrahlen lassen."
   },
   "policies": {
     "legal_notice": "Impressum",

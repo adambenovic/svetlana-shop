@@ -93,7 +93,8 @@
     "info_care": "Instrukcja pielęgnacji",
     "care_content": "Delikatnie wytrzeć suchą lub lekko wilgotną szmatką · Unikać agresywnych chemikaliów · Używać tylko żarówek LED (maks. 10W E27)",
     "loading": "Ładowanie...",
-    "error_loading": "Nie udało się załadować konfiguratora. Odśwież stronę."
+    "error_loading": "Nie udało się załadować konfiguratora. Odśwież stronę.",
+    "no_products": "Brak skonfigurowanych produktów. Dodaj je przez panel administracyjny."
   },
   "configurator_product": {
     "notice_heading": "Wymagana indywidualna konfiguracja",
@@ -145,7 +146,9 @@
     "load_more": "Załaduj więcej"
   },
   "hero": {
-    "tagline": "Jedna cena · Nieskończone kombinacje"
+    "tagline": "Jedna cena · Nieskończone kombinacje",
+    "title": "Rozświetl swój świat",
+    "subtitle": "Kolorowe lampy stołowe, które rozjaśnią każde pomieszczenie."
   },
   "policies": {
     "legal_notice": "Informacja prawna",

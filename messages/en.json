@@ -93,7 +93,8 @@
     "info_care": "Care Instructions",
     "care_content": "Wipe gently with a dry or slightly damp cloth · Avoid harsh chemicals · Use only LED bulbs (max 10W E27)",
     "loading": "Loading...",
-    "error_loading": "Failed to load configurator. Please refresh."
+    "error_loading": "Failed to load configurator. Please refresh.",
+    "no_products": "No products configured yet. Please add products via the admin."
   },
   "configurator_product": {
     "notice_heading": "Custom configuration required",
@@ -145,7 +146,9 @@
     "load_more": "Load more"
   },
   "hero": {
-    "tagline": "One price · Endless combinations"
+    "tagline": "One price · Endless combinations",
+    "title": "Light up your world",
+    "subtitle": "Colourful table lamps designed to brighten every room."
   },
   "policies": {
     "legal_notice": "Legal Notice",
