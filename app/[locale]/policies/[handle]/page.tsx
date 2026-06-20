@@ -33,7 +33,7 @@ export default async function PolicyPage({
 }) {
   const { handle, locale } = await params
   const payload = await getPayload({ config })
-  let docs: { title?: unknown; body?: unknown }[] = []
+  let docs: Array<Record<string, unknown>> = []
   try {
     const result = await payload.find({
       collection: 'pages',
@@ -41,7 +41,7 @@ export default async function PolicyPage({
       locale,
       limit: 1,
     })
-    docs = result.docs
+    docs = result.docs as Array<Record<string, unknown>>
   } catch {
     notFound()
   }
