@@ -28,5 +28,11 @@ export const Products: CollectionConfig = {
       ],
       defaultValue: 'draft',
     },
+    {
+      name: 'configuratorOnly',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: { description: 'Hidden from gallery — used as base product for all configurator orders' },
+    },
   ],
 }

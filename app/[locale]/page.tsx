@@ -15,7 +15,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   const { docs } = await payload.find({
     collection: 'products',
-    where: { status: { equals: 'published' } },
+    where: { and: [{ status: { equals: 'published' } }, { configuratorOnly: { not_equals: true } }] },
     locale,
     limit: 6,
   })

@@ -1,33 +1,43 @@
 .hero {
   background: var(--color-surface);
-  padding: 120px 0;
+  padding: 80px 0;
+  overflow: hidden;
 }
 
 .inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .inner { grid-template-columns: 1fr; }
+  .visual { display: none; }
+}
+
+.content {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
   gap: 24px;
 }
 
 .title {
-  font-size: clamp(40px, 6vw, 72px);
+  font-size: clamp(36px, 5vw, 64px);
   line-height: 1.1;
-  max-width: 720px;
 }
 
 .sub {
   font-size: 18px;
   color: var(--color-text-muted);
-  max-width: 520px;
+  max-width: 480px;
+  line-height: 1.6;
 }
 
 .actions {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 .btnPrimary {
@@ -39,14 +49,12 @@
   color: var(--color-bg);
   border-radius: var(--radius-sm);
   font-weight: 500;
-  font-size: 18px;
+  font-size: 16px;
   font-family: var(--font-body);
   transition: background var(--transition);
 }
 
-.btnPrimary:hover {
-  background: var(--color-accent-hover);
-}
+.btnPrimary:hover { background: var(--color-accent-hover); }
 
 .btnSecondary {
   display: inline-flex;
@@ -58,11 +66,41 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   font-weight: 500;
-  font-size: 18px;
+  font-size: 16px;
   font-family: var(--font-body);
   transition: border-color var(--transition);
 }
 
-.btnSecondary:hover {
-  border-color: var(--color-text);
+.btnSecondary:hover { border-color: var(--color-text); }
+
+/* Visual / image side */
+.visual {
+  position: relative;
+  height: 480px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.heroImg {
+  object-fit: cover;
+}
+
+/* Collage fallback: 2×2 grid of lamp parts */
+.collage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 8px;
+  height: 100%;
+}
+
+.collageCell {
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.collageImg {
+  object-fit: contain;
 }

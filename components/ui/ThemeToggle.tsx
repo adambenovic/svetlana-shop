@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 
-function LampIcon({ lit }: { lit: boolean }) {
+function BulbIcon({ lit }: { lit: boolean }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,19 +14,17 @@ function LampIcon({ lit }: { lit: boolean }) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {/* Shade */}
-      <path d="M7 12l2.5-7h5l2.5 7H7z" />
-      {/* Stem */}
-      <line x1="12" y1="12" x2="12" y2="17" />
-      {/* Base */}
-      <path d="M8 17h8" />
-      <path d="M9.5 19h5" strokeWidth="2" />
+      {/* Dome */}
+      <path d="M9 18c0-1.9-.8-3.7-2.2-5A6 6 0 0 1 6 9a6 6 0 0 1 12 0 6 6 0 0 1-.8 3 8 8 0 0 0-2.2 6" />
+      {/* Screw base */}
+      <line x1="9" y1="18" x2="15" y2="18" />
+      <line x1="9.5" y1="21" x2="14.5" y2="21" />
       {/* Rays when lit */}
       {lit && (
         <>
-          <line x1="12" y1="3" x2="12" y2="1.5" />
-          <line x1="15.5" y1="4.5" x2="16.5" y2="3" />
-          <line x1="8.5" y1="4.5" x2="7.5" y2="3" />
+          <line x1="12" y1="1" x2="12" y2="2.5" />
+          <line x1="18.4" y1="5.6" x2="17.3" y2="6.7" />
+          <line x1="5.6" y1="5.6" x2="6.7" y2="6.7" />
         </>
       )}
     </svg>
@@ -54,7 +52,7 @@ export function ThemeToggle() {
       aria-label="Toggle theme"
       style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center' }}
     >
-      <LampIcon lit={light} />
+      <BulbIcon lit={light} />
     </button>
   )
 }

@@ -18,7 +18,7 @@ export default async function GalleryPage({ params }: { params: Promise<{ locale
 
   const { docs } = await payload.find({
     collection: 'products',
-    where: { status: { equals: 'published' } },
+    where: { and: [{ status: { equals: 'published' } }, { configuratorOnly: { not_equals: true } }] },
     locale,
     limit: 100,
   })

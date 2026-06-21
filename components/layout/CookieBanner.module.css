@@ -78,7 +78,7 @@
   background: var(--color-accent);
   border: none;
   border-radius: var(--radius-sm);
-  color: #fff;
+  color: var(--color-bg);
   cursor: pointer;
   font-family: var(--font-body);
   font-size: 14px;
