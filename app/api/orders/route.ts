@@ -62,13 +62,15 @@ export async function POST(req: NextRequest) {
       notifyUrl: `${appUrl}/api/webhooks/gopay`,
       locale,
     })
-  } catch {
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[orders] GoPay error:', msg)
     await payload.update({
       collection: 'orders',
       id: order.id,
       data: { status: 'failed' },
     }).catch(() => {})
-    return NextResponse.json({ error: 'Payment gateway unavailable' }, { status: 502 })
+    return NextResponse.json({ error: 'Payment gateway unavailable', detail: msg }, { status: 502 })
   }
 
   await payload.update({
