@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { CartIcon } from '@/components/cart/CartIcon'
+import { Logo } from './Logo'
 import styles from './Header.module.css'
 
 export function Header({ locale }: { locale: string }) {
@@ -12,9 +12,8 @@ export function Header({ locale }: { locale: string }) {
   return (
     <header className={styles.header}>
       <div className={`page-width ${styles.inner}`}>
-        <Link href={`${prefix}/`} className={styles.logo}>
-          <Image src="/logo.png" alt="Svetlana Lampe" width={32} height={32} className={styles.logoImg} />
-          <span>Svetlana Lampe</span>
+        <Link href={`${prefix}/`} className={styles.logo} aria-label="Svetlana Lampe">
+          <Logo width={140} height={34} />
         </Link>
         <nav className={styles.nav}>
           <Link href={`${prefix}/`}>{t('menu_home')}</Link>

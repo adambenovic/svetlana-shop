@@ -68,8 +68,9 @@ function ApplePayIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" width="38" height="25" role="img" aria-label="Apple Pay">
       <rect width="48" height="32" rx="4" fill="#000" />
-      <text x="24" y="21" textAnchor="middle" fill="white" fontSize="10" fontWeight="500" fontFamily="-apple-system, Arial, sans-serif"> Pay</text>
-      <text x="13" y="21" textAnchor="middle" fill="white" fontSize="13" fontFamily="-apple-system, Arial, sans-serif"></text>
+      {/* Apple logo path */}
+      <path d="M13.5 11.2c.6-.7 1-1.7.9-2.7-.9.1-2 .6-2.6 1.3-.6.6-1.1 1.6-.9 2.6.9.1 1.9-.4 2.6-1.2zm.9 1.4c-1.4-.1-2.6.8-3.3.8-.7 0-1.7-.8-2.8-.7-1.5.1-2.8.8-3.6 2.2-1.5 2.6-.4 6.5 1.1 8.6.7 1 1.6 2.2 2.8 2.1 1.1-.1 1.5-.7 2.8-.7 1.3 0 1.7.7 2.8.7 1.2 0 2-.9 2.8-2 .9-1.3 1.2-2.5 1.2-2.6-.1 0-2.4-.9-2.4-3.5 0-2.2 1.8-3.2 1.9-3.3-.9-1.5-2.4-1.5-2.8-1.6h-.5z" fill="white" />
+      <text x="34" y="21" textAnchor="middle" fill="white" fontSize="10" fontWeight="500" fontFamily="-apple-system, Arial, sans-serif">Pay</text>
     </svg>
   )
 }
@@ -77,7 +78,7 @@ function ApplePayIcon() {
 const SOCIAL = [
   { name: 'Instagram', href: 'https://instagram.com/svetla.na.lampe', Icon: InstagramIcon },
   { name: 'TikTok', href: 'https://tiktok.com/@svetlana.lampe', Icon: TikTokIcon },
-  { name: 'Pinterest', href: 'https://pinterest.com/svetlanalampe', Icon: PinterestIcon },
+  { name: 'Pinterest', href: 'https://pinterest.com/svetlanalampe3d', Icon: PinterestIcon },
 ]
 
 const PAYMENT_ICONS = [VisaIcon, MastercardIcon, GooglePayIcon, ApplePayIcon]

@@ -8,7 +8,7 @@ interface HeroProps {
   heroImageUrl?: string
 }
 
-const DEFAULT_HERO_IMAGE = 'https://svetlanalampe.sk/cdn/shop/t/5/assets/banner-desktop.webp'
+const DEFAULT_HERO_IMAGE = '/banner-desktop.webp'
 
 export async function Hero({ locale, heroImageUrl = DEFAULT_HERO_IMAGE }: HeroProps) {
   const t = await getTranslations({ locale, namespace: 'hero' })
