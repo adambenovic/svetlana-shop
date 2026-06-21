@@ -181,7 +181,7 @@
 .checkoutBtn {
   display: block;
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-bg);
   text-align: center;
   padding: 14px 20px;
   border-radius: var(--radius-sm);
