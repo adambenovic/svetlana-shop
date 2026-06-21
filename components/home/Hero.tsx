@@ -8,15 +8,9 @@ interface HeroProps {
   heroImageUrl?: string
 }
 
-// Static collage of lamp part thumbnails used as hero visual until real product photos are added
-const COLLAGE = [
-  '/assets/Shade%201-thumb.webp',
-  '/assets/Shade%205-thumb.webp',
-  '/assets/Shade%2010-thumb.webp',
-  '/assets/Shade%2015-thumb.webp',
-]
+const DEFAULT_HERO_IMAGE = 'https://svetlanalampe.sk/cdn/shop/t/5/assets/banner-desktop.webp'
 
-export async function Hero({ locale, heroImageUrl }: HeroProps) {
+export async function Hero({ locale, heroImageUrl = DEFAULT_HERO_IMAGE }: HeroProps) {
   const t = await getTranslations({ locale, namespace: 'hero' })
   const th = await getTranslations({ locale, namespace: 'sections.header' })
   const prefix = locale === 'sk' ? '' : `/${locale}`
@@ -37,17 +31,7 @@ export async function Hero({ locale, heroImageUrl }: HeroProps) {
           </div>
         </div>
         <div className={styles.visual}>
-          {heroImageUrl ? (
-            <Image src={heroImageUrl} alt="Svetlana Lampe" fill className={styles.heroImg} />
-          ) : (
-            <div className={styles.collage}>
-              {COLLAGE.map((src, i) => (
-                <div key={i} className={styles.collageCell}>
-                  <Image src={src} alt="" fill className={styles.collageImg} />
-                </div>
-              ))}
-            </div>
-          )}
+          <Image src={heroImageUrl} alt="Svetlana Lampe" fill className={styles.heroImg} />
         </div>
       </div>
     </section>

@@ -115,3 +115,16 @@
 }
 
 .policyLink:hover { color: var(--color-text); }
+
+.paymentIcons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  width: 100%;
+  padding-top: 12px;
+}
+
+@media (min-width: 769px) {
+  .paymentIcons { justify-content: flex-end; }
+}

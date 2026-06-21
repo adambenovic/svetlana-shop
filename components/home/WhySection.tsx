@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import styles from './WhySection.module.css'
 
-const ICONS = ['🖐️', '🎨', '🚚']
+const ICONS = ['🖐️', '✅', '🚚']
 
 export async function WhySection({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: 'why' })
