@@ -87,6 +87,23 @@
   border-radius: var(--radius-sm);
 }
 
+.itemThumb {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  object-fit: contain;
+  background: var(--color-bg);
+  flex-shrink: 0;
+}
+
+.itemThumbPlaceholder {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  flex-shrink: 0;
+}
+
 .info {
   flex: 1;
   display: flex;

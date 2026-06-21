@@ -97,7 +97,12 @@ export function Configurator({ partsKey, basePrice, currency, productId, product
   const selectedPlug = parts?.plug_options.find(c => c.id === plug)
 
   function handleAddToCart() {
-    addItem({ productId, title: productTitle, configuration, quantity: 1, unitPrice: totalPrice, currency })
+    const imageUrl = shade && shadeColor
+      ? `/assets/shades/${shade.replace(/ /g, '%20')}-${shadeColor}.webp`
+      : base && baseColor
+        ? `/assets/bases/${base.replace(/ /g, '%20')}-${baseColor}.webp`
+        : undefined
+    addItem({ productId, title: productTitle, configuration, quantity: 1, unitPrice: totalPrice, currency, imageUrl })
   }
 
   function handleShare() {

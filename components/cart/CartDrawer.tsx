@@ -48,6 +48,12 @@ export function CartDrawer({ locale }: { locale: string }) {
             <ul className={styles.list}>
               {items.map(item => (
                 <li key={item.id} className={styles.item}>
+                  {item.imageUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={item.imageUrl} alt={item.title} className={styles.itemThumb} />
+                  ) : (
+                    <div className={styles.itemThumbPlaceholder} />
+                  )}
                   <div className={styles.info}>
                     <span className={styles.itemTitle}>{item.title}</span>
                     <span className={styles.itemConfig}>
