@@ -10,10 +10,10 @@ interface HeroProps {
 
 // Static collage of lamp part thumbnails used as hero visual until real product photos are added
 const COLLAGE = [
-  '/assets/Shade 1-thumb.webp',
-  '/assets/Shade 5-thumb.webp',
-  '/assets/Shade 10-thumb.webp',
-  '/assets/Shade 15-thumb.webp',
+  '/assets/Shade%201-thumb.webp',
+  '/assets/Shade%205-thumb.webp',
+  '/assets/Shade%2010-thumb.webp',
+  '/assets/Shade%2015-thumb.webp',
 ]
 
 export async function Hero({ locale, heroImageUrl }: HeroProps) {

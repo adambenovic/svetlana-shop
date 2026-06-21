@@ -9,8 +9,8 @@ interface ConfiguratorPreviewProps {
 }
 
 export function ConfiguratorPreview({ base, baseColor, shade, shadeColor }: ConfiguratorPreviewProps) {
-  const baseImg = base && baseColor ? `/assets/bases/${base}-${baseColor}.webp` : null
-  const shadeImg = shade && shadeColor ? `/assets/shades/${shade}-${shadeColor}.webp` : null
+  const baseImg = base && baseColor ? `/assets/bases/${base.replace(/ /g, '%20')}-${baseColor}.webp` : null
+  const shadeImg = shade && shadeColor ? `/assets/shades/${shade.replace(/ /g, '%20')}-${shadeColor}.webp` : null
   const hasContent = !!(baseImg || shadeImg)
 
   return (

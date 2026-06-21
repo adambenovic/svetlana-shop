@@ -24,7 +24,7 @@ export function ShapeGrid({ parts, selected, onChange }: ShapeGridProps) {
         >
           {p.thumbnail && (
             <Image
-              src={`/assets/${p.thumbnail}`}
+              src={`/assets/${p.thumbnail.replace(/ /g, '%20')}`}
               alt={p.name}
               width={56}
               height={56}
