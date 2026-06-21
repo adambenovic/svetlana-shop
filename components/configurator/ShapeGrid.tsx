@@ -10,9 +10,11 @@ interface ShapeGridProps {
 }
 
 export function ShapeGrid({ parts, selected, onChange }: ShapeGridProps) {
+  const sorted = [...parts].sort((a, b) => parseInt(a.name, 10) - parseInt(b.name, 10))
+
   return (
     <div className={styles.shapeGrid}>
-      {parts.map(p => (
+      {sorted.map(p => (
         <button
           key={p.id}
           className={[styles.shapeOption, selected === p.id ? styles.shapeSelected : ''].join(' ')}
@@ -30,7 +32,6 @@ export function ShapeGrid({ parts, selected, onChange }: ShapeGridProps) {
               unoptimized
             />
           )}
-          <span className={styles.shapeName}>{p.name}</span>
         </button>
       ))}
     </div>
