@@ -50,7 +50,12 @@ export function CartDrawer({ locale }: { locale: string }) {
                 <li key={item.id} className={styles.item}>
                   {item.imageUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={item.imageUrl} alt={item.title} className={styles.itemThumb} />
+                    <img
+                      src={item.imageUrl}
+                      alt={item.title}
+                      className={styles.itemThumb}
+                      onError={(e) => { e.currentTarget.replaceWith(Object.assign(document.createElement('div'), { className: styles.itemThumbPlaceholder })) }}
+                    />
                   ) : (
                     <div className={styles.itemThumbPlaceholder} />
                   )}

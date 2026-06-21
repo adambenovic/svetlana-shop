@@ -55,7 +55,9 @@ export function Configurator({ partsKey, basePrice, currency, productId, product
     const firstSolid = solidColors[0]?.id ?? ''
     if (!baseColor || baseColor === 'clear' || baseColor.startsWith('translucent')) setBaseColor(firstSolid)
     if (!base) setBase(parts.bases[0]?.id ?? '')
-    if (!shadeColor) setShadeColor(parts.colors[0]?.id ?? '')
+    // Skip colors without shade images (white, yellow have no image files)
+    const firstShadeColor = parts.colors.find(c => c.id !== 'white' && c.id !== 'yellow' && c.id !== 'clear' && !c.id.startsWith('translucent'))?.id ?? parts.colors[0]?.id ?? ''
+    if (!shadeColor) setShadeColor(firstShadeColor)
     if (!shade) setShade(parts.shades[0]?.id ?? '')
     if (!cable) setCable(parts.cable_colors[0]?.id ?? '')
     if (!sw) setSw(parts.switch_options[0]?.id ?? '')
