@@ -35,7 +35,15 @@
 }
 
 .icon {
-  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  flex-shrink: 0;
 }
 
 .cardTitle {

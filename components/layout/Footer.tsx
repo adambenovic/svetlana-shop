@@ -119,6 +119,9 @@ export function Footer({ locale }: { locale: string }) {
               </a>
             ))}
           </div>
+          <div className={styles.paymentIcons}>
+            {PAYMENT_ICONS.map((Icon, i) => <Icon key={i} />)}
+          </div>
         </div>
 
         <div className={styles.col}>
@@ -152,9 +155,6 @@ export function Footer({ locale }: { locale: string }) {
           >
             {t('cookie_prefs')}
           </button>
-        </div>
-        <div className={styles.paymentIcons}>
-          {PAYMENT_ICONS.map((Icon, i) => <Icon key={i} />)}
         </div>
       </div>
     </footer>

@@ -1,36 +1,44 @@
 .hero {
-  background: var(--color-surface);
-  padding: 80px 0;
+  position: relative;
+  width: 100%;
+  height: 600px;
   overflow: hidden;
 }
 
-.inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
+@media (max-width: 768px) {
+  .hero { height: 480px; }
+}
+
+.heroImg {
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 55%, transparent 100%);
+  display: flex;
   align-items: center;
 }
 
-@media (max-width: 768px) {
-  .inner { grid-template-columns: 1fr; }
-  .visual { display: none; }
-}
-
 .content {
+  padding: 0 clamp(20px, 5vw, 80px);
+  max-width: 580px;
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
 .title {
-  font-size: clamp(36px, 5vw, 64px);
+  font-size: clamp(32px, 5vw, 60px);
   line-height: 1.1;
+  color: #fff;
 }
 
 .sub {
   font-size: 18px;
-  color: var(--color-text-muted);
-  max-width: 480px;
+  color: rgba(255,255,255,0.82);
+  max-width: 440px;
   line-height: 1.6;
 }
 
@@ -46,7 +54,7 @@
   justify-content: center;
   padding: 14px 28px;
   background: var(--color-accent);
-  color: var(--color-bg); /* always matches accent background */
+  color: var(--color-bg);
   border-radius: var(--radius-sm);
   font-weight: 500;
   font-size: 16px;
@@ -54,7 +62,7 @@
   transition: background var(--transition);
 }
 
-.btnPrimary:hover { background: var(--color-accent-hover); }
+.btnPrimary:hover { opacity: 0.9; }
 
 .btnSecondary {
   display: inline-flex;
@@ -62,8 +70,8 @@
   justify-content: center;
   padding: 14px 28px;
   background: transparent;
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.6);
   border-radius: var(--radius-sm);
   font-weight: 500;
   font-size: 16px;
@@ -71,36 +79,4 @@
   transition: border-color var(--transition);
 }
 
-.btnSecondary:hover { border-color: var(--color-text); }
-
-/* Visual / image side */
-.visual {
-  position: relative;
-  height: 480px;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-
-.heroImg {
-  object-fit: cover;
-}
-
-/* Collage fallback: 2×2 grid of lamp parts */
-.collage {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 8px;
-  height: 100%;
-}
-
-.collageCell {
-  position: relative;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  background: var(--color-bg);
-}
-
-.collageImg {
-  object-fit: contain;
-}
+.btnSecondary:hover { border-color: #fff; }

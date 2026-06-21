@@ -121,10 +121,5 @@
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
-  width: 100%;
-  padding-top: 12px;
-}
-
-@media (min-width: 769px) {
-  .paymentIcons { justify-content: flex-end; }
+  margin-top: 16px;
 }
