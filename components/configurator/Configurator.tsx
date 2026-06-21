@@ -51,7 +51,9 @@ export function Configurator({ partsKey, basePrice, currency, productId, product
 
   useEffect(() => {
     if (!parts) return
-    if (!baseColor) setBaseColor(parts.colors[0]?.id ?? '')
+    const solidColors = parts.colors.filter(c => c.id !== 'clear' && !c.id.startsWith('translucent'))
+    const firstSolid = solidColors[0]?.id ?? ''
+    if (!baseColor || baseColor === 'clear' || baseColor.startsWith('translucent')) setBaseColor(firstSolid)
     if (!base) setBase(parts.bases[0]?.id ?? '')
     if (!shadeColor) setShadeColor(parts.colors[0]?.id ?? '')
     if (!shade) setShade(parts.shades[0]?.id ?? '')
@@ -153,7 +155,7 @@ export function Configurator({ partsKey, basePrice, currency, productId, product
             <>
               <h4 className={styles.sectionLabel}>{t('pick_base_color')}</h4>
               <SwatchPicker
-                parts={parts.colors}
+                parts={parts.colors.filter(c => c.id !== 'clear' && !c.id.startsWith('translucent'))}
                 selected={baseColor}
                 onChange={v => { setBaseColor(v); syncUrl({ baseColor: v }) }}
               />
