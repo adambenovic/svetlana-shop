@@ -2,6 +2,8 @@
 import { useCurrency, type Currency } from '@/store/currency'
 import styles from './LocaleSwitcher.module.css'
 
+const CURRENCIES: Currency[] = ['EUR', 'CZK', 'PLN', 'HUF']
+
 export function CurrencySwitcher() {
   const { currency, setCurrency } = useCurrency()
 
@@ -12,8 +14,7 @@ export function CurrencySwitcher() {
       className={styles.select}
       aria-label="Currency"
     >
-      <option value="EUR">EUR</option>
-      <option value="CZK">CZK</option>
+      {CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}
     </select>
   )
 }

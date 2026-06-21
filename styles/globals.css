@@ -3,6 +3,10 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+html, body { height: 100%; }
+body { display: flex; flex-direction: column; min-height: 100vh; }
+main { flex: 1; }
+
 html { font-family: var(--font-body); background: var(--color-bg); color: var(--color-text); }
 
 h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }

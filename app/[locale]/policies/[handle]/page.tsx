@@ -58,7 +58,8 @@ export default async function PolicyPage({
   }
   const page = docs[0]
   const title = typeof page.title === 'string' ? page.title : ''
-  const html = lexicalToHtml(page.body)
+  const rawHtml = typeof page.bodyHtml === 'string' ? page.bodyHtml : ''
+  const html = rawHtml || lexicalToHtml(page.body)
 
   return (
     <div className={`page-width ${styles.wrap}`}>

@@ -1,9 +1,14 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-export type Currency = 'EUR' | 'CZK'
+export type Currency = 'EUR' | 'CZK' | 'PLN' | 'HUF'
 
-const EUR_TO_CZK = 25.5
+const EUR_RATES: Record<Currency, number> = {
+  EUR: 1,
+  CZK: 25.5,
+  PLN: 4.25,
+  HUF: 395,
+}
 
 interface CurrencyState {
   currency: Currency
@@ -24,12 +29,12 @@ export function formatPrice(amountInCents: number, productCurrency: string, disp
   let amount = amountInCents / 100
   let outCurrency: string = productCurrency
 
-  if (productCurrency === 'EUR' && displayCurrency === 'CZK') {
-    amount = amount * EUR_TO_CZK
-    outCurrency = 'CZK'
-  } else if (productCurrency === 'CZK' && displayCurrency === 'EUR') {
-    amount = amount / EUR_TO_CZK
-    outCurrency = 'EUR'
+  const srcRate = EUR_RATES[productCurrency as Currency] ?? 1
+  const dstRate = EUR_RATES[displayCurrency] ?? 1
+
+  if (productCurrency !== displayCurrency) {
+    amount = (amount / srcRate) * dstRate
+    outCurrency = displayCurrency
   }
 
   return new Intl.NumberFormat(undefined, {

@@ -1,6 +1,9 @@
 'use client'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
+import { LocaleSwitcher } from '@/components/ui/LocaleSwitcher'
+import { CurrencySwitcher } from '@/components/ui/CurrencySwitcher'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import styles from './Footer.module.css'
 
 const SOCIAL = [
@@ -20,11 +23,15 @@ export function Footer({ locale }: { locale: string }) {
   ]
 
   const docLinks = [
+    { label: t('doc_manual'), href: `${prefix}/pages/lamp-manual` },
+    { label: t('doc_conformity'), href: `${prefix}/pages/declaration-of-conformity` },
+  ]
+
+  const policyLinks = [
     { label: t('policy_privacy'), href: `${prefix}/policies/privacy-policy` },
     { label: t('policy_shipping'), href: `${prefix}/policies/shipping-policy` },
     { label: t('policy_refund'), href: `${prefix}/policies/refund-policy` },
     { label: t('policy_terms'), href: `${prefix}/policies/terms-of-service` },
-    { label: t('policy_legal'), href: `${prefix}/pages/legal-notice` },
   ]
 
   return (
@@ -59,8 +66,13 @@ export function Footer({ locale }: { locale: string }) {
 
       <div className={`page-width ${styles.bottom}`}>
         <p className={styles.copy}>{t('copyright', { year })}</p>
+        <div className={styles.controls}>
+          <LocaleSwitcher currentLocale={locale} />
+          <CurrencySwitcher />
+          <ThemeToggle />
+        </div>
         <div className={styles.policyRow}>
-          {docLinks.slice(0, 3).map(l => (
+          {policyLinks.map(l => (
             <Link key={l.href} href={l.href} className={styles.policyLink}>{l.label}</Link>
           ))}
           <button

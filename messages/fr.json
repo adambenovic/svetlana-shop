@@ -31,7 +31,9 @@
       "policy_refund": "Politique de remboursement",
       "policy_terms": "Conditions d'utilisation",
       "policy_legal": "Mentions légales",
-      "cookie_prefs": "Paramètres des cookies"
+      "cookie_prefs": "Paramètres des cookies",
+      "doc_manual": "Manuel de la lampe",
+      "doc_conformity": "Déclaration de conformité"
     }
   },
   "products": {
@@ -207,5 +209,14 @@
     "title": "Page non trouvée",
     "desc": "La page que vous cherchez n'existe pas.",
     "back": "Retour à l'accueil"
+  },
+  "why": {
+    "heading": "Pourquoi Svetlana Lampe?",
+    "item1_title": "Fait main",
+    "item1_body": "Chaque lampe est fabriquée à la main en Slovaquie. Pas de production de masse — chaque pièce est unique.",
+    "item2_title": "Couleurs uniques",
+    "item2_body": "Plus de 30 couleurs et combinaisons. Créez votre lampe exactement comme vous l'imaginez grâce à notre configurateur.",
+    "item3_title": "Livraison rapide",
+    "item3_body": "Nous expédions sous 5 jours ouvrables. Livraison via les points relais Packeta en Slovaquie et République tchèque."
   }
 }

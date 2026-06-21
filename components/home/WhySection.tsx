@@ -1,36 +1,23 @@
+import { getTranslations } from 'next-intl/server'
 import styles from './WhySection.module.css'
 
-interface WhyItem {
-  icon: string
-  title: string
-  body: string
-}
+const ICONS = ['🖐️', '🎨', '🚚']
 
-const ITEMS: WhyItem[] = [
-  {
-    icon: '🖐️',
-    title: 'Ručná výroba',
-    body: 'Každá lampa je vyrobená ručne na Slovensku. Žiadne sériové kopírovanie — každý kus je originál.',
-  },
-  {
-    icon: '🎨',
-    title: 'Jedinečné farby',
-    body: 'Vyše 30 farieb a kombinácií. Namixujte si lampu presne podľa vašej predstavy cez náš konfigurátor.',
-  },
-  {
-    icon: '🚚',
-    title: 'Rýchle doručenie',
-    body: 'Odosielame do 5 pracovných dní. Doručenie cez Packeta výdajne miesta po celej SR a ČR.',
-  },
-]
+export async function WhySection({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: 'why' })
 
-export function WhySection() {
+  const items = [
+    { icon: ICONS[0], title: t('item1_title'), body: t('item1_body') },
+    { icon: ICONS[1], title: t('item2_title'), body: t('item2_body') },
+    { icon: ICONS[2], title: t('item3_title'), body: t('item3_body') },
+  ]
+
   return (
     <section className={styles.section}>
       <div className="page-width">
-        <h2 className={styles.heading}>Prečo Svetlana Lampe?</h2>
+        <h2 className={styles.heading}>{t('heading')}</h2>
         <div className={styles.grid}>
-          {ITEMS.map(item => (
+          {items.map(item => (
             <div key={item.title} className={styles.card}>
               <span className={styles.icon}>{item.icon}</span>
               <h3 className={styles.cardTitle}>{item.title}</h3>

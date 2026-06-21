@@ -80,6 +80,17 @@
   border-top: 1px solid var(--color-border);
 }
 
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .bottom { flex-direction: column; align-items: flex-start; }
+  .controls { order: -1; }
+}
+
 .copy {
   font-size: 13px;
   color: var(--color-text-muted);

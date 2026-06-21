@@ -51,7 +51,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </section>
       )}
 
-      <WhySection />
+      <WhySection locale={locale} />
     </>
   )
 }

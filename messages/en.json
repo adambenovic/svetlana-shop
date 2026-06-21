@@ -31,7 +31,9 @@
       "policy_refund": "Refund Policy",
       "policy_terms": "Terms of Service",
       "policy_legal": "Legal Notice",
-      "cookie_prefs": "Cookie Preferences"
+      "cookie_prefs": "Cookie Preferences",
+      "doc_manual": "Lamp Manual",
+      "doc_conformity": "Declaration of Conformity"
     }
   },
   "products": {
@@ -207,5 +209,14 @@
     "title": "Page not found",
     "desc": "The page you are looking for does not exist.",
     "back": "Back to home"
+  },
+  "why": {
+    "heading": "Why Svetlana Lampe?",
+    "item1_title": "Handmade",
+    "item1_body": "Every lamp is handmade in Slovakia. No mass production — each piece is one of a kind.",
+    "item2_title": "Unique Colors",
+    "item2_body": "Over 30 colors and combinations. Design your lamp exactly as you imagine via our configurator.",
+    "item3_title": "Fast Delivery",
+    "item3_body": "We ship within 5 business days. Delivery via Packeta pick-up points across Slovakia and Czech Republic."
   }
 }

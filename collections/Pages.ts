@@ -22,5 +22,11 @@ export const Pages: CollectionConfig = {
       type: 'richText',
       localized: true,
     },
+    {
+      name: 'bodyHtml',
+      type: 'textarea',
+      localized: true,
+      admin: { description: 'Raw HTML (used instead of body rich text when present)' },
+    },
   ],
 }

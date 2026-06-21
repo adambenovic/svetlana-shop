@@ -31,7 +31,9 @@
       "policy_refund": "Reklamace",
       "policy_terms": "Obchodní podmínky",
       "policy_legal": "Právní upozornění",
-      "cookie_prefs": "Nastavení cookies"
+      "cookie_prefs": "Nastavení cookies",
+      "doc_manual": "Návod k lampě",
+      "doc_conformity": "Prohlášení o shodě"
     }
   },
   "products": {
@@ -207,5 +209,14 @@
     "title": "Stránka nenalezena",
     "desc": "Stránka, kterou hledáte, neexistuje.",
     "back": "Zpět na úvod"
+  },
+  "why": {
+    "heading": "Proč Svetlana Lampe?",
+    "item1_title": "Ruční výroba",
+    "item1_body": "Každá lampa je vyrobena ručně na Slovensku. Žádná sériová výroba — každý kus je originál.",
+    "item2_title": "Jedinečné barvy",
+    "item2_body": "Více než 30 barev a kombinací. Sestavte si lampu přesně podle svých představ v našem konfigurátoru.",
+    "item3_title": "Rychlé doručení",
+    "item3_body": "Odesíláme do 5 pracovních dní. Doručení přes výdejní místa Packeta po celé ČR a SR."
   }
 }

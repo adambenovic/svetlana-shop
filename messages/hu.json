@@ -31,7 +31,9 @@
       "policy_refund": "Visszatérítési szabályzat",
       "policy_terms": "Általános szerződési feltételek",
       "policy_legal": "Jogi közlemény",
-      "cookie_prefs": "Cookie-beállítások"
+      "cookie_prefs": "Cookie-beállítások",
+      "doc_manual": "Lámpa kézikönyv",
+      "doc_conformity": "Megfelelőségi nyilatkozat"
     }
   },
   "products": {
@@ -207,5 +209,14 @@
     "title": "Az oldal nem található",
     "desc": "A keresett oldal nem létezik.",
     "back": "Vissza a főoldalra"
+  },
+  "why": {
+    "heading": "Miért Svetlana Lampe?",
+    "item1_title": "Kézműves gyártás",
+    "item1_body": "Minden lámpa kézzel készül Szlovákiában. Nincs tömeggyártás — minden darab egyedi.",
+    "item2_title": "Egyedi színek",
+    "item2_body": "Több mint 30 szín és kombináció. Tervezze meg a lámpáját pontosan úgy, ahogy elképzeli, a konfigurátorunkkal.",
+    "item3_title": "Gyors kiszállítás",
+    "item3_body": "5 munkanapon belül szállítunk. Kiszállítás Packeta átvételi pontokon keresztül Szlovákiában és Csehországban."
   }
 }
