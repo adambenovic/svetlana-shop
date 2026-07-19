@@ -4,7 +4,8 @@ import config from '@/payload.config'
 import fs from 'fs'
 import path from 'path'
 
-const LEGAL_DIR = '/home/adamb/benoshop/legal'
+// Bind-mounted into the container by docker-compose.tunnel.yml (source: benoshop repo)
+const LEGAL_DIR = process.env.LEGAL_DIR ?? '/app/legal-source'
 
 const LOCALES = ['sk', 'cs', 'de', 'pl', 'hu', 'uk', 'en', 'es', 'fr', 'it'] as const
 
@@ -30,7 +31,34 @@ const TITLES: Record<string, Record<string, string>> = {
   'declaration-of-conformity': { sk: 'Vyhlásenie o zhode', en: 'Declaration of Conformity', cs: 'Prohlášení o shodě', de: 'Konformitätserklärung', pl: 'Deklaracja zgodności', hu: 'Megfelelőségi nyilatkozat', uk: 'Декларація відповідності', es: 'Declaración de conformidad', fr: 'Déclaration de conformité', it: 'Dichiarazione di conformità' },
 }
 
+// The two document pages show pre-rendered page images (native PDF embeds don't
+// render on mobile browsers) plus a download link to the actual PDF.
+// Images generated with pdftoppm + cwebp — see DEPLOY.md.
+const PDF_FILES: Record<string, { pdf: string; pagesDir: string; pageCount: number }> = {
+  'lamp-manual': { pdf: '/docs/LEAH_Manual.pdf', pagesDir: '/docs/manual-pages', pageCount: 11 },
+  'declaration-of-conformity': { pdf: '/docs/EU_Declaration_of_Conformity_LEAH_Series.pdf', pagesDir: '/docs/conformity-pages', pageCount: 2 },
+}
+
+const DOWNLOAD_LABEL: Record<string, string> = {
+  sk: 'Stiahnuť PDF', cs: 'Stáhnout PDF', de: 'PDF herunterladen', pl: 'Pobierz PDF',
+  hu: 'PDF letöltése', uk: 'Завантажити PDF', es: 'Descargar PDF', fr: 'Télécharger le PDF',
+  it: 'Scarica il PDF', en: 'Download PDF',
+}
+
+function pdfHtml(slug: string, locale: string): string | null {
+  const doc = PDF_FILES[slug]
+  if (!doc) return null
+  const label = DOWNLOAD_LABEL[locale] ?? DOWNLOAD_LABEL.en
+  const pages = Array.from({ length: doc.pageCount }, (_, i) => {
+    const n = String(i + 1).padStart(2, '0')
+    return `<img src="${doc.pagesDir}/page-${n}.webp" alt="${i + 1}/${doc.pageCount}" loading="lazy" style="display:block;width:100%;height:auto;border:1px solid var(--color-border);border-radius:8px;margin-bottom:16px;background:#fff;" />`
+  }).join('\n')
+  return `<p><a href="${doc.pdf}" download>📄 ${label}</a></p>\n${pages}\n<p><a href="${doc.pdf}" download>📄 ${label}</a></p>`
+}
+
 function readHtml(locale: string, slug: string): string | null {
+  const generated = pdfHtml(slug, locale)
+  if (generated) return generated
   const filePath = path.join(LEGAL_DIR, locale, `${slug}.html`)
   try {
     return fs.readFileSync(filePath, 'utf-8')
