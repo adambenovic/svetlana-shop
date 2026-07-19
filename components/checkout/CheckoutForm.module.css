@@ -3,5 +3,11 @@
 .field label { font-size: 14px; color: var(--color-text-muted); font-weight: 500; }
 .field input { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 10px 14px; color: var(--color-text); font-family: var(--font-body); font-size: 16px; }
 .field input:focus { outline: none; border-color: var(--color-accent); }
-.summary { padding: 16px; background: var(--color-surface); border-radius: var(--radius-md); font-size: 18px; }
+.field select { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 10px 14px; color: var(--color-text); font-family: var(--font-body); font-size: 16px; }
+.field select:focus { outline: none; border-color: var(--color-accent); }
+.sectionTitle { font-size: 16px; font-weight: 600; margin: 8px 0 0; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.row .field { min-width: 0; }
+.summary { padding: 16px; background: var(--color-surface); border-radius: var(--radius-md); font-size: 18px; display: flex; flex-direction: column; gap: 6px; }
+.discountLine { font-size: 14px; color: var(--color-success); }
 .error { color: #e05a5a; font-size: 14px; }

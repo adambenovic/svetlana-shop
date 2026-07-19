@@ -6,10 +6,58 @@ global.fetch = mockFetch
 beforeEach(() => {
   mockFetch.mockReset()
   _resetTokenCache()
+  delete process.env.GOPAY_ENV
   process.env.GOPAY_API_URL = 'https://testgw.gopay.cz/api'
   process.env.GOPAY_CLIENT_ID = 'test-id'
   process.env.GOPAY_CLIENT_SECRET = 'test-secret'
   process.env.GOPAY_GO_ID = '123456'
+})
+
+test('GOPAY_ENV=test switches to sandbox URL, credentials, and goid', async () => {
+  process.env.GOPAY_ENV = 'test'
+  process.env.GOPAY_TEST_CLIENT_ID = 'sandbox-id'
+  process.env.GOPAY_TEST_CLIENT_SECRET = 'sandbox-secret'
+  process.env.GOPAY_TEST_GO_ID = '999'
+
+  mockFetch
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ access_token: 'tok', expires_in: 3600 }) })
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ id: 'p1', gw_url: 'https://gw', state: 'CREATED' }) })
+
+  await createPayment({
+    orderId: 'SL-001', amount: 8900, currency: 'EUR', description: 'Test',
+    email: 'a@b.com', returnUrl: 'http://localhost/success',
+    notifyUrl: 'http://localhost/webhook', locale: 'sk',
+  })
+
+  expect(mockFetch.mock.calls[0][0]).toBe('https://gw.sandbox.gopay.com/api/oauth2/token')
+  expect(mockFetch.mock.calls[0][1].headers.Authorization)
+    .toBe('Basic ' + Buffer.from('sandbox-id:sandbox-secret').toString('base64'))
+  expect(mockFetch.mock.calls[1][0]).toBe('https://gw.sandbox.gopay.com/api/payments/payment')
+  expect(JSON.parse(mockFetch.mock.calls[1][1].body).target.goid).toBe(999)
+})
+
+test('tokens are cached per environment, not shared across the switch', async () => {
+  mockFetch
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ access_token: 'prod-tok', expires_in: 3600 }) })
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ id: 'p1', gw_url: '', state: 'CREATED' }) })
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ access_token: 'test-tok', expires_in: 3600 }) })
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ id: 'p2', gw_url: '', state: 'CREATED' }) })
+
+  const args = {
+    orderId: 'SL-001', amount: 100, currency: 'EUR', description: 'Test',
+    email: 'a@b.com', returnUrl: '', notifyUrl: '', locale: 'sk',
+  }
+  await createPayment(args)
+
+  process.env.GOPAY_ENV = 'test'
+  process.env.GOPAY_TEST_CLIENT_ID = 'sandbox-id'
+  process.env.GOPAY_TEST_CLIENT_SECRET = 'sandbox-secret'
+  process.env.GOPAY_TEST_GO_ID = '999'
+  await createPayment(args)
+
+  // 4 calls: each environment fetched its own token instead of reusing the cache
+  expect(mockFetch).toHaveBeenCalledTimes(4)
+  expect(mockFetch.mock.calls[2][0]).toContain('/oauth2/token')
 })
 
 test('createPayment fetches token then creates payment', async () => {

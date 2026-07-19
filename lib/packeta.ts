@@ -13,6 +13,16 @@ export interface PacketaResult {
   trackingUrl: string
 }
 
+// Packeta refuses packets insured above these caps (verified against their API;
+// see Packeta conditions). The declared value is clamped — shipping still works
+// for expensive orders, they are just not insured above the cap.
+const MAX_INSURED_VALUE: Record<string, number> = { EUR: 700, CZK: 20_000 }
+
+export function clampInsuredValue(value: number, currency: string): number {
+  const max = MAX_INSURED_VALUE[currency]
+  return max ? Math.min(value, max) : value
+}
+
 export async function createShipment(p: {
   orderNumber: string
   name: string
@@ -33,7 +43,7 @@ export async function createShipment(p: {
     <phone>${escapeXml(p.phone)}</phone>
     <addressId>${p.addressId}</addressId>
     <weight>${p.weight ?? 1.5}</weight>
-    <value>${p.value}</value>
+    <value>${clampInsuredValue(p.value, p.currency)}</value>
     <currency>${p.currency}</currency>
   </packetAttributes>
 </createPacket>`

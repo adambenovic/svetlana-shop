@@ -52,3 +52,11 @@ test('createShipment XML body escapes special chars in name', async () => {
   const sentBody = mockFetch.mock.calls[0][1].body as string
   expect(sentBody).toContain('O&apos;Brien &amp; &lt;Test&gt;')
 })
+
+test('declared value is clamped to Packeta insurance caps', () => {
+  const { clampInsuredValue } = require('./packeta')
+  expect(clampInsuredValue(5399, 'EUR')).toBe(700)
+  expect(clampInsuredValue(89, 'EUR')).toBe(89)
+  expect(clampInsuredValue(150000, 'CZK')).toBe(20000)
+  expect(clampInsuredValue(999, 'USD')).toBe(999)
+})
