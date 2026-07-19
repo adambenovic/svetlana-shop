@@ -3,7 +3,8 @@ import { dismissCookieBanner } from './helpers'
 
 // Configurator requires a product in the DB. Tests gracefully skip if none exists.
 async function goToConfigurator(page: Page, locale = '') {
-  const path = locale ? `/${locale}/configurator` : '/configurator'
+  // SK (default locale) uses the translated pathname
+  const path = locale ? `/${locale}/configurator` : '/konfigurator'
   const resp = await page.goto(path)
   return resp?.status() ?? 0
 }
@@ -114,7 +115,7 @@ test.describe('Gallery page', () => {
   })
 
   test('gallery loads in SK', async ({ page }) => {
-    await page.goto('/gallery')
+    await page.goto('/galeria')
     await expect(page.locator('h1')).toBeVisible()
     await expect(page.locator('html')).toHaveAttribute('lang', 'sk')
   })

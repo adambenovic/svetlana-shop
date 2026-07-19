@@ -109,7 +109,11 @@
     "remove": "Eliminar",
     "total": "Total",
     "checkout": "Proceder al pago",
-    "continue_shopping": "Seguir comprando"
+    "continue_shopping": "Seguir comprando",
+    "discount_placeholder": "Código de descuento",
+    "discount_apply": "Aplicar",
+    "discount_invalid": "Código no válido o caducado",
+    "discount_applied": "Código {code} aplicado (−{percent}%)"
   },
   "cart_delivery": {
     "title": "Método de envío",
@@ -127,6 +131,11 @@
     "name": "Nombre completo",
     "email": "Correo electrónico",
     "phone": "Teléfono",
+    "billing_address": "Dirección de facturación",
+    "street": "Calle y número",
+    "city": "Ciudad",
+    "zip": "Código postal",
+    "country": "País",
     "select_packeta": "Seleccionar punto de recogida Packeta",
     "selected_point": "Punto de recogida",
     "change_point": "Cambiar",
@@ -136,6 +145,11 @@
     "submitting": "Procesando...",
     "success_title": "¡Gracias por tu pedido!",
     "success_body": "El pedido {orderNumber} ha sido recibido. La confirmación ha sido enviada a tu correo.",
+    "payment_failed_title": "Pago no completado",
+    "payment_failed_body": "El pago del pedido {orderNumber} no se completó. Hemos conservado tu carrito.",
+    "payment_not_found_body": "No pudimos verificar tu pago. Si se te ha cobrado, contáctanos.",
+    "payment_retry": "Intentar pagar de nuevo",
+    "back_to_checkout": "Volver al pago",
     "error_generic": "Algo salió mal. Por favor, inténtalo de nuevo."
   },
   "gallery": {
@@ -164,7 +178,8 @@
     "discount_applied": "¡Descuento aplicado!",
     "text": "🎉 20 % de descuento para los primeros 10 pedidos — código:",
     "code": "EARLYBIRD",
-    "dismiss": "Cerrar"
+    "dismiss": "Cerrar",
+    "click_to_use": "haz clic para usar"
   },
   "cookies": {
     "title": "Usamos cookies",

@@ -5,3 +5,19 @@
 .nav a { color: var(--color-text-muted); transition: color var(--transition); }
 .nav a:hover { color: var(--color-text); }
 .actions { display: flex; align-items: center; gap: 16px; margin-left: auto; }
+
+/* Mobile: logo + actions on the first row; nav becomes a full-width tab bar
+   separated by a hairline, links evenly distributed with real tap targets */
+@media (max-width: 640px) {
+  .inner { flex-wrap: wrap; height: auto; padding-top: 12px; padding-bottom: 0; gap: 0 16px; }
+  .nav {
+    order: 3;
+    flex-basis: 100%;
+    justify-content: space-around;
+    gap: 0;
+    margin: 10px calc(-1 * var(--gutter)) 0;
+    border-top: 1px solid var(--color-border);
+  }
+  .nav a { padding: 12px 8px; font-size: 14px; font-weight: 500; white-space: nowrap; }
+  .actions { gap: 12px; }
+}

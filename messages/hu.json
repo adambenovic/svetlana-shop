@@ -109,7 +109,11 @@
     "remove": "Eltávolítás",
     "total": "Végösszeg",
     "checkout": "Megrendelés",
-    "continue_shopping": "Vásárlás folytatása"
+    "continue_shopping": "Vásárlás folytatása",
+    "discount_placeholder": "Kuponkód",
+    "discount_apply": "Beváltás",
+    "discount_invalid": "Érvénytelen vagy lejárt kód",
+    "discount_applied": "{code} kód beváltva (−{percent}%)"
   },
   "cart_delivery": {
     "title": "Szállítási mód",
@@ -127,6 +131,11 @@
     "name": "Teljes név",
     "email": "E-mail-cím",
     "phone": "Telefonszám",
+    "billing_address": "Számlázási cím",
+    "street": "Utca, házszám",
+    "city": "Város",
+    "zip": "Irányítószám",
+    "country": "Ország",
     "select_packeta": "Packeta átvételi pont kiválasztása",
     "selected_point": "Átvételi pont",
     "change_point": "Módosítás",
@@ -136,6 +145,11 @@
     "submitting": "Feldolgozás...",
     "success_title": "Köszönjük a rendelést!",
     "success_body": "A(z) {orderNumber} rendelés beérkezett. A visszaigazolást elküldtük e-mailben.",
+    "payment_failed_title": "A fizetés nem fejeződött be",
+    "payment_failed_body": "A(z) {orderNumber} rendelés kifizetése nem fejeződött be. A kosarát megőriztük.",
+    "payment_not_found_body": "Nem sikerült ellenőrizni a fizetést. Ha az összeget levonták, kérjük, lépjen kapcsolatba velünk.",
+    "payment_retry": "Fizetés újrapróbálása",
+    "back_to_checkout": "Vissza a pénztárhoz",
     "error_generic": "Hiba történt. Kérjük, próbálja újra."
   },
   "gallery": {
@@ -164,7 +178,8 @@
     "discount_applied": "Kedvezmény érvényesítve!",
     "text": "🎉 20% kedvezmény az első 10 rendelésre — kód:",
     "code": "EARLYBIRD",
-    "dismiss": "Bezárás"
+    "dismiss": "Bezárás",
+    "click_to_use": "kattintson a beváltáshoz"
   },
   "cookies": {
     "title": "Cookie-kat használunk",

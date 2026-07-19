@@ -70,13 +70,17 @@
 
 .linkList a:hover { color: var(--color-text); }
 
-.bottom {
+/* Scoped under .footer — the element also carries the global .page-width class,
+   whose `padding: 0 var(--gutter)` otherwise ties and wins on source order */
+.footer .bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
-  padding: 16px 0;
+  margin-top: 32px;
+  padding-top: 24px;
+  padding-bottom: 28px;
   border-top: 1px solid var(--color-border);
 }
 
@@ -87,7 +91,7 @@
 }
 
 @media (max-width: 768px) {
-  .bottom { flex-direction: column; align-items: flex-start; }
+  .footer .bottom { flex-direction: column; align-items: flex-start; gap: 16px; padding-top: 28px; }
   .controls { order: -1; }
 }
 

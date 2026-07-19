@@ -109,7 +109,11 @@
     "remove": "Видалити",
     "total": "Всього",
     "checkout": "Оформити замовлення",
-    "continue_shopping": "Продовжити покупки"
+    "continue_shopping": "Продовжити покупки",
+    "discount_placeholder": "Промокод",
+    "discount_apply": "Застосувати",
+    "discount_invalid": "Недійсний або прострочений код",
+    "discount_applied": "Код {code} застосовано (−{percent}%)"
   },
   "cart_delivery": {
     "title": "Спосіб доставки",
@@ -127,6 +131,11 @@
     "name": "Ім'я та прізвище",
     "email": "Електронна адреса",
     "phone": "Телефон",
+    "billing_address": "Адреса для рахунку",
+    "street": "Вулиця та номер",
+    "city": "Місто",
+    "zip": "Поштовий індекс",
+    "country": "Країна",
     "select_packeta": "Обрати пункт видачі Packeta",
     "selected_point": "Пункт видачі",
     "change_point": "Змінити",
@@ -136,6 +145,11 @@
     "submitting": "Обробка...",
     "success_title": "Дякуємо за замовлення!",
     "success_body": "Замовлення {orderNumber} прийнято. Підтвердження надіслано на вашу електронну адресу.",
+    "payment_failed_title": "Оплату не завершено",
+    "payment_failed_body": "Оплату замовлення {orderNumber} не завершено. Ваш кошик збережено.",
+    "payment_not_found_body": "Не вдалося перевірити оплату. Якщо кошти було списано, зв’яжіться з нами.",
+    "payment_retry": "Спробувати оплатити ще раз",
+    "back_to_checkout": "Назад до оформлення",
     "error_generic": "Сталася помилка. Будь ласка, спробуйте ще раз."
   },
   "gallery": {
@@ -164,7 +178,8 @@
     "discount_applied": "Знижку застосовано!",
     "text": "🎉 20% знижка для перших 10 замовлень — код:",
     "code": "EARLYBIRD",
-    "dismiss": "Закрити"
+    "dismiss": "Закрити",
+    "click_to_use": "натисніть, щоб застосувати"
   },
   "cookies": {
     "title": "Ми використовуємо файли cookie",

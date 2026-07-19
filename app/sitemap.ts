@@ -1,14 +1,20 @@
 import type { MetadataRoute } from 'next'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { getPathname } from '@/i18n/navigation'
+import { routing } from '@/i18n/routing'
+
+// Queries Payload — must render at request time, not during `next build`
+// (the Docker builder has no database or PAYLOAD_SECRET).
+export const dynamic = 'force-dynamic'
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
-const LOCALES = ['sk', 'en', 'cs', 'de', 'es', 'fr', 'hu', 'it', 'pl', 'uk']
-const DEFAULT_LOCALE = 'sk'
+const LOCALES = routing.locales
 
-function url(locale: string, path: string) {
-  const prefix = locale === DEFAULT_LOCALE ? '' : `/${locale}`
-  return `${BASE_URL}${prefix}${path}`
+type Href = Parameters<typeof getPathname>[0]['href']
+
+function url(locale: (typeof LOCALES)[number], href: Href) {
+  return `${BASE_URL}${getPathname({ href, locale })}`
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -28,7 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   ])
 
-  const staticRoutes = ['/', '/configurator', '/gallery', '/cart']
+  const staticRoutes = ['/', '/configurator', '/gallery', '/cart'] as const
   const entries: MetadataRoute.Sitemap = []
 
   for (const locale of LOCALES) {
@@ -43,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const p of products) {
       if (!p.slug) continue
       entries.push({
-        url: url(locale, `/products/${p.slug}`),
+        url: url(locale, { pathname: '/products/[slug]', params: { slug: String(p.slug) } }),
         lastModified: new Date(p.updatedAt as string),
         changeFrequency: 'monthly',
         priority: 0.7,
@@ -52,7 +58,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const p of pages) {
       if (!p.slug) continue
       entries.push({
-        url: url(locale, `/pages/${p.slug}`),
+        url: url(locale, { pathname: '/pages/[slug]', params: { slug: String(p.slug) } }),
         lastModified: new Date(p.updatedAt as string),
         changeFrequency: 'yearly',
         priority: 0.5,

@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { GalleryGrid } from './GalleryGrid'
@@ -33,14 +33,12 @@ export async function GalleryPreview({ locale, viewAllLabel = 'View all lamps â†
     partsKey: p.partsKey ?? undefined,
   }))
 
-  const prefix = locale === 'sk' ? '' : `/${locale}`
-
   return (
     <div>
       <GalleryGrid products={products} locale={locale} />
       <div style={{ textAlign: 'center', marginTop: '32px' }}>
         <Link
-          href={`${prefix}/gallery`}
+          href="/gallery"
           style={{ color: 'var(--color-accent)', fontWeight: 500, fontSize: '16px' }}
         >
           {viewAllLabel}

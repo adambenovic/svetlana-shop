@@ -1,25 +1,21 @@
 'use client'
-import { useRouter, usePathname } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { usePathname, useRouter } from '@/i18n/navigation'
+import { routing } from '@/i18n/routing'
 import styles from './LocaleSwitcher.module.css'
-
-const LOCALES = ['sk', 'en', 'cs', 'de', 'es', 'fr', 'hu', 'it', 'pl', 'uk'] as const
-const DEFAULT_LOCALE = 'sk'
 
 export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
   const t = useTranslations('locales')
   const pathname = usePathname()
+  const params = useParams()
   const router = useRouter()
 
   function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const next = e.target.value
-    // Strip existing locale prefix from pathname
-    let path = pathname
-    if (currentLocale !== DEFAULT_LOCALE) {
-      path = pathname.replace(new RegExp(`^/${currentLocale}(?=/|$)`), '') || '/'
-    }
-    const newPath = next === DEFAULT_LOCALE ? path || '/' : `/${next}${path}`
-    router.push(newPath)
+    const locale = e.target.value as (typeof routing.locales)[number]
+    // @ts-expect-error -- pathname/params always match for the current route;
+    // next-intl maps them to the target locale's translated pathname
+    router.replace({ pathname, params }, { locale })
   }
 
   return (
@@ -29,7 +25,7 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
       className={styles.select}
       aria-label="Language"
     >
-      {LOCALES.map(l => (
+      {routing.locales.map(l => (
         <option key={l} value={l}>{t(l)}</option>
       ))}
     </select>

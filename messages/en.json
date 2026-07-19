@@ -109,7 +109,11 @@
     "remove": "Remove",
     "total": "Total",
     "checkout": "Proceed to checkout",
-    "continue_shopping": "Continue shopping"
+    "continue_shopping": "Continue shopping",
+    "discount_placeholder": "Discount code",
+    "discount_apply": "Apply",
+    "discount_invalid": "Invalid or expired code",
+    "discount_applied": "Code {code} applied (−{percent}%)"
   },
   "cart_delivery": {
     "title": "Delivery method",
@@ -127,6 +131,11 @@
     "name": "Full name",
     "email": "Email",
     "phone": "Phone",
+    "billing_address": "Billing address",
+    "street": "Street and number",
+    "city": "City",
+    "zip": "Postal code",
+    "country": "Country",
     "select_packeta": "Select Packeta pickup point",
     "selected_point": "Pickup point",
     "change_point": "Change",
@@ -136,6 +145,11 @@
     "submitting": "Processing...",
     "success_title": "Thank you for your order!",
     "success_body": "Order {orderNumber} received. Confirmation sent to your email.",
+    "payment_failed_title": "Payment not completed",
+    "payment_failed_body": "The payment for order {orderNumber} was not completed. Your cart has been kept.",
+    "payment_not_found_body": "We could not verify your payment. If you have been charged, please contact us.",
+    "payment_retry": "Try paying again",
+    "back_to_checkout": "Back to checkout",
     "error_generic": "Something went wrong. Please try again."
   },
   "gallery": {
@@ -164,7 +178,8 @@
     "discount_applied": "Discount applied!",
     "text": "🎉 20% off for the first 10 orders — code:",
     "code": "EARLYBIRD",
-    "dismiss": "Close"
+    "dismiss": "Close",
+    "click_to_use": "click to use"
   },
   "cookies": {
     "title": "We use cookies",

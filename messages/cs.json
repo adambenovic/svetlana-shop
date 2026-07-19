@@ -109,7 +109,11 @@
     "remove": "Odebrat",
     "total": "Celkem",
     "checkout": "Pokračovat k platbě",
-    "continue_shopping": "Pokračovat v nákupu"
+    "continue_shopping": "Pokračovat v nákupu",
+    "discount_placeholder": "Slevový kód",
+    "discount_apply": "Použít",
+    "discount_invalid": "Neplatný nebo expirovaný kód",
+    "discount_applied": "Kód {code} použit (−{percent}%)"
   },
   "cart_delivery": {
     "title": "Způsob doručení",
@@ -127,6 +131,11 @@
     "name": "Jméno a příjmení",
     "email": "E-mail",
     "phone": "Telefon",
+    "billing_address": "Fakturační adresa",
+    "street": "Ulice a číslo",
+    "city": "Město",
+    "zip": "PSČ",
+    "country": "Země",
     "select_packeta": "Vybrat výdejní místo Packeta",
     "selected_point": "Výdejní místo",
     "change_point": "Změnit",
@@ -136,6 +145,11 @@
     "submitting": "Zpracovávám...",
     "success_title": "Děkujeme za objednávku!",
     "success_body": "Objednávka {orderNumber} byla přijata. Potvrzení jsme poslali na váš e-mail.",
+    "payment_failed_title": "Platba nebyla dokončena",
+    "payment_failed_body": "Platba za objednávku {orderNumber} nebyla dokončena. Váš košík jsme zachovali.",
+    "payment_not_found_body": "Platbu se nepodařilo ověřit. Pokud vám byly peníze strženy, kontaktujte nás.",
+    "payment_retry": "Zkusit zaplatit znovu",
+    "back_to_checkout": "Zpět k pokladně",
     "error_generic": "Nastala chyba. Zkuste to prosím znovu."
   },
   "gallery": {
@@ -164,7 +178,8 @@
     "discount_applied": "Sleva uplatněna!",
     "text": "🎉 20 % sleva pro prvních 10 objednávek — kód:",
     "code": "EARLYBIRD",
-    "dismiss": "Zavřít"
+    "dismiss": "Zavřít",
+    "click_to_use": "kliknutím použijete"
   },
   "cookies": {
     "title": "Používáme cookies",

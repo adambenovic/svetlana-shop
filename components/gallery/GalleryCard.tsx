@@ -1,6 +1,8 @@
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import Image from 'next/image'
 import type { Product } from '@/types/product'
+import { Price } from '@/components/ui/Price'
+import { productPriceMap } from '@/lib/prices'
 import styles from './GalleryCard.module.css'
 
 interface GalleryCardProps {
@@ -9,12 +11,11 @@ interface GalleryCardProps {
 }
 
 export function GalleryCard({ product, locale }: GalleryCardProps) {
-  const prefix = locale === 'sk' ? '' : `/${locale}`
   const image = product.images[0]
 
   return (
     <Link
-      href={`${prefix}/products/${product.slug}`}
+      href={{ pathname: '/products/[slug]', params: { slug: product.slug } }}
       className={[styles.card, product.hasBg ? styles.hasBg : ''].join(' ')}
       aria-label={product.title}
     >
@@ -32,7 +33,7 @@ export function GalleryCard({ product, locale }: GalleryCardProps) {
       <div className={styles.label}>
         <span className={styles.title}>{product.title}</span>
         <span className={styles.price}>
-          {(product.basePrice / 100).toFixed(2)} {product.currency}
+          <Price prices={productPriceMap(product)} />
         </span>
       </div>
     </Link>

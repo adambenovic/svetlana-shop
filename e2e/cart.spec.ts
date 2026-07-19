@@ -7,12 +7,12 @@ test.describe('Cart page — empty state', () => {
   })
 
   test('shows empty message in SK', async ({ page }) => {
-    await page.goto('/cart')
+    await page.goto('/kosik')
     await expect(page.locator('main')).toContainText('Váš košík je prázdny')
   })
 
   test('shows "continue shopping" link in SK', async ({ page }) => {
-    await page.goto('/cart')
+    await page.goto('/kosik')
     await expect(page.getByRole('link', { name: 'Pokračovať v nákupe' })).toBeVisible()
   })
 
@@ -29,49 +29,49 @@ test.describe('Cart page — with seeded item', () => {
   })
 
   test('shows item title after hydration', async ({ page }) => {
-    await page.goto('/cart')
+    await page.goto('/kosik')
     await expect(page.getByText('LEAH')).toBeVisible({ timeout: 5000 })
   })
 
   test('shows item price (89.00 EUR)', async ({ page }) => {
-    await page.goto('/cart')
+    await page.goto('/kosik')
     await expect(page.getByText('LEAH')).toBeVisible({ timeout: 5000 })
     await expect(page.locator('main')).toContainText('89.00')
   })
 
   test('shows cart h1 title', async ({ page }) => {
-    await page.goto('/cart')
+    await page.goto('/kosik')
     await expect(page.locator('h1')).toContainText('Košík', { timeout: 5000 })
   })
 
   test('remove button is visible per item', async ({ page }) => {
-    await page.goto('/cart')
+    await page.goto('/kosik')
     await expect(page.getByText('LEAH')).toBeVisible({ timeout: 5000 })
     await expect(page.getByRole('button', { name: 'Odstrániť' })).toBeVisible()
   })
 
   test('clicking remove clears item and shows empty state', async ({ page }) => {
-    await page.goto('/cart')
+    await page.goto('/kosik')
     await expect(page.getByText('LEAH')).toBeVisible({ timeout: 5000 })
     await page.getByRole('button', { name: 'Odstrániť' }).click()
     await expect(page.locator('main')).toContainText('Váš košík je prázdny')
   })
 
   test('quantity increment updates displayed quantity', async ({ page }) => {
-    await page.goto('/cart')
+    await page.goto('/kosik')
     await expect(page.getByText('LEAH')).toBeVisible({ timeout: 5000 })
     await page.getByRole('button', { name: '+' }).click()
-    await expect(page.locator('main')).toContainText('178.00') // 2 × 89.00
+    await expect(page.locator('main')).toContainText('178') // 2 × €89
   })
 
   test('checkout link is present', async ({ page }) => {
-    await page.goto('/cart')
+    await page.goto('/kosik')
     await expect(page.getByText('LEAH')).toBeVisible({ timeout: 5000 })
     await expect(page.getByRole('link', { name: 'Pokračovať k platbe' })).toBeVisible()
   })
 
   test('checkout link navigates to /checkout', async ({ page }) => {
-    await page.goto('/cart')
+    await page.goto('/kosik')
     await expect(page.getByText('LEAH')).toBeVisible({ timeout: 5000 })
     await page.getByRole('link', { name: 'Pokračovať k platbe' }).click()
     await expect(page).toHaveURL('/checkout')
@@ -94,7 +94,7 @@ test.describe('Cart — multiple items', () => {
       MOCK_CART_ITEM,
       { ...MOCK_CART_ITEM, id: 'test-product-2', title: 'EVA', unitPrice: 9900 },
     ])
-    await page.goto('/cart')
+    await page.goto('/kosik')
     await expect(page.getByText('LEAH')).toBeVisible({ timeout: 5000 })
     await expect(page.getByText('EVA')).toBeVisible()
   })

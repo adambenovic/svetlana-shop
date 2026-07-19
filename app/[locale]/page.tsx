@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { getTranslations } from 'next-intl/server'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
@@ -34,8 +34,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     partsKey: p.partsKey ?? undefined,
   }))
 
-  const prefix = locale === 'sk' ? '' : `/${locale}`
-
   return (
     <>
       <Hero locale={locale} />
@@ -45,7 +43,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <div className="page-width">
             <GalleryGrid products={products} locale={locale} />
             <div className={styles.viewAll}>
-              <Link href={`${prefix}/gallery`}>{t('view_all')}</Link>
+              <Link href="/gallery">{t('view_all')}</Link>
             </div>
           </div>
         </section>

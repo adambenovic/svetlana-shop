@@ -49,7 +49,7 @@ test.describe('Locale — translated content', () => {
   })
 
   test('SK /cart shows Slovak cart text', async ({ page }) => {
-    await page.goto('/cart')
+    await page.goto('/kosik')
     await expect(page.locator('main')).toContainText('Váš košík je prázdny')
   })
 
@@ -59,7 +59,7 @@ test.describe('Locale — translated content', () => {
   })
 
   test('SK /checkout shows Slovak checkout title', async ({ page }) => {
-    await page.goto('/checkout')
+    await page.goto('/pokladna')
     await expect(page.locator('h1')).toContainText('Objednávka')
   })
 

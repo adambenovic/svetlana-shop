@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import Image from 'next/image'
 import styles from './Hero.module.css'
 
@@ -10,7 +10,6 @@ interface HeroProps {
 export async function Hero({ locale }: HeroProps) {
   const t = await getTranslations({ locale, namespace: 'hero' })
   const th = await getTranslations({ locale, namespace: 'sections.header' })
-  const prefix = locale === 'sk' ? '' : `/${locale}`
 
   return (
     <section className={styles.hero}>
@@ -29,10 +28,10 @@ export async function Hero({ locale }: HeroProps) {
           <h1 className={styles.title}>{t('title')}</h1>
           <p className={styles.sub}>{t('subtitle')}</p>
           <div className={styles.actions}>
-            <Link href={`${prefix}/configurator`} className={styles.btnPrimary}>
+            <Link href="/configurator" className={styles.btnPrimary}>
               {th('menu_configurator')}
             </Link>
-            <Link href={`${prefix}/gallery`} className={styles.btnSecondary}>
+            <Link href="/gallery" className={styles.btnSecondary}>
               {th('menu_gallery')}
             </Link>
           </div>

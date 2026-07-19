@@ -47,3 +47,16 @@
 }
 
 .dismiss:hover { opacity: 1; }
+
+.use {
+  background: none;
+  border: none;
+  color: inherit;
+  opacity: 0.8;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: inherit;
+  padding: 0;
+  text-decoration: underline;
+}
+.use:hover { opacity: 1; }

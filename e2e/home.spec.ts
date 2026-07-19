@@ -42,15 +42,15 @@ test.describe('Homepage', () => {
     await expect(page.locator('footer')).toContainText('Svetlana Lampe')
   })
 
-  test('clicking configurator nav link navigates to /configurator', async ({ page }) => {
+  test('clicking configurator nav link navigates to /konfigurator', async ({ page }) => {
     await page.goto('/')
     await page.locator('header nav').getByText('Vytvorte si lampu').click()
-    await expect(page).toHaveURL('/configurator')
+    await expect(page).toHaveURL('/konfigurator')
   })
 
-  test('clicking gallery nav link navigates to /gallery', async ({ page }) => {
+  test('clicking gallery nav link navigates to /galeria', async ({ page }) => {
     await page.goto('/')
     await page.locator('header nav').getByText('Galéria').click()
-    await expect(page).toHaveURL('/gallery')
+    await expect(page).toHaveURL('/galeria')
   })
 })

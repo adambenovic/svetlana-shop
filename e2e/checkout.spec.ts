@@ -10,7 +10,7 @@ test.describe('Checkout form — SK', () => {
   })
 
   test('shows form fields after cart hydration', async ({ page }) => {
-    await page.goto('/checkout')
+    await page.goto('/pokladna')
     // Wait for cart to hydrate (CartHydration calls rehydrate in useEffect)
     await expect(page.locator('#name')).toBeVisible({ timeout: 5000 })
     await expect(page.locator('#email')).toBeVisible()
@@ -18,24 +18,27 @@ test.describe('Checkout form — SK', () => {
   })
 
   test('SK form labels are in Slovak', async ({ page }) => {
-    await page.goto('/checkout')
+    await page.goto('/pokladna')
     await expect(page.locator('label[for="name"]')).toContainText('Meno a priezvisko')
     await expect(page.locator('label[for="email"]')).toContainText('E-mail')
     await expect(page.locator('label[for="phone"]')).toContainText('Telefón')
   })
 
   test('submit button shows GoPay text', async ({ page }) => {
-    await page.goto('/checkout')
+    await page.goto('/pokladna')
     await expect(page.getByRole('button', { name: 'Zaplatiť cez GoPay' })).toBeVisible({ timeout: 5000 })
   })
 
   test('submitting without Packeta shows error', async ({ page }) => {
-    await page.goto('/checkout')
+    await page.goto('/pokladna')
     await expect(page.locator('#name')).toBeVisible({ timeout: 5000 })
 
     await page.fill('#name', 'Jana Nováková')
     await page.fill('#email', 'jana@example.com')
     await page.fill('#phone', '+421900000000')
+    await page.fill('#billing-street', 'Hlavná 1')
+    await page.fill('#billing-city', 'Bratislava')
+    await page.fill('#billing-zip', '81101')
 
     await page.getByRole('button', { name: 'Zaplatiť cez GoPay' }).click()
 
@@ -43,7 +46,7 @@ test.describe('Checkout form — SK', () => {
   })
 
   test('selecting Packeta point via mocked widget shows point name', async ({ page }) => {
-    await page.goto('/checkout')
+    await page.goto('/pokladna')
     await expect(page.locator('#name')).toBeVisible({ timeout: 5000 })
 
     await mockPacketaWidget(page)
@@ -62,7 +65,7 @@ test.describe('Checkout form — SK', () => {
       body: JSON.stringify({ gopayUrl: 'https://example.com/payment-redirect', orderId: 'SL-TEST-001' }),
     }))
 
-    await page.goto('/checkout')
+    await page.goto('/pokladna')
     await expect(page.locator('#name')).toBeVisible({ timeout: 5000 })
 
     await mockPacketaWidget(page)
@@ -72,6 +75,9 @@ test.describe('Checkout form — SK', () => {
     await page.fill('#name', 'Jana Nováková')
     await page.fill('#email', 'jana@example.com')
     await page.fill('#phone', '+421900000000')
+    await page.fill('#billing-street', 'Hlavná 1')
+    await page.fill('#billing-city', 'Bratislava')
+    await page.fill('#billing-zip', '81101')
 
     await page.getByRole('button', { name: 'Zaplatiť cez GoPay' }).click()
 
@@ -101,18 +107,21 @@ test.describe('Success page', () => {
     await dismissCookieBanner(page)
   })
 
-  test('success page shows thank-you message in SK', async ({ page }) => {
-    await page.goto('/checkout/success?gopayId=TEST-123')
-    await expect(page.locator('h1')).toContainText('Ďakujeme')
+  // The page verifies the payment state with GoPay server-side; an unknown or
+  // unverifiable payment id must NOT render the thank-you (or clear the cart).
+  test('unverifiable payment shows not-completed message in SK', async ({ page }) => {
+    await page.goto('/pokladna/uspech?id=TEST-123')
+    await expect(page.locator('h1')).toContainText('Platba nebola dokončená')
+    await expect(page.locator('main')).toContainText('Platbu sa nepodarilo overiť')
   })
 
-  test('success page shows order number from query param', async ({ page }) => {
-    await page.goto('/checkout/success?gopayId=SL-2026-abc123')
-    await expect(page.locator('main')).toContainText('SL-2026-abc123')
+  test('unverifiable payment links back to checkout', async ({ page }) => {
+    await page.goto('/pokladna/uspech?id=TEST-123')
+    await expect(page.getByRole('link', { name: 'Späť na pokladňu' })).toHaveAttribute('href', '/pokladna')
   })
 
-  test('EN success page shows English thank-you', async ({ page }) => {
-    await page.goto('/en/checkout/success?gopayId=TEST-456')
-    await expect(page.locator('h1')).toContainText('Thank')
+  test('EN unverifiable payment shows English message', async ({ page }) => {
+    await page.goto('/en/checkout/success?id=TEST-456')
+    await expect(page.locator('h1')).toContainText('Payment not completed')
   })
 })
