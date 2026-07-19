@@ -53,7 +53,7 @@ to prod while a test payment is mid-flight, its webhook would fail verification.
 
 ### Legal pages & document PDFs
 
-`POST /api/seed-pages` loads legal HTML (bind-mounted from `~/projects/benoshop/legal`)
+`POST /api/seed-pages` (Bearer-gated) loads legal HTML from the in-repo `legal/` dir (baked into the image)
 into the Pages collection for all 10 locales. The lamp-manual and
 declaration-of-conformity pages show pre-rendered page images (mobile browsers
 can't embed PDFs) plus a download link. To regenerate after replacing a PDF in

@@ -38,8 +38,9 @@ export function CheckoutForm({ locale }: CheckoutFormProps) {
   const [error, setError] = useState('')
 
   // Track cart hydration so we only act on a genuinely-empty cart (the store uses
-  // skipHydration; items are [] until rehydration finishes).
-  const [hydrated, setHydrated] = useState(() => useCart.persist.hasHydrated())
+  // skipHydration; items are [] until rehydration finishes). Start false — the
+  // persist API isn't available during SSR, and hydration only matters client-side.
+  const [hydrated, setHydrated] = useState(false)
   useEffect(() => {
     if (useCart.persist.hasHydrated()) setHydrated(true)
     return useCart.persist.onFinishHydration(() => setHydrated(true))

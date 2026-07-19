@@ -51,8 +51,6 @@ services:
       # or the image (see .dockerignore). Next serves public/ files at request time.
       - ./public/assets/bases:/app/public/assets/bases:ro
       - ./public/assets/shades:/app/public/assets/shades:ro
-      # Legal texts source for POST /api/seed-pages
-      - /home/adam/projects/benoshop/legal:/app/legal-source:ro
     ports:
       - "127.0.0.1:43117:3000"
 

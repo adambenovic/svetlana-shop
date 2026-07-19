@@ -25,6 +25,8 @@ ENV NODE_ENV=production
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
+# Legal texts (source of truth in-repo) — read by /api/seed-pages at runtime
+COPY --from=builder /app/legal ./legal
 COPY --from=builder /app/entrypoint.sh ./entrypoint.sh
 # sharp must be local (not global) so standalone server can resolve it
 COPY --from=builder /app/node_modules/sharp ./node_modules/sharp

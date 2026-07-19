@@ -16,7 +16,9 @@ function authorized(req: NextRequest): boolean {
 }
 
 // Bind-mounted into the container by docker-compose.tunnel.yml (source: benoshop repo)
-const LEGAL_DIR = process.env.LEGAL_DIR ?? '/app/legal-source'
+// Legal texts live in-repo and are baked into the image (see Dockerfile) — no
+// external mount. Overridable via LEGAL_DIR for local dev if needed.
+const LEGAL_DIR = process.env.LEGAL_DIR ?? path.join(process.cwd(), 'legal')
 
 const LOCALES = ['sk', 'cs', 'de', 'pl', 'hu', 'uk', 'en', 'es', 'fr', 'it'] as const
 
