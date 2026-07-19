@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react'
 import styles from './QtyInput.module.css'
 
 /** Quantity stepper with a directly editable number field.
- *  Decreasing below 1 removes the item (handled by the store). */
+ *  "−" is disabled at 1 so a stray click can't silently drop the item —
+ *  removal is only via the explicit Remove button. */
 export function QtyInput({ value, onChange }: { value: number; onChange: (n: number) => void }) {
   const [text, setText] = useState(String(value))
   useEffect(() => { setText(String(value)) }, [value])
@@ -15,7 +16,7 @@ export function QtyInput({ value, onChange }: { value: number; onChange: (n: num
 
   return (
     <div className={styles.qty}>
-      <button type="button" onClick={() => onChange(value - 1)} aria-label="Decrease">−</button>
+      <button type="button" onClick={() => onChange(value - 1)} disabled={value <= 1} aria-label="Decrease">−</button>
       <input
         type="number"
         min={1}

@@ -9,6 +9,7 @@ const SESSION_KEY = 'sv_announcement_dismissed'
 
 export function AnnouncementBar() {
   const t = useTranslations('announcement')
+  const ta = useTranslations('a11y')
   const router = useRouter()
   const items = useCart(s => s.items)
   const setDiscount = useCart(s => s.setDiscount)
@@ -39,13 +40,16 @@ export function AnnouncementBar() {
   if (!visible) return null
 
   return (
-    <div className={styles.bar} role="banner" aria-label="Promotional announcement">
+    <div className={styles.bar} role="region" aria-label={ta('announcement_region')}>
       <p className={styles.text}>
         {t('text')}{' '}
-        <button className={styles.code} onClick={useCode} title={t('click_to_use')}>
+        <button
+          className={styles.code}
+          onClick={useCode}
+          aria-label={ta('use_promo_code', { code: t('code') })}
+        >
           {t('code')}
         </button>
-        {' '}<button className={styles.use} onClick={useCode}>({t('click_to_use')})</button>
       </p>
       <button className={styles.dismiss} onClick={dismiss} aria-label={t('dismiss')}>✕</button>
     </div>

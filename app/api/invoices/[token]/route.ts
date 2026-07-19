@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { ensureInvoice, INVOICE_DIR } from '@/lib/invoice'
+import { checkRateLimit } from '@/lib/rate-limit'
 
 // Customer invoice access: the URL token is unguessable (128-bit), and as a
 // second factor the customer must confirm a detail they know — the billing ZIP
@@ -63,6 +64,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ toke
 
   const v = req.nextUrl.searchParams.get('v')
   if (!v) return gatePage(token, false)
+
+  // Throttle brute-force verification attempts (email/ZIP guessing) per IP.
+  const limited = checkRateLimit(req, 'invoice-verify', 10, 60_000)
+  if (limited) return limited
 
   const email = (order.customer as { email?: string })?.email ?? ''
   const zip = (order.billing as { zip?: string })?.zip ?? ''

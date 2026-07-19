@@ -8,6 +8,26 @@
 .sectionTitle { font-size: 16px; font-weight: 600; margin: 8px 0 0; }
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .row .field { min-width: 0; }
-.summary { padding: 16px; background: var(--color-surface); border-radius: var(--radius-md); font-size: 18px; display: flex; flex-direction: column; gap: 6px; }
+.summary { padding: 16px; background: var(--color-surface); border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 10px; }
+.summaryTitle { font-size: 16px; font-weight: 600; margin: 0; }
+.summaryList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.summaryItem { display: flex; align-items: flex-start; gap: 12px; }
+.summaryInfo { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.summaryItemTitle { font-weight: 600; font-size: 14px; }
+.summaryConfig { font-size: 12px; color: var(--color-text-muted); overflow-wrap: anywhere; }
+.summaryQty { font-size: 12px; color: var(--color-text-muted); }
+.summaryPrice { font-weight: 600; font-size: 14px; white-space: nowrap; text-align: right; }
+.summaryRow { display: flex; justify-content: space-between; font-size: 14px; color: var(--color-text-muted); border-top: 1px solid var(--color-border); padding-top: 10px; }
+.madeToOrder { font-size: 12px; color: var(--color-text-muted); margin: 0; }
+.totalRow { display: flex; justify-content: space-between; font-size: 18px; font-weight: 600; }
 .discountLine { font-size: 14px; color: var(--color-success); }
+
+.pickup { display: flex; flex-direction: column; gap: 8px; }
+.required { color: #e05a5a; }
+.pickupRequired { font-size: 13px; color: var(--color-text-muted); margin: 0; }
+
 .error { color: #e05a5a; font-size: 14px; }
+
+.trust { list-style: none; margin: 0; padding: 12px 0 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--color-text-muted); }
+.trust li { display: flex; align-items: center; gap: 8px; }
+.trust li::before { content: "✓"; color: var(--color-success); font-weight: 700; }

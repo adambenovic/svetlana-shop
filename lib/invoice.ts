@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { randomBytes } from 'crypto'
+import { sql } from 'drizzle-orm'
 import PDFDocument from 'pdfkit'
 import type { Payload } from 'payload'
 
@@ -178,9 +179,11 @@ export function buildInvoicePdf(o: InvoiceOrder): Promise<Buffer> {
 export const INVOICE_DIR = process.env.INVOICE_DIR ?? '/app/invoices'
 
 async function nextInvoiceSeq(payload: Payload): Promise<number> {
-  const db = payload.db as unknown as { pool: { query: (q: string) => Promise<{ rows: Array<{ nextval: string }> }> } }
-  const res = await db.pool.query("SELECT nextval('invoice_number_seq')")
-  return Number(res.rows[0].nextval)
+  const db = (payload.db as unknown as {
+    drizzle: { execute: (q: unknown) => Promise<{ rows: Array<{ nextval: string | number }> }> }
+  }).drizzle
+  const res = await db.execute(sql`SELECT nextval('invoice_number_seq')`)
+  return Number(res.rows[0]!.nextval)
 }
 
 /** Idempotently generates invoice number/token/PDF for a paid order and stores

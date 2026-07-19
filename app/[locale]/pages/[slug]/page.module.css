@@ -17,6 +17,20 @@
   color: var(--color-text);
 }
 
+/* Some seeded help pages (lamp manual, declaration of conformity) embed a stack
+   of full-page white PDF renders. Constrain and frame them so they read as
+   document previews instead of blasting full-bleed white on the dark theme. */
+.body :global(img) {
+  display: block;
+  max-width: 480px;
+  width: 100%;
+  height: auto;
+  margin: 20px auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
 .empty {
   color: var(--color-text-muted);
 }

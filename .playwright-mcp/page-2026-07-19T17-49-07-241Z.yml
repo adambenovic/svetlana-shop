@@ -1,0 +1,255 @@
+- generic [ref=f20e1]:
+  - banner "Promotional announcement" [ref=f20e2]:
+    - paragraph [ref=f20e3]:
+      - text: "🎉 20 % zľava pre prvých 10 objednávok — kód:"
+      - button "EARLYBIRD" [ref=f20e4] [cursor=pointer]
+      - button "(kliknutím použijete)" [ref=f20e5] [cursor=pointer]
+    - button "Zavrieť" [ref=f20e6] [cursor=pointer]: ✕
+  - banner [ref=f20e7]:
+    - generic [ref=f20e8]:
+      - link "Svetlana Lampe" [ref=f20e9] [cursor=pointer]:
+        - /url: /
+        - img "Svetlana Lampe" [ref=f20e10]:
+          - generic [ref=f20e14]: SvetlanaLampe
+      - navigation [ref=f20e15]:
+        - link "Domov" [ref=f20e16] [cursor=pointer]:
+          - /url: /
+        - link "Vytvorte si lampu" [ref=f20e17] [cursor=pointer]:
+          - /url: /konfigurator
+        - link "Galéria" [ref=f20e18] [cursor=pointer]:
+          - /url: /galeria
+      - generic [ref=f20e19]:
+        - button "Toggle theme" [ref=f20e20] [cursor=pointer]
+        - button "Cart (0 items)" [ref=f20e25] [cursor=pointer]
+  - main [ref=f20e30]:
+    - generic [ref=f20e32]:
+      - generic [ref=f20e104]:
+        - img "Base 1 in white" [ref=f20e105]
+        - img "Shade 1 in black" [ref=f20e106]
+      - generic [ref=f20e107]:
+        - tablist [ref=f20e108]:
+          - tab "Podstavec" [ref=f20e109] [cursor=pointer]
+          - tab "Tienidlo" [active] [selected] [ref=f20e110] [cursor=pointer]
+          - tab "Kábel" [ref=f20e111] [cursor=pointer]
+          - tab "Žiarovka" [ref=f20e112] [cursor=pointer]
+        - tabpanel [ref=f20e113]:
+          - heading "Farba tienidla" [level=4] [ref=f20e252]
+          - generic [ref=f20e253]:
+            - button "White" [ref=f20e254] [cursor=pointer]
+            - button "Black" [pressed] [ref=f20e255] [cursor=pointer]
+            - button "Texture Grey" [ref=f20e256] [cursor=pointer]
+            - button "Red" [ref=f20e257] [cursor=pointer]
+            - button "Orange" [ref=f20e258] [cursor=pointer]
+            - button "Yellow" [ref=f20e259] [cursor=pointer]
+            - button "Forest Green" [ref=f20e260] [cursor=pointer]
+            - button "Lake Blue" [ref=f20e261] [cursor=pointer]
+            - button "Purple" [ref=f20e262] [cursor=pointer]
+            - button "Pink" [ref=f20e263] [cursor=pointer]
+            - button "Cream" [ref=f20e264] [cursor=pointer]
+            - button "Beige" [ref=f20e265] [cursor=pointer]
+            - button "Brown" [ref=f20e266] [cursor=pointer]
+            - button "Peanut Brown" [ref=f20e267] [cursor=pointer]
+            - button "Clear" [ref=f20e268] [cursor=pointer]
+            - button "Translucent Pink" [ref=f20e269] [cursor=pointer]
+            - button "Translucent Blue" [ref=f20e270] [cursor=pointer]
+            - button "Translucent Olive" [ref=f20e271] [cursor=pointer]
+          - heading "Vyberte tienidlo" [level=4] [ref=f20e272]
+          - generic [ref=f20e273]:
+            - button [pressed] [ref=f20e274] [cursor=pointer]:
+              - img "1" [ref=f20e275]
+            - button [ref=f20e276] [cursor=pointer]:
+              - img "2" [ref=f20e277]
+            - button [ref=f20e278] [cursor=pointer]:
+              - img "3" [ref=f20e279]
+            - button [ref=f20e280] [cursor=pointer]:
+              - img "4" [ref=f20e281]
+            - button [ref=f20e282] [cursor=pointer]:
+              - img "5" [ref=f20e283]
+            - button [ref=f20e284] [cursor=pointer]:
+              - img "6" [ref=f20e285]
+            - button [ref=f20e286] [cursor=pointer]:
+              - img "7" [ref=f20e287]
+            - button [ref=f20e288] [cursor=pointer]:
+              - img "8" [ref=f20e289]
+            - button [ref=f20e290] [cursor=pointer]:
+              - img "9" [ref=f20e291]
+            - button [ref=f20e292] [cursor=pointer]:
+              - img "10" [ref=f20e293]
+            - button [ref=f20e294] [cursor=pointer]:
+              - img "11" [ref=f20e295]
+            - button [ref=f20e296] [cursor=pointer]:
+              - img "12" [ref=f20e297]
+            - button [ref=f20e298] [cursor=pointer]:
+              - img "13" [ref=f20e299]
+            - button [ref=f20e300] [cursor=pointer]:
+              - img "15" [ref=f20e301]
+            - button [ref=f20e302] [cursor=pointer]:
+              - img "16" [ref=f20e303]
+            - button [ref=f20e304] [cursor=pointer]:
+              - img "17" [ref=f20e305]
+            - button [ref=f20e306] [cursor=pointer]:
+              - img "18" [ref=f20e307]
+            - button [ref=f20e308] [cursor=pointer]:
+              - img "19" [ref=f20e309]
+            - button [ref=f20e310] [cursor=pointer]:
+              - img "20" [ref=f20e311]
+            - button [ref=f20e312] [cursor=pointer]:
+              - img "21" [ref=f20e313]
+            - button [ref=f20e314] [cursor=pointer]:
+              - img "22" [ref=f20e315]
+            - button [ref=f20e316] [cursor=pointer]:
+              - img "23" [ref=f20e317]
+            - button [ref=f20e318] [cursor=pointer]:
+              - img "24" [ref=f20e319]
+            - button [ref=f20e320] [cursor=pointer]:
+              - img "25" [ref=f20e321]
+            - button [ref=f20e322] [cursor=pointer]:
+              - img "26" [ref=f20e323]
+            - button [ref=f20e324] [cursor=pointer]:
+              - img "27" [ref=f20e325]
+            - button [ref=f20e326] [cursor=pointer]:
+              - img "28" [ref=f20e327]
+            - button [ref=f20e328] [cursor=pointer]:
+              - img "29" [ref=f20e329]
+            - button [ref=f20e330] [cursor=pointer]:
+              - img "30" [ref=f20e331]
+            - button [ref=f20e332] [cursor=pointer]:
+              - img "31" [ref=f20e333]
+            - button [ref=f20e334] [cursor=pointer]:
+              - img "32" [ref=f20e335]
+            - button [ref=f20e336] [cursor=pointer]:
+              - img "33" [ref=f20e337]
+            - button [ref=f20e338] [cursor=pointer]:
+              - img "34" [ref=f20e339]
+            - button [ref=f20e340] [cursor=pointer]:
+              - img "35" [ref=f20e341]
+            - button [ref=f20e342] [cursor=pointer]:
+              - img "36" [ref=f20e343]
+            - button [ref=f20e344] [cursor=pointer]:
+              - img "37" [ref=f20e345]
+            - button [ref=f20e346] [cursor=pointer]:
+              - img "38" [ref=f20e347]
+            - button [ref=f20e348] [cursor=pointer]:
+              - img "39" [ref=f20e349]
+            - button [ref=f20e350] [cursor=pointer]:
+              - img "40" [ref=f20e351]
+            - button [ref=f20e352] [cursor=pointer]:
+              - img "41" [ref=f20e353]
+            - button [ref=f20e354] [cursor=pointer]:
+              - img "42" [ref=f20e355]
+            - button [ref=f20e356] [cursor=pointer]:
+              - img "Shade14" [ref=f20e357]
+          - paragraph [ref=f20e358]: "Výška: 173mm · Šírka: 175mm"
+        - generic [ref=f20e209]:
+          - generic [ref=f20e210]: €53.99
+          - button "Pridať do košíka" [ref=f20e211] [cursor=pointer]
+          - button "Zdieľať konfiguráciu" [ref=f20e212] [cursor=pointer]
+        - paragraph [ref=f20e213]: Obrázky sú 3D vizualizácie — skutočné farby a textúry sa môžu líšiť.
+        - table "Kombinácia" [ref=f20e214]:
+          - rowgroup [ref=f20e215]:
+            - row [ref=f20e216]:
+              - cell "Podstavec" [ref=f20e217]
+              - cell "1" [ref=f20e218]
+            - row [ref=f20e219]:
+              - cell "Farba podstavca" [ref=f20e220]
+              - cell "White" [ref=f20e221]
+            - row [ref=f20e222]:
+              - cell "Tienidlo" [ref=f20e223]
+              - cell "1" [ref=f20e224]
+            - row [ref=f20e225]:
+              - cell "Farba tienidla" [ref=f20e226]
+              - cell "Black" [ref=f20e227]
+            - row [ref=f20e228]:
+              - cell "Farba kábla" [ref=f20e229]
+              - cell "Fire Red" [ref=f20e230]
+            - row [ref=f20e231]:
+              - cell "Vypínač" [ref=f20e232]
+              - cell "White" [ref=f20e233]
+            - row [ref=f20e234]:
+              - cell "Zástrčka" [ref=f20e235]
+              - cell "White" [ref=f20e236]
+            - row [ref=f20e237]:
+              - cell "Žiarovka" [ref=f20e238]
+              - cell "Teplá biela (3000K)" [ref=f20e239]
+            - row [ref=f20e240]:
+              - cell "Rozmery" [ref=f20e241]
+              - cell "241mm × 175mm" [ref=f20e242]
+        - generic [ref=f20e243]:
+          - group [ref=f20e244]:
+            - generic "Špecifikácie +" [ref=f20e245] [cursor=pointer]
+          - group [ref=f20e246]:
+            - generic "Doprava a vrátenie +" [ref=f20e247] [cursor=pointer]
+          - group [ref=f20e248]:
+            - generic "Bezpečnosť a certifikácia +" [ref=f20e249] [cursor=pointer]
+          - group [ref=f20e250]:
+            - generic "Pokyny na údržbu +" [ref=f20e251] [cursor=pointer]
+  - contentinfo [ref=f20e33]:
+    - generic [ref=f20e34]:
+      - generic [ref=f20e35]:
+        - generic [ref=f20e36]: Svetlana Lampe
+        - paragraph [ref=f20e37]: Ručne navrhované 3D tlačené lampy z dielne Svetlana Lampe.
+        - generic [ref=f20e38]:
+          - link "Instagram" [ref=f20e39] [cursor=pointer]:
+            - /url: https://instagram.com/svetla.na.lampe
+          - link "TikTok" [ref=f20e44] [cursor=pointer]:
+            - /url: https://tiktok.com/@svetlana.lampe
+          - link "Pinterest" [ref=f20e47] [cursor=pointer]:
+            - /url: https://pinterest.com/svetlanalampe3d
+        - generic [ref=f20e50]:
+          - img "Visa" [ref=f20e51]:
+            - generic [ref=f20e53]: VISA
+          - img "Mastercard" [ref=f20e54]
+          - img "Google Pay" [ref=f20e59]
+          - img "Apple Pay" [ref=f20e72]:
+            - generic [ref=f20e75]: Pay
+      - generic [ref=f20e76]:
+        - paragraph [ref=f20e77]: Obchod
+        - list [ref=f20e78]:
+          - listitem [ref=f20e79]:
+            - link "Domov" [ref=f20e80] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=f20e81]:
+            - link "Vytvorte si lampu" [ref=f20e82] [cursor=pointer]:
+              - /url: /konfigurator
+          - listitem [ref=f20e83]:
+            - link "Galéria" [ref=f20e84] [cursor=pointer]:
+              - /url: /galeria
+      - generic [ref=f20e85]:
+        - paragraph [ref=f20e86]: Dokumenty
+        - list [ref=f20e87]:
+          - listitem [ref=f20e88]:
+            - link "Manuál k lampe" [ref=f20e89] [cursor=pointer]:
+              - /url: /stranky/lamp-manual
+          - listitem [ref=f20e90]:
+            - link "Vyhlásenie o zhode" [ref=f20e91] [cursor=pointer]:
+              - /url: /stranky/declaration-of-conformity
+    - generic [ref=f20e92]:
+      - paragraph [ref=f20e93]: © 2026 Svetlana Lampe. Všetky práva vyhradené.
+      - generic [ref=f20e94]:
+        - combobox "Language" [ref=f20e95] [cursor=pointer]:
+          - option "Slovenčina" [selected]
+          - option "Čeština"
+          - option "Deutsch"
+          - option "Polski"
+          - option "Magyar"
+          - option "Українська"
+          - option "English"
+          - option "Español"
+          - option "Français"
+          - option "Italiano"
+        - combobox "Currency" [ref=f20e96] [cursor=pointer]:
+          - option "EUR" [selected]
+          - option "CZK"
+          - option "PLN"
+          - option "HUF"
+      - generic [ref=f20e97]:
+        - link "Ochrana osobných údajov" [ref=f20e98] [cursor=pointer]:
+          - /url: /podmienky/privacy-policy
+        - link "Doprava a vrátenie" [ref=f20e99] [cursor=pointer]:
+          - /url: /podmienky/shipping-policy
+        - link "Reklamácie" [ref=f20e100] [cursor=pointer]:
+          - /url: /podmienky/refund-policy
+        - link "Obchodné podmienky" [ref=f20e101] [cursor=pointer]:
+          - /url: /podmienky/terms-of-service
+        - button "Nastavenia cookies" [ref=f20e102] [cursor=pointer]
+  - alert [ref=f20e103]

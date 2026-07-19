@@ -35,8 +35,10 @@ export function CookieBanner() {
   if (!visible) return null
 
   return (
-    <div className={styles.overlay} role="dialog" aria-modal="true" aria-label={t('title')}>
-      <div className={styles.banner}>
+    // Non-modal: essential-only cookies mean there is no consent to trap the
+    // user for. A role="region" banner announces itself without hijacking focus.
+    <div className={styles.overlay}>
+      <div className={styles.banner} role="region" aria-label={t('title')}>
         <h2 className={styles.title}>{t('title')}</h2>
         <p className={styles.desc}>{t('desc')}</p>
         <div className={styles.necessary}>

@@ -1,0 +1,117 @@
+- generic [active] [ref=f17e1]:
+  - banner "Promotional announcement" [ref=f17e2]:
+    - paragraph [ref=f17e3]:
+      - text: "🎉 20 % zľava pre prvých 10 objednávok — kód:"
+      - button "EARLYBIRD" [ref=f17e4] [cursor=pointer]
+      - button "(kliknutím použijete)" [ref=f17e5] [cursor=pointer]
+    - button "Zavrieť" [ref=f17e6] [cursor=pointer]: ✕
+  - banner [ref=f17e7]:
+    - generic [ref=f17e8]:
+      - link "Svetlana Lampe" [ref=f17e9] [cursor=pointer]:
+        - /url: /
+        - img "Svetlana Lampe" [ref=f17e10]:
+          - generic [ref=f17e14]: SvetlanaLampe
+      - navigation [ref=f17e15]:
+        - link "Domov" [ref=f17e16] [cursor=pointer]:
+          - /url: /
+        - link "Vytvorte si lampu" [ref=f17e17] [cursor=pointer]:
+          - /url: /konfigurator
+        - link "Galéria" [ref=f17e18] [cursor=pointer]:
+          - /url: /galeria
+      - generic [ref=f17e19]:
+        - button "Toggle theme" [ref=f17e20] [cursor=pointer]
+        - button "Cart (1 items)" [ref=f17e23] [cursor=pointer]:
+          - generic [ref=f17e28]: "1"
+  - main [ref=f17e29]:
+    - generic [ref=f17e30]:
+      - img "Svetlana Lampe" [ref=f17e31]
+      - generic [ref=f17e33]:
+        - heading "Rozsvieťte svoj svet" [level=1] [ref=f17e34]
+        - paragraph [ref=f17e35]: Farebné stolové lampy na rozžiarenie každej miestnosti.
+        - generic [ref=f17e36]:
+          - link "Vytvorte si lampu" [ref=f17e37] [cursor=pointer]:
+            - /url: /konfigurator
+          - link "Galéria" [ref=f17e38] [cursor=pointer]:
+            - /url: /galeria
+    - generic [ref=f17e40]:
+      - heading "Prečo Svetlana" [level=2] [ref=f17e41]
+      - generic [ref=f17e42]:
+        - generic [ref=f17e43]:
+          - heading "Ručne vyrobené" [level=3] [ref=f17e50]
+          - paragraph [ref=f17e51]: Každá lampa je starostlivo vyrobená a dokončená ručne pre presnosť a jedinečný charakter
+        - generic [ref=f17e52]:
+          - heading "CE certifikované" [level=3] [ref=f17e57]
+          - paragraph [ref=f17e58]: Všetky naše lampy spĺňajú európske bezpečnostné normy. Kvalita a bezpečnosť, ktorej môžete dôverovať
+        - generic [ref=f17e59]:
+          - heading "Doprava zadarmo" [level=3] [ref=f17e66]
+          - paragraph [ref=f17e67]: Doprava zadarmo na všetky objednávky po celej EÚ. Vaša lampa bezpečne dorazí k vašim dverám
+  - contentinfo [ref=f17e68]:
+    - generic [ref=f17e69]:
+      - generic [ref=f17e70]:
+        - generic [ref=f17e71]: Svetlana Lampe
+        - paragraph [ref=f17e72]: Ručne navrhované 3D tlačené lampy z dielne Svetlana Lampe.
+        - generic [ref=f17e73]:
+          - link "Instagram" [ref=f17e74] [cursor=pointer]:
+            - /url: https://instagram.com/svetla.na.lampe
+          - link "TikTok" [ref=f17e79] [cursor=pointer]:
+            - /url: https://tiktok.com/@svetlana.lampe
+          - link "Pinterest" [ref=f17e82] [cursor=pointer]:
+            - /url: https://pinterest.com/svetlanalampe3d
+        - generic [ref=f17e85]:
+          - img "Visa" [ref=f17e86]:
+            - generic [ref=f17e88]: VISA
+          - img "Mastercard" [ref=f17e89]
+          - img "Google Pay" [ref=f17e94]
+          - img "Apple Pay" [ref=f17e107]:
+            - generic [ref=f17e110]: Pay
+      - generic [ref=f17e111]:
+        - paragraph [ref=f17e112]: Obchod
+        - list [ref=f17e113]:
+          - listitem [ref=f17e114]:
+            - link "Domov" [ref=f17e115] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=f17e116]:
+            - link "Vytvorte si lampu" [ref=f17e117] [cursor=pointer]:
+              - /url: /konfigurator
+          - listitem [ref=f17e118]:
+            - link "Galéria" [ref=f17e119] [cursor=pointer]:
+              - /url: /galeria
+      - generic [ref=f17e120]:
+        - paragraph [ref=f17e121]: Dokumenty
+        - list [ref=f17e122]:
+          - listitem [ref=f17e123]:
+            - link "Manuál k lampe" [ref=f17e124] [cursor=pointer]:
+              - /url: /stranky/lamp-manual
+          - listitem [ref=f17e125]:
+            - link "Vyhlásenie o zhode" [ref=f17e126] [cursor=pointer]:
+              - /url: /stranky/declaration-of-conformity
+    - generic [ref=f17e127]:
+      - paragraph [ref=f17e128]: © 2026 Svetlana Lampe. Všetky práva vyhradené.
+      - generic [ref=f17e129]:
+        - combobox "Language" [ref=f17e130] [cursor=pointer]:
+          - option "Slovenčina" [selected]
+          - option "Čeština"
+          - option "Deutsch"
+          - option "Polski"
+          - option "Magyar"
+          - option "Українська"
+          - option "English"
+          - option "Español"
+          - option "Français"
+          - option "Italiano"
+        - combobox "Currency" [ref=f17e131] [cursor=pointer]:
+          - option "EUR"
+          - option "CZK" [selected]
+          - option "PLN"
+          - option "HUF"
+      - generic [ref=f17e132]:
+        - link "Ochrana osobných údajov" [ref=f17e133] [cursor=pointer]:
+          - /url: /podmienky/privacy-policy
+        - link "Doprava a vrátenie" [ref=f17e134] [cursor=pointer]:
+          - /url: /podmienky/shipping-policy
+        - link "Reklamácie" [ref=f17e135] [cursor=pointer]:
+          - /url: /podmienky/refund-policy
+        - link "Obchodné podmienky" [ref=f17e136] [cursor=pointer]:
+          - /url: /podmienky/terms-of-service
+        - button "Nastavenia cookies" [ref=f17e137] [cursor=pointer]
+  - alert [ref=f17e138]

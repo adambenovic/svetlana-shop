@@ -28,3 +28,32 @@ img { max-width: 100%; display: block; }
 .prose em { font-style: italic; }
 .prose a { color: var(--color-accent); text-decoration: underline; }
 .prose blockquote { border-left: 3px solid var(--color-accent); padding-left: 16px; color: var(--color-text-muted); margin: 16px 0; }
+
+/* Accessibility: honour reduced-motion — neutralise animations/transitions. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Keyboard focus: never suppress the ring for keyboard users. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Visually-hidden helper (kept accessible to screen readers). */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

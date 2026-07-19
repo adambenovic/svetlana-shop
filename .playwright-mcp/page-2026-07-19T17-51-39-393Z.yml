@@ -1,0 +1,116 @@
+- generic [active] [ref=e1]:
+  - banner "Promotional announcement" [ref=e2]:
+    - paragraph [ref=e3]:
+      - text: "🎉 20 % zľava pre prvých 10 objednávok — kód:"
+      - button "EARLYBIRD" [ref=e4] [cursor=pointer]
+      - button "(kliknutím použijete)" [ref=e5] [cursor=pointer]
+    - button "Zavrieť" [ref=e6] [cursor=pointer]: ✕
+  - banner [ref=e7]:
+    - generic [ref=e8]:
+      - link "Svetlana Lampe" [ref=e9] [cursor=pointer]:
+        - /url: /
+        - img "Svetlana Lampe" [ref=e10]:
+          - generic [ref=e14]: SvetlanaLampe
+      - navigation [ref=e15]:
+        - link "Domov" [ref=e16] [cursor=pointer]:
+          - /url: /
+        - link "Vytvorte si lampu" [ref=e17] [cursor=pointer]:
+          - /url: /konfigurator
+        - link "Galéria" [ref=e18] [cursor=pointer]:
+          - /url: /galeria
+      - generic [ref=e19]:
+        - button "Toggle theme" [ref=e20] [cursor=pointer]
+        - button "Cart (0 items)" [ref=e25] [cursor=pointer]
+  - main [ref=e30]:
+    - generic [ref=e31]:
+      - img "Svetlana Lampe" [ref=e32]
+      - generic [ref=e34]:
+        - heading "Rozsvieťte svoj svet" [level=1] [ref=e35]
+        - paragraph [ref=e36]: Farebné stolové lampy na rozžiarenie každej miestnosti.
+        - generic [ref=e37]:
+          - link "Vytvorte si lampu" [ref=e38] [cursor=pointer]:
+            - /url: /konfigurator
+          - link "Galéria" [ref=e39] [cursor=pointer]:
+            - /url: /galeria
+    - generic [ref=e41]:
+      - heading "Prečo Svetlana" [level=2] [ref=e42]
+      - generic [ref=e43]:
+        - generic [ref=e44]:
+          - heading "Ručne vyrobené" [level=3] [ref=e51]
+          - paragraph [ref=e52]: Každá lampa je starostlivo vyrobená a dokončená ručne pre presnosť a jedinečný charakter
+        - generic [ref=e53]:
+          - heading "CE certifikované" [level=3] [ref=e58]
+          - paragraph [ref=e59]: Všetky naše lampy spĺňajú európske bezpečnostné normy. Kvalita a bezpečnosť, ktorej môžete dôverovať
+        - generic [ref=e60]:
+          - heading "Doprava zadarmo" [level=3] [ref=e67]
+          - paragraph [ref=e68]: Doprava zadarmo na všetky objednávky po celej EÚ. Vaša lampa bezpečne dorazí k vašim dverám
+  - contentinfo [ref=e69]:
+    - generic [ref=e70]:
+      - generic [ref=e71]:
+        - generic [ref=e72]: Svetlana Lampe
+        - paragraph [ref=e73]: Ručne navrhované 3D tlačené lampy z dielne Svetlana Lampe.
+        - generic [ref=e74]:
+          - link "Instagram" [ref=e75] [cursor=pointer]:
+            - /url: https://instagram.com/svetla.na.lampe
+          - link "TikTok" [ref=e80] [cursor=pointer]:
+            - /url: https://tiktok.com/@svetlana.lampe
+          - link "Pinterest" [ref=e83] [cursor=pointer]:
+            - /url: https://pinterest.com/svetlanalampe3d
+        - generic [ref=e86]:
+          - img "Visa" [ref=e87]:
+            - generic [ref=e89]: VISA
+          - img "Mastercard" [ref=e90]
+          - img "Google Pay" [ref=e95]
+          - img "Apple Pay" [ref=e108]:
+            - generic [ref=e111]: Pay
+      - generic [ref=e112]:
+        - paragraph [ref=e113]: Obchod
+        - list [ref=e114]:
+          - listitem [ref=e115]:
+            - link "Domov" [ref=e116] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e117]:
+            - link "Vytvorte si lampu" [ref=e118] [cursor=pointer]:
+              - /url: /konfigurator
+          - listitem [ref=e119]:
+            - link "Galéria" [ref=e120] [cursor=pointer]:
+              - /url: /galeria
+      - generic [ref=e121]:
+        - paragraph [ref=e122]: Dokumenty
+        - list [ref=e123]:
+          - listitem [ref=e124]:
+            - link "Manuál k lampe" [ref=e125] [cursor=pointer]:
+              - /url: /stranky/lamp-manual
+          - listitem [ref=e126]:
+            - link "Vyhlásenie o zhode" [ref=e127] [cursor=pointer]:
+              - /url: /stranky/declaration-of-conformity
+    - generic [ref=e128]:
+      - paragraph [ref=e129]: © 2026 Svetlana Lampe. Všetky práva vyhradené.
+      - generic [ref=e130]:
+        - combobox "Language" [ref=e131] [cursor=pointer]:
+          - option "Slovenčina" [selected]
+          - option "Čeština"
+          - option "Deutsch"
+          - option "Polski"
+          - option "Magyar"
+          - option "Українська"
+          - option "English"
+          - option "Español"
+          - option "Français"
+          - option "Italiano"
+        - combobox "Currency" [ref=e132] [cursor=pointer]:
+          - option "EUR" [selected]
+          - option "CZK"
+          - option "PLN"
+          - option "HUF"
+      - generic [ref=e133]:
+        - link "Ochrana osobných údajov" [ref=e134] [cursor=pointer]:
+          - /url: /podmienky/privacy-policy
+        - link "Doprava a vrátenie" [ref=e135] [cursor=pointer]:
+          - /url: /podmienky/shipping-policy
+        - link "Reklamácie" [ref=e136] [cursor=pointer]:
+          - /url: /podmienky/refund-policy
+        - link "Obchodné podmienky" [ref=e137] [cursor=pointer]:
+          - /url: /podmienky/terms-of-service
+        - button "Nastavenia cookies" [ref=e138] [cursor=pointer]
+  - alert [ref=e139]

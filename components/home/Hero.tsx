@@ -10,6 +10,7 @@ interface HeroProps {
 export async function Hero({ locale }: HeroProps) {
   const t = await getTranslations({ locale, namespace: 'hero' })
   const th = await getTranslations({ locale, namespace: 'sections.header' })
+  const ta = await getTranslations({ locale, namespace: 'a11y' })
 
   return (
     <section className={styles.hero}>
@@ -17,7 +18,7 @@ export async function Hero({ locale }: HeroProps) {
         <source media="(max-width: 749px)" srcSet="/banner-mobile.webp" />
         <Image
           src="/banner-desktop.webp"
-          alt="Svetlana Lampe"
+          alt={ta('hero_alt')}
           fill
           className={styles.heroImg}
           priority
@@ -25,6 +26,7 @@ export async function Hero({ locale }: HeroProps) {
       </picture>
       <div className={styles.overlay}>
         <div className={styles.content}>
+          <p className={styles.eyebrow}>{t('tagline')}</p>
           <h1 className={styles.title}>{t('title')}</h1>
           <p className={styles.sub}>{t('subtitle')}</p>
           <div className={styles.actions}>

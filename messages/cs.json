@@ -96,7 +96,8 @@
     "care_content": "Jemně otřete suchým nebo mírně vlhkým hadříkem · Nepoužívejte agresivní chemikálie · Používejte pouze LED žárovky (max. 10W E27)",
     "loading": "Načítám...",
     "error_loading": "Nepodařilo se načíst konfigurátor. Obnovte stránku.",
-    "no_products": "Produkty zatím nejsou nakonfigurovány. Přidejte je přes administraci."
+    "no_products": "Produkty zatím nejsou nakonfigurovány. Přidejte je přes administraci.",
+    "page_heading": "Navrhněte si lampu"
   },
   "configurator_product": {
     "notice_heading": "Vyžaduje vlastní konfiguraci",
@@ -124,7 +125,8 @@
     "select_point": "Vybrat výdejní místo",
     "change_point": "Změnit",
     "free_shipping": "Doprava zdarma na všechny objednávky",
-    "go_to_cart": "Přejít do košíku"
+    "go_to_cart": "Přejít do košíku",
+    "made_to_order": "Vyrábáno na zakázku — počítejte s několika dny navíc na výrobu"
   },
   "checkout": {
     "title": "Objednávka",
@@ -150,7 +152,14 @@
     "payment_not_found_body": "Platbu se nepodařilo ověřit. Pokud vám byly peníze strženy, kontaktujte nás.",
     "payment_retry": "Zkusit zaplatit znovu",
     "back_to_checkout": "Zpět k pokladně",
-    "error_generic": "Nastala chyba. Zkuste to prosím znovu."
+    "error_generic": "Nastala chyba. Zkuste to prosím znovu.",
+    "error_no_pickup": "Vyberte prosím výdejní místo Zásilkovny.",
+    "pickup_required": "Povinné",
+    "pickup_heading": "Doručení — výdejní místo Zásilkovny",
+    "trust_payment": "Bezpečná platba přes GoPay — Visa, Mastercard, Apple Pay a Google Pay",
+    "trust_free_shipping": "Doprava na výdejní místo zdarma",
+    "trust_returns": "Vrácení do 14 dnů",
+    "qty": "Ks"
   },
   "gallery": {
     "title": "Galerie lamp",
@@ -159,7 +168,9 @@
     "customize_cta": "Přizpůsobit tuto lampu",
     "add_to_cart": "Přidat do košíku",
     "page_title": "Naše lampy",
-    "load_more": "Načíst více"
+    "load_more": "Načíst více",
+    "empty_title": "Zatím zde nejsou žádné lampy",
+    "empty_body": "Naše kolekce se připravuje. Mezitím si navrhněte vlastní lampu."
   },
   "hero": {
     "tagline": "Jedna cena · Nekonečné kombinace",
@@ -233,5 +244,26 @@
     "item2_body": "Všechny naše lampy splňují evropské bezpečnostní normy. Kvalita a bezpečnost, které lze důvěřovat",
     "item3_title": "Doprava zdarma",
     "item3_body": "Doprava zdarma na všechny objednávky po celé EU. Vaše lampa bezpečně dorazí ke vašim dveřím"
+  },
+  "meta": {
+    "default_title": "Svetlana Lampe — 3D tištěné designové stolní lampy",
+    "default_description": "Ručně vyráběné 3D tištěné designové stolní lampy. Navrhněte si vlastní — nekonečné kombinace barev a tvarů, na zakázku.",
+    "home_title": "Designové 3D tištěné stolní lampy",
+    "home_description": "Barevné stolní lampy na zakázku, které si navrhnete sami. Nekonečné kombinace barev a tvarů za jednu cenu.",
+    "configurator_title": "Navrhněte si vlastní stolní lampu",
+    "configurator_description": "Použijte konfigurátor lamp: vyberte podstavec, stínidlo, barvy, kabel a žárovku a objednejte si jedinečnou lampu."
+  },
+  "a11y": {
+    "theme_toggle": "Přepnout světlý a tmavý režim",
+    "currency": "Měna",
+    "language": "Jazyk",
+    "announcement_region": "Propagační oznámení",
+    "use_promo_code": "Použít promo kód {code}",
+    "hero_alt": "Barevné 3D tištěné stolní lampy Svetlana svítící v moderním interiéru",
+    "preview_base_alt": "Podstavec lampy {shape} v barvě {color}",
+    "preview_shade_alt": "Stínidlo lampy {shape} v barvě {color}",
+    "selected_color": "Vybraná barva: {color}",
+    "shape_option": "{name} ({height} × {diameter} mm)",
+    "cart": "Košík ({count})"
   }
 }

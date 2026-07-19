@@ -1,8 +1,7 @@
-import type { Product } from '@/types/product'
-import { GalleryCard } from './GalleryCard'
+import { GalleryCard, type GalleryProduct } from './GalleryCard'
 import styles from './GalleryGrid.module.css'
 
-export function GalleryGrid({ products, locale }: { products: Product[]; locale: string }) {
+export function GalleryGrid({ products, locale }: { products: GalleryProduct[]; locale: string }) {
   return (
     <div className={styles.grid}>
       {products.map(p => (

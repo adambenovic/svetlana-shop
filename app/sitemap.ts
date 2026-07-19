@@ -34,14 +34,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   ])
 
-  const staticRoutes = ['/', '/configurator', '/gallery', '/cart'] as const
+  // Cart/checkout are transactional (noindex) — never in the sitemap.
+  const staticRoutes = ['/', '/configurator', '/gallery'] as const
+
+  // Utility/help pages carry no SEO value — keep them out of the sitemap.
+  const EXCLUDED_PAGE_SLUGS = new Set(['cookie-preferences', 'lamp-manual', 'declaration-of-conformity'])
+
   const entries: MetadataRoute.Sitemap = []
 
   for (const locale of LOCALES) {
     for (const route of staticRoutes) {
+      // No lastModified on static routes — a per-request `new Date()` is fake
+      // precision that only churns the sitemap.
       entries.push({
         url: url(locale, route),
-        lastModified: new Date(),
         changeFrequency: 'weekly',
         priority: route === '/' ? 1 : 0.8,
       })
@@ -56,7 +62,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })
     }
     for (const p of pages) {
-      if (!p.slug) continue
+      if (!p.slug || EXCLUDED_PAGE_SLUGS.has(String(p.slug))) continue
       entries.push({
         url: url(locale, { pathname: '/pages/[slug]', params: { slug: String(p.slug) } }),
         lastModified: new Date(p.updatedAt as string),

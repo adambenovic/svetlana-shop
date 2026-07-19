@@ -136,10 +136,23 @@
   transform: scale(1.1);
 }
 
+/* Constant hairline so white / black / translucent swatches never vanish
+   against either theme background. */
+.swatch {
+  border: 1px solid rgba(128, 128, 128, 0.45);
+}
+
 .swatchSelected {
   border-color: var(--color-accent);
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
+}
+
+/* Selected color name shown near the swatch group. */
+.selectedName {
+  font-size: 13px;
+  color: var(--color-text);
+  margin-top: -8px;
 }
 
 /* Dimensions */
@@ -156,7 +169,24 @@
   gap: 8px;
   max-height: 340px;
   overflow-y: auto;
-  padding-right: 4px;
+  padding-right: 6px;
+  /* Scroll affordance: keep a visible thin scrollbar so the clipped rows read
+     as scrollable rather than cut off. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.shapeGrid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.shapeGrid::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+.shapeGrid::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .shapeOption {
@@ -183,6 +213,11 @@
 .shapeThumb {
   object-fit: contain;
   border-radius: 4px;
+  /* Fixed footprint + neutral tile so images that are still loading (or absent)
+     show a calm placeholder rather than a jarring blank-white square. */
+  width: 56px;
+  height: 56px;
+  background: var(--color-bg);
 }
 
 .shapeName {
@@ -341,4 +376,41 @@
 .loading {
   color: var(--color-text-muted);
   padding: 32px 0;
+}
+
+/* Sticky mobile price + CTA bar — hidden on desktop where the inline summary
+   is already visible. */
+.stickyBar {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .stickyBar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    padding: 12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.18);
+  }
+
+  .stickyPrice {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-accent);
+    font-family: var(--font-heading);
+    margin-right: auto;
+  }
+
+  /* Room so the fixed bar never covers the last controls. */
+  .controls {
+    padding-bottom: 72px;
+  }
 }

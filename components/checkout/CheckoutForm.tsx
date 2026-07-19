@@ -1,11 +1,14 @@
 'use client'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/i18n/navigation'
 import { useCart } from '@/store/cart'
-import { useCurrency, formatPrice } from '@/store/currency'
+import { useCurrency, pickPrice, formatPrice } from '@/store/currency'
 import { Button } from '@/components/ui/Button'
 import { BILLING_COUNTRIES, DEFAULT_COUNTRY } from '@/lib/countries'
+import { lampImages } from '@/lib/prices'
+import { lampConfigSummary } from '@/lib/lamp-config-display'
+import { LampThumb } from '@/components/cart/LampThumb'
 import { PacketaWidget, type PacketaPoint } from './PacketaWidget'
 import styles from './CheckoutForm.module.css'
 
@@ -15,6 +18,8 @@ interface CheckoutFormProps {
 
 export function CheckoutForm({ locale }: CheckoutFormProps) {
   const t = useTranslations('checkout')
+  const tc = useTranslations('configurator')
+  const td = useTranslations('cart_delivery')
   const router = useRouter()
   const { items, subtotal, total, pricedIn, discount } = useCart()
   const selected = useCurrency(s => s.currency)
@@ -32,6 +37,19 @@ export function CheckoutForm({ locale }: CheckoutFormProps) {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
+  // Track cart hydration so we only act on a genuinely-empty cart (the store uses
+  // skipHydration; items are [] until rehydration finishes).
+  const [hydrated, setHydrated] = useState(() => useCart.persist.hasHydrated())
+  useEffect(() => {
+    if (useCart.persist.hasHydrated()) setHydrated(true)
+    return useCart.persist.onFinishHydration(() => setHydrated(true))
+  }, [])
+
+  // Empty-cart guard: never present a payable form with an empty cart.
+  useEffect(() => {
+    if (hydrated && items.length === 0) router.replace('/cart')
+  }, [hydrated, items.length, router])
+
   const countryOptions = useMemo(() => {
     const displayNames = new Intl.DisplayNames([locale], { type: 'region' })
     return BILLING_COUNTRIES
@@ -41,7 +59,7 @@ export function CheckoutForm({ locale }: CheckoutFormProps) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!point) { setError('Please select a Packeta pickup point.'); return }
+    if (!point) { setError(t('error_no_pickup')); return }
     setSubmitting(true)
     setError('')
 
@@ -63,6 +81,8 @@ export function CheckoutForm({ locale }: CheckoutFormProps) {
             packetaPointId: point.id,
             packetaPointName: point.name,
             packetaPointCity: point.city,
+            // ISO alpha-2 (uppercased); Packeta returns a lowercase country code.
+            packetaPointCountry: point.country ? point.country.toUpperCase() : undefined,
           },
           totalAmount: total(currency),
           currency,
@@ -82,19 +102,60 @@ export function CheckoutForm({ locale }: CheckoutFormProps) {
     }
   }
 
+  // Redirecting to /cart — don't flash a payable form with a zero total.
+  if (hydrated && items.length === 0) return null
+
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
+      <section className={styles.summary} aria-label={t('order_summary')}>
+        <h2 className={styles.summaryTitle}>{t('order_summary')}</h2>
+        <ul className={styles.summaryList}>
+          {items.map(item => {
+            const unit = pickPrice(item.prices ?? { EUR: item.unitPrice }, currency)
+            return (
+              <li key={item.id} className={styles.summaryItem}>
+                <LampThumb {...lampImages(item.configuration, item)} alt={item.title} />
+                <div className={styles.summaryInfo}>
+                  <span className={styles.summaryItemTitle}>{item.title}</span>
+                  <span className={styles.summaryConfig}>{lampConfigSummary(item.configuration, tc)}</span>
+                  <span className={styles.summaryQty}>
+                    {t('qty')}: {item.quantity} × {formatPrice(unit.amount, unit.currency, locale)}
+                  </span>
+                </div>
+                <span className={styles.summaryPrice}>
+                  {formatPrice(unit.amount * item.quantity, unit.currency, locale)}
+                </span>
+              </li>
+            )
+          })}
+        </ul>
+        {discount && (
+          <span className={styles.discountLine}>
+            {discount.code}: {formatPrice(subtotal(currency), currency, locale)} −{discount.percent}%
+          </span>
+        )}
+        <div className={styles.summaryRow}>
+          <span>{td('free_shipping')}</span>
+          <span>{formatPrice(0, currency, locale)}</span>
+        </div>
+        <p className={styles.madeToOrder}>{td('made_to_order')}</p>
+        <div className={styles.totalRow}>
+          <span>{t('total')}</span>
+          <strong>{formatPrice(total(currency), currency, locale)}</strong>
+        </div>
+      </section>
+
       <div className={styles.field}>
         <label htmlFor="name">{t('name')}</label>
-        <input id="name" type="text" required value={name} onChange={e => setName(e.target.value)} />
+        <input id="name" type="text" required autoComplete="name" value={name} onChange={e => setName(e.target.value)} />
       </div>
       <div className={styles.field}>
         <label htmlFor="email">{t('email')}</label>
-        <input id="email" type="email" required value={email} onChange={e => setEmail(e.target.value)} />
+        <input id="email" type="email" required autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} />
       </div>
       <div className={styles.field}>
         <label htmlFor="phone">{t('phone')}</label>
-        <input id="phone" type="tel" required value={phone} onChange={e => setPhone(e.target.value)} />
+        <input id="phone" type="tel" required autoComplete="tel" value={phone} onChange={e => setPhone(e.target.value)} />
       </div>
 
       <h2 className={styles.sectionTitle}>{t('billing_address')}</h2>
@@ -121,22 +182,25 @@ export function CheckoutForm({ locale }: CheckoutFormProps) {
         </select>
       </div>
 
-      <PacketaWidget selected={point} onChange={setPoint} />
-
-      <div className={styles.summary}>
-        {discount && (
-          <span className={styles.discountLine}>
-            {discount.code}: {formatPrice(subtotal(currency), currency)} −{discount.percent}%
-          </span>
-        )}
-        <span>{t('total')}: <strong>{formatPrice(total(currency), currency)}</strong></span>
+      <div className={styles.pickup}>
+        <h2 className={styles.sectionTitle}>
+          {t('pickup_heading')} <span className={styles.required} aria-hidden="true">*</span>
+        </h2>
+        <PacketaWidget selected={point} onChange={setPoint} />
+        {!point && <p className={styles.pickupRequired}>{t('pickup_required')}</p>}
       </div>
 
-      {error && <p className={styles.error}>{error}</p>}
+      {error && <p className={styles.error} role="alert">{error}</p>}
 
       <Button type="submit" size="lg" disabled={submitting}>
         {submitting ? t('submitting') : t('submit')}
       </Button>
+
+      <ul className={styles.trust}>
+        <li>{t('trust_payment')}</li>
+        <li>{t('trust_free_shipping')}</li>
+        <li>{t('trust_returns')}</li>
+      </ul>
     </form>
   )
 }

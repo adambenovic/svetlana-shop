@@ -30,4 +30,7 @@
   --color-border: #E0DAD4;
   --color-accent: #1A1A1A;
   --color-accent-hover: #2D2D2D;
+  /* #7BC47F fails contrast (~1.85:1) on the light background — darken it so
+     "discount applied" and similar success text stays readable (~5.1:1). */
+  --color-success: #2E7D32;
 }

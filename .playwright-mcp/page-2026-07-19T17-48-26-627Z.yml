@@ -1,0 +1,95 @@
+- generic [active] [ref=f20e1]:
+  - banner "Promotional announcement" [ref=f20e2]:
+    - paragraph [ref=f20e3]:
+      - text: "🎉 20 % zľava pre prvých 10 objednávok — kód:"
+      - button "EARLYBIRD" [ref=f20e4] [cursor=pointer]
+      - button "(kliknutím použijete)" [ref=f20e5] [cursor=pointer]
+    - button "Zavrieť" [ref=f20e6] [cursor=pointer]: ✕
+  - banner [ref=f20e7]:
+    - generic [ref=f20e8]:
+      - link "Svetlana Lampe" [ref=f20e9] [cursor=pointer]:
+        - /url: /
+        - img "Svetlana Lampe" [ref=f20e10]:
+          - generic [ref=f20e14]: SvetlanaLampe
+      - navigation [ref=f20e15]:
+        - link "Domov" [ref=f20e16] [cursor=pointer]:
+          - /url: /
+        - link "Vytvorte si lampu" [ref=f20e17] [cursor=pointer]:
+          - /url: /konfigurator
+        - link "Galéria" [ref=f20e18] [cursor=pointer]:
+          - /url: /galeria
+      - generic [ref=f20e19]:
+        - button "Toggle theme" [ref=f20e20] [cursor=pointer]
+        - button "Cart (0 items)" [ref=f20e25] [cursor=pointer]
+  - main [ref=f20e30]:
+    - generic [ref=f20e31]: Načítavam...
+  - contentinfo [ref=f20e33]:
+    - generic [ref=f20e34]:
+      - generic [ref=f20e35]:
+        - generic [ref=f20e36]: Svetlana Lampe
+        - paragraph [ref=f20e37]: Ručne navrhované 3D tlačené lampy z dielne Svetlana Lampe.
+        - generic [ref=f20e38]:
+          - link "Instagram" [ref=f20e39] [cursor=pointer]:
+            - /url: https://instagram.com/svetla.na.lampe
+          - link "TikTok" [ref=f20e44] [cursor=pointer]:
+            - /url: https://tiktok.com/@svetlana.lampe
+          - link "Pinterest" [ref=f20e47] [cursor=pointer]:
+            - /url: https://pinterest.com/svetlanalampe3d
+        - generic [ref=f20e50]:
+          - img "Visa" [ref=f20e51]:
+            - generic [ref=f20e53]: VISA
+          - img "Mastercard" [ref=f20e54]
+          - img "Google Pay" [ref=f20e59]
+          - img "Apple Pay" [ref=f20e72]:
+            - generic [ref=f20e75]: Pay
+      - generic [ref=f20e76]:
+        - paragraph [ref=f20e77]: Obchod
+        - list [ref=f20e78]:
+          - listitem [ref=f20e79]:
+            - link "Domov" [ref=f20e80] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=f20e81]:
+            - link "Vytvorte si lampu" [ref=f20e82] [cursor=pointer]:
+              - /url: /konfigurator
+          - listitem [ref=f20e83]:
+            - link "Galéria" [ref=f20e84] [cursor=pointer]:
+              - /url: /galeria
+      - generic [ref=f20e85]:
+        - paragraph [ref=f20e86]: Dokumenty
+        - list [ref=f20e87]:
+          - listitem [ref=f20e88]:
+            - link "Manuál k lampe" [ref=f20e89] [cursor=pointer]:
+              - /url: /stranky/lamp-manual
+          - listitem [ref=f20e90]:
+            - link "Vyhlásenie o zhode" [ref=f20e91] [cursor=pointer]:
+              - /url: /stranky/declaration-of-conformity
+    - generic [ref=f20e92]:
+      - paragraph [ref=f20e93]: © 2026 Svetlana Lampe. Všetky práva vyhradené.
+      - generic [ref=f20e94]:
+        - combobox "Language" [ref=f20e95] [cursor=pointer]:
+          - option "Slovenčina" [selected]
+          - option "Čeština"
+          - option "Deutsch"
+          - option "Polski"
+          - option "Magyar"
+          - option "Українська"
+          - option "English"
+          - option "Español"
+          - option "Français"
+          - option "Italiano"
+        - combobox "Currency" [ref=f20e96] [cursor=pointer]:
+          - option "EUR" [selected]
+          - option "CZK"
+          - option "PLN"
+          - option "HUF"
+      - generic [ref=f20e97]:
+        - link "Ochrana osobných údajov" [ref=f20e98] [cursor=pointer]:
+          - /url: /podmienky/privacy-policy
+        - link "Doprava a vrátenie" [ref=f20e99] [cursor=pointer]:
+          - /url: /podmienky/shipping-policy
+        - link "Reklamácie" [ref=f20e100] [cursor=pointer]:
+          - /url: /podmienky/refund-policy
+        - link "Obchodné podmienky" [ref=f20e101] [cursor=pointer]:
+          - /url: /podmienky/terms-of-service
+        - button "Nastavenia cookies" [ref=f20e102] [cursor=pointer]
+  - alert [ref=f20e103]

@@ -1,12 +1,18 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   padding: 16px;
+  /* Non-modal: no dimming backdrop, and the wrapper must not intercept clicks
+     to the page behind it — only the banner itself is interactive. */
+  pointer-events: none;
+}
+
+.banner {
+  pointer-events: auto;
 }
 
 .banner {

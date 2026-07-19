@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 function BulbIcon({ lit }: { lit: boolean }) {
   return (
@@ -32,6 +33,7 @@ function BulbIcon({ lit }: { lit: boolean }) {
 }
 
 export function ThemeToggle() {
+  const t = useTranslations('a11y')
   const [light, setLight] = useState(false)
 
   useEffect(() => {
@@ -49,7 +51,8 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      aria-label="Toggle theme"
+      aria-label={t('theme_toggle')}
+      aria-pressed={light}
       style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center' }}
     >
       <BulbIcon lit={light} />

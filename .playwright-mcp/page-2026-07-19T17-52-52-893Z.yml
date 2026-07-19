@@ -1,0 +1,123 @@
+- generic [active] [ref=f2e1]:
+  - banner "Promotional announcement" [ref=f2e2]:
+    - paragraph [ref=f2e3]:
+      - text: "🎉 20 % zľava pre prvých 10 objednávok — kód:"
+      - button "EARLYBIRD" [ref=f2e4] [cursor=pointer]
+      - button "(kliknutím použijete)" [ref=f2e5] [cursor=pointer]
+    - button "Zavrieť" [ref=f2e6] [cursor=pointer]: ✕
+  - banner [ref=f2e7]:
+    - generic [ref=f2e8]:
+      - link "Svetlana Lampe" [ref=f2e9] [cursor=pointer]:
+        - /url: /
+        - img "Svetlana Lampe" [ref=f2e10]:
+          - generic [ref=f2e14]: SvetlanaLampe
+      - navigation [ref=f2e15]:
+        - link "Domov" [ref=f2e16] [cursor=pointer]:
+          - /url: /
+        - link "Vytvorte si lampu" [ref=f2e17] [cursor=pointer]:
+          - /url: /konfigurator
+        - link "Galéria" [ref=f2e18] [cursor=pointer]:
+          - /url: /galeria
+      - generic [ref=f2e19]:
+        - button "Toggle theme" [ref=f2e20] [cursor=pointer]
+        - button "Cart (1 items)" [ref=f2e25] [cursor=pointer]:
+          - generic [ref=f2e30]: "1"
+  - main [ref=f2e31]:
+    - generic [ref=f2e32]:
+      - heading "Košík" [level=1] [ref=f2e33]
+      - list [ref=f2e34]:
+        - listitem [ref=f2e35]:
+          - link "Svetlana Lampe – konfigurátor" [ref=f2e36] [cursor=pointer]:
+            - /url: /konfigurator?baseColor=white&base=Base+1&shadeColor=black&shade=Shade+1&cable=fire-red&switch=switch-white&plug=plug-white&bulb=warm
+            - img "Svetlana Lampe – konfigurátor" [ref=f2e39]
+            - generic [ref=f2e40]:
+              - generic [ref=f2e41]: Svetlana Lampe – konfigurátor
+              - generic [ref=f2e42]: "baseColor: white · base: Base 1 · shadeColor: black · shade: Shade 1 · cable: fire-red · switch: switch-white · plug: plug-white · bulb: warm"
+          - generic [ref=f2e43]:
+            - generic [ref=f2e44]:
+              - button "Decrease" [ref=f2e45] [cursor=pointer]: −
+              - spinbutton "Quantity" [ref=f2e46]: "1"
+              - button "Increase" [ref=f2e47] [cursor=pointer]: +
+            - generic [ref=f2e48]: €53.99
+            - button "Odstrániť" [ref=f2e49] [cursor=pointer]
+      - paragraph [ref=f2e50]:
+        - generic [ref=f2e51]: Kód EARLYBIRD použitý (−20%)
+        - button "Odstrániť" [ref=f2e52] [cursor=pointer]
+      - generic [ref=f2e53]:
+        - generic [ref=f2e54]:
+          - generic [ref=f2e55]: €53.99 → −20%
+          - generic [ref=f2e56]:
+            - text: "Spolu:"
+            - strong [ref=f2e57]: €43.19
+        - link "Pokračovať k platbe" [ref=f2e58] [cursor=pointer]:
+          - /url: /pokladna
+  - contentinfo [ref=f2e59]:
+    - generic [ref=f2e60]:
+      - generic [ref=f2e61]:
+        - generic [ref=f2e62]: Svetlana Lampe
+        - paragraph [ref=f2e63]: Ručne navrhované 3D tlačené lampy z dielne Svetlana Lampe.
+        - generic [ref=f2e64]:
+          - link "Instagram" [ref=f2e65] [cursor=pointer]:
+            - /url: https://instagram.com/svetla.na.lampe
+          - link "TikTok" [ref=f2e70] [cursor=pointer]:
+            - /url: https://tiktok.com/@svetlana.lampe
+          - link "Pinterest" [ref=f2e73] [cursor=pointer]:
+            - /url: https://pinterest.com/svetlanalampe3d
+        - generic [ref=f2e76]:
+          - img "Visa" [ref=f2e77]:
+            - generic [ref=f2e79]: VISA
+          - img "Mastercard" [ref=f2e80]
+          - img "Google Pay" [ref=f2e85]
+          - img "Apple Pay" [ref=f2e98]:
+            - generic [ref=f2e101]: Pay
+      - generic [ref=f2e102]:
+        - paragraph [ref=f2e103]: Obchod
+        - list [ref=f2e104]:
+          - listitem [ref=f2e105]:
+            - link "Domov" [ref=f2e106] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=f2e107]:
+            - link "Vytvorte si lampu" [ref=f2e108] [cursor=pointer]:
+              - /url: /konfigurator
+          - listitem [ref=f2e109]:
+            - link "Galéria" [ref=f2e110] [cursor=pointer]:
+              - /url: /galeria
+      - generic [ref=f2e111]:
+        - paragraph [ref=f2e112]: Dokumenty
+        - list [ref=f2e113]:
+          - listitem [ref=f2e114]:
+            - link "Manuál k lampe" [ref=f2e115] [cursor=pointer]:
+              - /url: /stranky/lamp-manual
+          - listitem [ref=f2e116]:
+            - link "Vyhlásenie o zhode" [ref=f2e117] [cursor=pointer]:
+              - /url: /stranky/declaration-of-conformity
+    - generic [ref=f2e118]:
+      - paragraph [ref=f2e119]: © 2026 Svetlana Lampe. Všetky práva vyhradené.
+      - generic [ref=f2e120]:
+        - combobox "Language" [ref=f2e121] [cursor=pointer]:
+          - option "Slovenčina" [selected]
+          - option "Čeština"
+          - option "Deutsch"
+          - option "Polski"
+          - option "Magyar"
+          - option "Українська"
+          - option "English"
+          - option "Español"
+          - option "Français"
+          - option "Italiano"
+        - combobox "Currency" [ref=f2e122] [cursor=pointer]:
+          - option "EUR" [selected]
+          - option "CZK"
+          - option "PLN"
+          - option "HUF"
+      - generic [ref=f2e123]:
+        - link "Ochrana osobných údajov" [ref=f2e124] [cursor=pointer]:
+          - /url: /podmienky/privacy-policy
+        - link "Doprava a vrátenie" [ref=f2e125] [cursor=pointer]:
+          - /url: /podmienky/shipping-policy
+        - link "Reklamácie" [ref=f2e126] [cursor=pointer]:
+          - /url: /podmienky/refund-policy
+        - link "Obchodné podmienky" [ref=f2e127] [cursor=pointer]:
+          - /url: /podmienky/terms-of-service
+        - button "Nastavenia cookies" [ref=f2e128] [cursor=pointer]
+  - alert [ref=f2e129]

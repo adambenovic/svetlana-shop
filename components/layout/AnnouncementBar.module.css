@@ -48,6 +48,17 @@
 
 .dismiss:hover { opacity: 1; }
 
+/* Comfortable touch target on touch devices. */
+@media (pointer: coarse) {
+  .dismiss {
+    min-width: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 .use {
   background: none;
   border: none;

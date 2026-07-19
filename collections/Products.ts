@@ -6,7 +6,12 @@ export const Products: CollectionConfig = {
   fields: [
     { name: 'title', type: 'text', required: true, localized: true },
     { name: 'slug', type: 'text', required: true, unique: true },
-    { name: 'description', type: 'richText', localized: true },
+    { name: 'description', type: 'textarea', localized: true },
+    {
+      name: 'configuration',
+      type: 'json',
+      admin: { description: 'Fixed configurator selection (base/shade/color/cable/switch/plug/bulb ids) for signature/gallery products — the storefront composites the render images from this.' },
+    },
     { name: 'basePrice', type: 'number', required: true, admin: { description: 'EUR price in cents. €89 = 8900' } },
     { name: 'currency', type: 'select', options: ['EUR', 'CZK'], defaultValue: 'EUR', admin: { hidden: true, description: 'Legacy — EUR is the canonical currency, other currencies live in prices' } },
     {

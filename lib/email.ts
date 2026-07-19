@@ -14,6 +14,18 @@ function t(locale: string) {
   return i18n[locale] ?? i18n.en
 }
 
+// Order fields (item titles, configuration keys/values, pickup point, order
+// number) originate from user/product input and are interpolated into HTML —
+// escape them so they can't inject markup into the confirmation email.
+function esc(s: unknown): string {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 function apiKey() {
   return process.env.BREVO_API_KEY!
 }
@@ -36,10 +48,11 @@ export interface OrderEmailParams {
 }
 
 export async function sendOrderConfirmation(p: OrderEmailParams): Promise<void> {
+  const currency = esc(p.currency)
   const itemsHtml = p.items
     .map(i => {
-      const cfg = Object.entries(i.configuration).map(([k, v]) => `${k}: ${v}`).join(', ')
-      return `<li>${i.title} (${cfg}) × ${i.quantity} — ${((i.unitPrice * i.quantity) / 100).toFixed(2)} ${p.currency}</li>`
+      const cfg = Object.entries(i.configuration).map(([k, v]) => `${esc(k)}: ${esc(v)}`).join(', ')
+      return `<li>${esc(i.title)} (${cfg}) × ${esc(i.quantity)} — ${((i.unitPrice * i.quantity) / 100).toFixed(2)} ${currency}</li>`
     })
     .join('')
 
@@ -59,11 +72,11 @@ export async function sendOrderConfirmation(p: OrderEmailParams): Promise<void> 
       htmlContent: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #E8734A;">${tr.thanks}</h1>
-          <p>${tr.order}: <strong>${p.orderNumber}</strong></p>
+          <p>${tr.order}: <strong>${esc(p.orderNumber)}</strong></p>
           <ul style="line-height: 2;">${itemsHtml}</ul>
-          <p style="font-size: 20px;">${tr.total}: <strong>${(p.totalAmount / 100).toFixed(2)} ${p.currency}</strong></p>
-          <p>${tr.pickup}: <strong>${p.packetaPointName}</strong></p>
-          ${p.invoiceUrl ? `<p>${tr.invoice}: <a href="${p.invoiceUrl}">${p.invoiceUrl}</a></p>` : ''}
+          <p style="font-size: 20px;">${tr.total}: <strong>${(p.totalAmount / 100).toFixed(2)} ${currency}</strong></p>
+          <p>${tr.pickup}: <strong>${esc(p.packetaPointName)}</strong></p>
+          ${p.invoiceUrl ? `<p>${tr.invoice}: <a href="${esc(p.invoiceUrl)}">${esc(p.invoiceUrl)}</a></p>` : ''}
           <hr />
           <p style="color: #999; font-size: 12px;">Svetlana Lampe — 3D printed table lamps</p>
         </div>

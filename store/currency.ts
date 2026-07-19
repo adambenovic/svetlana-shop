@@ -31,8 +31,8 @@ export function pickPrice(prices: PriceMap, currency: Currency): { amount: numbe
   return { amount: prices.EUR ?? 0, currency: 'EUR' }
 }
 
-export function formatPrice(amountInCents: number, currency: string): string {
-  return new Intl.NumberFormat(undefined, {
+export function formatPrice(amountInCents: number, currency: string, locale?: string): string {
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
     minimumFractionDigits: 0,

@@ -6,6 +6,7 @@ import { useCart } from '@/store/cart'
 import { useCurrency, pickPrice, formatPrice } from '@/store/currency'
 import { Button } from '@/components/ui/Button'
 import { lampImages, configuratorQuery } from '@/lib/prices'
+import { lampConfigSummary } from '@/lib/lamp-config-display'
 import { LampThumb } from '@/components/cart/LampThumb'
 import { DiscountCode } from '@/components/cart/DiscountCode'
 import { QtyInput } from '@/components/cart/QtyInput'
@@ -13,6 +14,8 @@ import styles from './page.module.css'
 
 export default function CartPage() {
   const t = useTranslations('cart')
+  const tc = useTranslations('configurator')
+  const td = useTranslations('cart_delivery')
   const locale = useLocale()
   const { items, removeItem, updateQuantity, subtotal, total, pricedIn, discount } = useCart()
   const selected = useCurrency(s => s.currency)
@@ -44,13 +47,13 @@ export default function CartPage() {
                 <div className={styles.info}>
                   <span className={styles.itemTitle}>{item.title}</span>
                   <span className={styles.itemConfig}>
-                    {Object.entries(item.configuration).filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join(' · ')}
+                    {lampConfigSummary(item.configuration, tc)}
                   </span>
                 </div>
               </Link>
               <div className={styles.controls}>
                 <QtyInput value={item.quantity} onChange={q => updateQuantity(item.id, q)} />
-                <span className={styles.itemPrice}>{formatPrice(unit.amount * item.quantity, unit.currency)}</span>
+                <span className={styles.itemPrice}>{formatPrice(unit.amount * item.quantity, unit.currency, locale)}</span>
                 <button className={styles.remove} onClick={() => removeItem(item.id)}>
                   {t('remove')}
                 </button>
@@ -66,11 +69,14 @@ export default function CartPage() {
         <div className={styles.totals}>
           {discount && (
             <span className={styles.subtotalLine}>
-              {formatPrice(subtotal(currency), currency)} → −{discount.percent}%
+              {formatPrice(subtotal(currency), currency, locale)} → −{discount.percent}%
             </span>
           )}
           <span className={styles.totalLabel}>
-            {t('total')}: <strong>{formatPrice(total(currency), currency)}</strong>
+            {t('total')}: <strong>{formatPrice(total(currency), currency, locale)}</strong>
+          </span>
+          <span className={styles.subtotalLine}>
+            {td('free_shipping')} · {td('made_to_order')}
           </span>
         </div>
         <Button as="a" href={getPathname({ href: '/checkout', locale })} size="lg">{t('checkout')}</Button>

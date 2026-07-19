@@ -59,6 +59,11 @@ export interface GoPayPayment {
   id: string
   gw_url: string
   state: GoPayState
+  // Present on the payment-status response (getPayment) — used by the webhook to
+  // reconcile the charged amount/currency and to match the order by order_number.
+  amount?: number
+  currency?: string
+  order_number?: string
 }
 
 export async function createPayment(p: {

@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { sql } from 'drizzle-orm'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { getPayment } from '@/lib/gopay'
 import { sendOrderConfirmation } from '@/lib/email'
 import { ensureInvoice } from '@/lib/invoice'
+
+// Minimal view of the drizzle handle exposed by the Payload postgres adapter.
+type DrizzleExec = {
+  execute: (q: unknown) => Promise<{ rows: Array<Record<string, unknown>> }>
+}
+function drizzle(payload: Awaited<ReturnType<typeof getPayload>>): DrizzleExec {
+  return (payload.db as unknown as { drizzle: DrizzleExec }).drizzle
+}
 
 // GoPay delivers payment-state notifications as HTTP GET ?id=<paymentId>.
 // POST is kept for manual replays.
@@ -12,25 +21,83 @@ export { handleNotification as GET, handleNotification as POST }
 async function handleNotification(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const gopayId = searchParams.get('id')
-  if (!gopayId) return NextResponse.json({ error: 'missing id' }, { status: 400 })
+  // GoPay payment ids are numeric — reject junk before spending a token on the API.
+  if (!gopayId || !/^\d+$/.test(gopayId)) {
+    return NextResponse.json({ error: 'missing id' }, { status: 400 })
+  }
 
   const payload = await getPayload({ config })
-
-  // Pre-check: verify gopayId maps to a pending order before hitting GoPay API.
-  // Prevents API abuse and unnecessary token usage from arbitrary webhook POSTs.
-  const { docs } = await payload.find({
-    collection: 'orders',
-    where: { and: [{ gopayId: { equals: gopayId } }, { status: { equals: 'pending' } }] },
-    limit: 1,
-  })
-  if (!docs.length) return NextResponse.json({ ok: true })
+  const db = drizzle(payload)
 
   const payment = await getPayment(gopayId)
-  if (payment.state !== 'PAID') return NextResponse.json({ ok: true })
 
+  // Match the order by gopayId first. Fallback: if the gopayId was never
+  // persisted (createPayment succeeded but the update storing it failed), match
+  // by the order_number GoPay echoes back. Any status — terminal states below
+  // (refund) act on already-paid orders.
+  let { docs } = await payload.find({
+    collection: 'orders',
+    where: { gopayId: { equals: gopayId } },
+    limit: 1,
+  })
+  if (!docs.length && payment.order_number) {
+    ;({ docs } = await payload.find({
+      collection: 'orders',
+      where: { orderNumber: { equals: payment.order_number } },
+      limit: 1,
+    }))
+  }
   const order = docs[0]
+  if (!order) return NextResponse.json({ ok: true })
 
-  await payload.update({ collection: 'orders', id: order.id, data: { status: 'paid' } })
+  const state = payment.state
+
+  // ── Terminal failures on a still-pending order ──────────────────────────
+  if (state === 'CANCELED' || state === 'TIMEOUTED') {
+    await db.execute(sql`UPDATE orders SET status = 'failed' WHERE id = ${order.id} AND status = 'pending'`)
+    return NextResponse.json({ ok: true })
+  }
+
+  // ── Refunds on an already-paid order ────────────────────────────────────
+  if (state === 'REFUNDED' || state === 'PARTIALLY_REFUNDED') {
+    await db.execute(sql`UPDATE orders SET status = 'refunded' WHERE id = ${order.id} AND status = 'paid'`)
+    return NextResponse.json({ ok: true })
+  }
+
+  if (state !== 'PAID') return NextResponse.json({ ok: true })
+
+  // Amount/currency reconciliation — never mark paid if GoPay charged a different
+  // amount/currency than the order total we recorded.
+  if (
+    (typeof payment.amount === 'number' && payment.amount !== (order.totalAmount as number)) ||
+    (payment.currency && payment.currency !== (order.currency as string))
+  ) {
+    console.error(
+      `[webhook] amount/currency mismatch for order ${order.orderNumber}: ` +
+      `gopay=${payment.amount} ${payment.currency} vs order=${order.totalAmount} ${order.currency} — skipping`,
+    )
+    return NextResponse.json({ ok: true })
+  }
+
+  // Atomic pending→paid transition. RETURNING tells us whether THIS request won
+  // the race; concurrent GoPay retries that lose it return no row and stop here,
+  // so the invoice/email/discount side effects run exactly once. Also backfills
+  // gopayId when we matched via order_number.
+  const res = await db.execute(
+    sql`UPDATE orders SET status = 'paid', gopay_id = ${gopayId} WHERE id = ${order.id} AND status = 'pending' RETURNING id`,
+  )
+  if (!res.rows.length) return NextResponse.json({ ok: true })
+
+  // Consume the discount now (paid), atomically and guarded against overuse.
+  if (order.discountCode) {
+    try {
+      await db.execute(
+        sql`UPDATE discounts SET used_count = used_count + 1 WHERE code = ${order.discountCode as string} AND active = true AND (max_uses IS NULL OR used_count < max_uses)`,
+      )
+    } catch (err) {
+      console.error('[webhook] discount usedCount increment failed:', err)
+    }
+  }
 
   // Invoice (faktúra): generated once per order, stored outside public/, sent
   // as an attachment and via a tokenized link. Failure must not break the

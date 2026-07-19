@@ -25,6 +25,7 @@ type Tab = 'base' | 'shade' | 'cable' | 'bulb'
 
 export function Configurator({ partsKey, prices, productId, productTitle }: ConfiguratorProps) {
   const t = useTranslations('configurator')
+  const ta = useTranslations('a11y')
   const router = useRouter()
   const searchParams = useSearchParams()
   const addItem = useCart(s => s.addItem)
@@ -129,6 +130,29 @@ export function Configurator({ partsKey, prices, productId, productTitle }: Conf
     { id: 'bulb', label: t('tab_bulb') },
   ]
 
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
+
+  function onTabKeyDown(e: React.KeyboardEvent, index: number) {
+    let next = index
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (index + 1) % tabs.length
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (index - 1 + tabs.length) % tabs.length
+    else if (e.key === 'Home') next = 0
+    else if (e.key === 'End') next = tabs.length - 1
+    else return
+    e.preventDefault()
+    setTab(tabs[next].id)
+    tabRefs.current[next]?.focus()
+  }
+
+  const baseAlt = ta('preview_base_alt', {
+    shape: selectedBase?.name ?? base,
+    color: selectedBaseColor?.name ?? baseColor,
+  })
+  const shadeAlt = ta('preview_shade_alt', {
+    shape: selectedShade?.name ?? shade,
+    color: selectedShadeColor?.name ?? shadeColor,
+  })
+
   if (partsError) {
     return <div className={styles.loading} style={{ color: 'var(--color-accent)' }}>{t('error_loading')}</div>
   }
@@ -145,19 +169,26 @@ export function Configurator({ partsKey, prices, productId, productTitle }: Conf
         baseColor={baseColor}
         shade={shade}
         shadeColor={shadeColor}
+        baseAlt={baseAlt}
+        shadeAlt={shadeAlt}
       />
 
       {/* Controls — right column */}
       <div className={styles.controls}>
         {/* Tab bar */}
-        <div className={styles.tabs} role="tablist">
-          {tabs.map(tb => (
+        <div className={styles.tabs} role="tablist" aria-label={t('page_heading')}>
+          {tabs.map((tb, i) => (
             <button
               key={tb.id}
+              ref={el => { tabRefs.current[i] = el }}
+              id={`configtab-${tb.id}`}
               role="tab"
               aria-selected={tab === tb.id}
+              aria-controls={`configpanel-${tb.id}`}
+              tabIndex={tab === tb.id ? 0 : -1}
               className={[styles.tab, tab === tb.id ? styles.tabActive : ''].join(' ')}
               onClick={() => setTab(tb.id)}
+              onKeyDown={e => onTabKeyDown(e, i)}
             >
               {tb.label}
             </button>
@@ -165,20 +196,31 @@ export function Configurator({ partsKey, prices, productId, productTitle }: Conf
         </div>
 
         {/* Tab panels */}
-        <div className={styles.panel} role="tabpanel">
+        <div
+          className={styles.panel}
+          role="tabpanel"
+          id={`configpanel-${tab}`}
+          aria-labelledby={`configtab-${tab}`}
+          tabIndex={0}
+        >
           {tab === 'base' && (
             <>
-              <h4 className={styles.sectionLabel}>{t('pick_base_color')}</h4>
+              <h2 className={styles.sectionLabel}>{t('pick_base_color')}</h2>
               <SwatchPicker
                 parts={parts.colors.filter(c => c.id !== 'clear' && !c.id.startsWith('translucent'))}
                 selected={baseColor}
                 onChange={v => { setBaseColor(v); syncUrl({ baseColor: v }) }}
+                label={t('pick_base_color')}
               />
-              <h4 className={styles.sectionLabel}>{t('pick_base')}</h4>
+              {selectedBaseColor && (
+                <p className={styles.selectedName}>{ta('selected_color', { color: selectedBaseColor.name })}</p>
+              )}
+              <h2 className={styles.sectionLabel}>{t('pick_base')}</h2>
               <ShapeGrid
                 parts={parts.bases}
                 selected={base}
                 onChange={v => { setBase(v); syncUrl({ base: v }) }}
+                label={t('pick_base')}
               />
               {selectedBase && (
                 <p className={styles.dims}>
@@ -190,17 +232,22 @@ export function Configurator({ partsKey, prices, productId, productTitle }: Conf
 
           {tab === 'shade' && (
             <>
-              <h4 className={styles.sectionLabel}>{t('pick_shade_color')}</h4>
+              <h2 className={styles.sectionLabel}>{t('pick_shade_color')}</h2>
               <SwatchPicker
                 parts={parts.colors}
                 selected={shadeColor}
                 onChange={v => { setShadeColor(v); syncUrl({ shadeColor: v }) }}
+                label={t('pick_shade_color')}
               />
-              <h4 className={styles.sectionLabel}>{t('pick_shade')}</h4>
+              {selectedShadeColor && (
+                <p className={styles.selectedName}>{ta('selected_color', { color: selectedShadeColor.name })}</p>
+              )}
+              <h2 className={styles.sectionLabel}>{t('pick_shade')}</h2>
               <ShapeGrid
                 parts={parts.shades}
                 selected={shade}
                 onChange={v => { setShade(v); syncUrl({ shade: v }) }}
+                label={t('pick_shade')}
               />
               {selectedShade && (
                 <p className={styles.dims}>
@@ -212,30 +259,33 @@ export function Configurator({ partsKey, prices, productId, productTitle }: Conf
 
           {tab === 'cable' && (
             <>
-              <h4 className={styles.sectionLabel}>{t('pick_cable_color')}</h4>
+              <h2 className={styles.sectionLabel}>{t('pick_cable_color')}</h2>
               <SwatchPicker
                 parts={parts.cable_colors}
                 selected={cable}
                 onChange={v => { setCable(v); syncUrl({ cable: v }) }}
+                label={t('pick_cable_color')}
               />
               {selectedCable?.swatch && (
                 <div className={styles.cablePreview}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={selectedCable.swatch} alt={selectedCable.name} className={styles.cablePreviewImg} />
+                  <img src={selectedCable.swatch} alt="" className={styles.cablePreviewImg} />
                   <span className={styles.cablePreviewName}>{selectedCable.name}</span>
                 </div>
               )}
-              <h4 className={styles.sectionLabel}>{t('pick_switch')}</h4>
+              <h2 className={styles.sectionLabel}>{t('pick_switch')}</h2>
               <SwatchPicker
                 parts={parts.switch_options}
                 selected={sw}
                 onChange={v => { setSw(v); syncUrl({ switch: v }) }}
+                label={t('pick_switch')}
               />
-              <h4 className={styles.sectionLabel}>{t('pick_plug')}</h4>
+              <h2 className={styles.sectionLabel}>{t('pick_plug')}</h2>
               <SwatchPicker
                 parts={parts.plug_options}
                 selected={plug}
                 onChange={v => { setPlug(v); syncUrl({ plug: v }) }}
+                label={t('pick_plug')}
               />
             </>
           )}

@@ -96,7 +96,8 @@
     "care_content": "Vorsichtig mit einem trockenen oder leicht feuchten Tuch abwischen · Keine aggressiven Chemikalien · Nur LED-Lampen verwenden (max. 10W E27)",
     "loading": "Wird geladen...",
     "error_loading": "Konfigurator konnte nicht geladen werden. Bitte neu laden.",
-    "no_products": "Noch keine Produkte konfiguriert. Bitte fügen Sie Produkte über die Verwaltung hinzu."
+    "no_products": "Noch keine Produkte konfiguriert. Bitte fügen Sie Produkte über die Verwaltung hinzu.",
+    "page_heading": "Gestalte deine Lampe"
   },
   "configurator_product": {
     "notice_heading": "Individuelle Konfiguration erforderlich",
@@ -124,7 +125,8 @@
     "select_point": "Abholpunkt wählen",
     "change_point": "Ändern",
     "free_shipping": "Kostenloser Versand bei allen Bestellungen",
-    "go_to_cart": "Zum Warenkorb"
+    "go_to_cart": "Zum Warenkorb",
+    "made_to_order": "Auf Bestellung gefertigt — bitte einige zusätzliche Tage für die Herstellung einplanen"
   },
   "checkout": {
     "title": "Bestellung",
@@ -150,7 +152,14 @@
     "payment_not_found_body": "Wir konnten Ihre Zahlung nicht überprüfen. Falls Ihnen etwas abgebucht wurde, kontaktieren Sie uns bitte.",
     "payment_retry": "Zahlung erneut versuchen",
     "back_to_checkout": "Zurück zur Kasse",
-    "error_generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    "error_generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+    "error_no_pickup": "Bitte wählen Sie einen Packeta-Abholpunkt.",
+    "pickup_required": "Erforderlich",
+    "pickup_heading": "Lieferung — Packeta-Abholpunkt",
+    "trust_payment": "Sichere Zahlung über GoPay — Visa, Mastercard, Apple Pay & Google Pay",
+    "trust_free_shipping": "Kostenloser Versand an Ihren Abholpunkt",
+    "trust_returns": "14 Tage Rückgaberecht",
+    "qty": "Menge"
   },
   "gallery": {
     "title": "Lampen-Galerie",
@@ -159,7 +168,9 @@
     "customize_cta": "Diese Lampe anpassen",
     "add_to_cart": "In den Warenkorb",
     "page_title": "Unsere Lampen",
-    "load_more": "Mehr laden"
+    "load_more": "Mehr laden",
+    "empty_title": "Noch keine Lampen vorhanden",
+    "empty_body": "Unsere Kollektion entsteht gerade. Gestalten Sie in der Zwischenzeit Ihre eigene Lampe."
   },
   "hero": {
     "tagline": "Ein Preis · Endlose Kombinationen",
@@ -233,5 +244,26 @@
     "item2_body": "Alle unsere Lampen erfüllen europäische Sicherheitsnormen. Qualität und Sicherheit, der Sie vertrauen können",
     "item3_title": "Kostenloser Versand",
     "item3_body": "Kostenloser Versand auf alle EU-Bestellungen. Ihre Lampe kommt sicher an Ihre Tür"
+  },
+  "meta": {
+    "default_title": "Svetlana Lampe — 3D-gedruckte Designer-Tischlampen",
+    "default_description": "Handgefertigte 3D-gedruckte Designer-Tischlampen. Gestalte deine eigene — unendliche Farb- und Formkombinationen, auf Bestellung.",
+    "home_title": "Designer-Tischlampen aus dem 3D-Drucker",
+    "home_description": "Bunte Tischlampen auf Bestellung, die du selbst gestaltest. Endlose Farb- und Formkombinationen zu einem Preis.",
+    "configurator_title": "Gestalte deine eigene Tischlampe",
+    "configurator_description": "Nutze den Lampen-Konfigurator: Wähle Fuß, Schirm, Farben, Kabel und Leuchtmittel und bestelle deine einzigartige Lampe."
+  },
+  "a11y": {
+    "theme_toggle": "Helles und dunkles Design umschalten",
+    "currency": "Währung",
+    "language": "Sprache",
+    "announcement_region": "Werbehinweis",
+    "use_promo_code": "Aktionscode {code} verwenden",
+    "hero_alt": "Bunte 3D-gedruckte Svetlana-Tischlampen, die in einem modernen Interieur leuchten",
+    "preview_base_alt": "Lampenfuß {shape} in {color}",
+    "preview_shade_alt": "Lampenschirm {shape} in {color}",
+    "selected_color": "Ausgewählte Farbe: {color}",
+    "shape_option": "{name} ({height} × {diameter} mm)",
+    "cart": "Warenkorb ({count})"
   }
 }

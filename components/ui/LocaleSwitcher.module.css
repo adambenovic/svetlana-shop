@@ -20,6 +20,17 @@
 }
 
 .select:focus {
+  outline: none;
+}
+
+.select:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 1px;
+}
+
+/* Comfortable touch target on touch devices. */
+@media (pointer: coarse) {
+  .select {
+    min-height: 40px;
+  }
 }

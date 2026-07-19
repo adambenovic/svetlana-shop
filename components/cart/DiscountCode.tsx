@@ -55,7 +55,7 @@ export function DiscountCode() {
       <button type="submit" className={styles.apply} disabled={checking || !code.trim()}>
         {t('discount_apply')}
       </button>
-      {error && <p className={styles.error}>{t('discount_invalid')}</p>}
+      {error && <p className={styles.error} role="alert">{t('discount_invalid')}</p>}
     </form>
   )
 }

@@ -7,6 +7,7 @@ import styles from './LocaleSwitcher.module.css'
 
 export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
   const t = useTranslations('locales')
+  const ta = useTranslations('a11y')
   const pathname = usePathname()
   const params = useParams()
   const router = useRouter()
@@ -23,7 +24,7 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
       value={currentLocale}
       onChange={handleChange}
       className={styles.select}
-      aria-label="Language"
+      aria-label={ta('language')}
     >
       {routing.locales.map(l => (
         <option key={l} value={l}>{t(l)}</option>

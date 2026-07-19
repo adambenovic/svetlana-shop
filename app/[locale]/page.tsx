@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { Link } from '@/i18n/navigation'
 import { getTranslations } from 'next-intl/server'
 import { getPayload } from 'payload'
@@ -5,8 +6,26 @@ import config from '@/payload.config'
 import { GalleryGrid } from '@/components/gallery/GalleryGrid'
 import { Hero } from '@/components/home/Hero'
 import { WhySection } from '@/components/home/WhySection'
+import { alternatesFor, openGraphFor } from '@/components/layout/seo'
 import type { Product } from '@/types/product'
 import styles from './page.module.css'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'meta' })
+  const title = t('home_title')
+  const description = t('home_description')
+  return {
+    title,
+    description,
+    alternates: alternatesFor('/', locale),
+    openGraph: openGraphFor({ locale, href: '/', title, description }),
+  }
+}
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params

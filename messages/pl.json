@@ -96,7 +96,8 @@
     "care_content": "Delikatnie wytrzeć suchą lub lekko wilgotną szmatką · Unikać agresywnych chemikaliów · Używać tylko żarówek LED (maks. 10W E27)",
     "loading": "Ładowanie...",
     "error_loading": "Nie udało się załadować konfiguratora. Odśwież stronę.",
-    "no_products": "Brak skonfigurowanych produktów. Dodaj je przez panel administracyjny."
+    "no_products": "Brak skonfigurowanych produktów. Dodaj je przez panel administracyjny.",
+    "page_heading": "Zaprojektuj swoją lampę"
   },
   "configurator_product": {
     "notice_heading": "Wymagana indywidualna konfiguracja",
@@ -124,7 +125,8 @@
     "select_point": "Wybierz punkt odbioru",
     "change_point": "Zmień",
     "free_shipping": "Darmowa dostawa na wszystkie zamówienia",
-    "go_to_cart": "Przejdź do koszyka"
+    "go_to_cart": "Przejdź do koszyka",
+    "made_to_order": "Wykonywane na zamówienie — prosimy doliczyć kilka dni na produkcję"
   },
   "checkout": {
     "title": "Zamówienie",
@@ -150,7 +152,14 @@
     "payment_not_found_body": "Nie udało się zweryfikować płatności. Jeśli środki zostały pobrane, skontaktuj się z nami.",
     "payment_retry": "Spróbuj zapłacić ponownie",
     "back_to_checkout": "Wróć do kasy",
-    "error_generic": "Wystąpił błąd. Proszę spróbować ponownie."
+    "error_generic": "Wystąpił błąd. Proszę spróbować ponownie.",
+    "error_no_pickup": "Wybierz punkt odbioru Packeta.",
+    "pickup_required": "Wymagane",
+    "pickup_heading": "Dostawa — punkt odbioru Packeta",
+    "trust_payment": "Bezpieczna płatność przez GoPay — Visa, Mastercard, Apple Pay i Google Pay",
+    "trust_free_shipping": "Bezpłatna dostawa do punktu odbioru",
+    "trust_returns": "Zwrot w ciągu 14 dni",
+    "qty": "Szt."
   },
   "gallery": {
     "title": "Galeria lamp",
@@ -159,7 +168,9 @@
     "customize_cta": "Dostosuj tę lampę",
     "add_to_cart": "Dodaj do koszyka",
     "page_title": "Nasze lampy",
-    "load_more": "Załaduj więcej"
+    "load_more": "Załaduj więcej",
+    "empty_title": "Nie ma tu jeszcze żadnych lamp",
+    "empty_body": "Nasza kolekcja jest w przygotowaniu. W międzyczasie zaprojektuj własną lampę."
   },
   "hero": {
     "tagline": "Jedna cena · Nieskończone kombinacje",
@@ -233,5 +244,26 @@
     "item2_body": "Wszystkie nasze lampy spełniają europejskie normy bezpieczeństwa. Jakość i bezpieczeństwo, którym możesz ufać",
     "item3_title": "Darmowa wysyłka",
     "item3_body": "Darmowa wysyłka na wszystkie zamówienia w UE. Twoja lampa bezpiecznie dotrze pod Twoje drzwi"
+  },
+  "meta": {
+    "default_title": "Svetlana Lampe — designerskie lampy stołowe z druku 3D",
+    "default_description": "Ręcznie wykonane designerskie lampy stołowe z druku 3D. Zaprojektuj własną — nieskończone kombinacje kolorów i kształtów, na zamówienie.",
+    "home_title": "Designerskie lampy stołowe z druku 3D",
+    "home_description": "Kolorowe lampy stołowe na zamówienie, które projektujesz samodzielnie. Nieskończone kombinacje kolorów i kształtów w jednej cenie.",
+    "configurator_title": "Zaprojektuj własną lampę stołową",
+    "configurator_description": "Skorzystaj z konfiguratora lamp: wybierz podstawę, klosz, kolory, kabel i żarówkę i zamów swoją unikalną lampę."
+  },
+  "a11y": {
+    "theme_toggle": "Przełącz jasny i ciemny motyw",
+    "currency": "Waluta",
+    "language": "Język",
+    "announcement_region": "Ogłoszenie promocyjne",
+    "use_promo_code": "Użyj kodu promocyjnego {code}",
+    "hero_alt": "Kolorowe stołowe lampy Svetlana z druku 3D świecące w nowoczesnym wnętrzu",
+    "preview_base_alt": "Podstawa lampy {shape} w kolorze {color}",
+    "preview_shade_alt": "Klosz lampy {shape} w kolorze {color}",
+    "selected_color": "Wybrany kolor: {color}",
+    "shape_option": "{name} ({height} × {diameter} mm)",
+    "cart": "Koszyk ({count})"
   }
 }

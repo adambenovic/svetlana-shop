@@ -96,7 +96,8 @@
     "care_content": "Óvatosan töröld le száraz vagy enyhén nedves ruhával · Kerüld az agresszív vegyszereket · Csak LED izzókat használj (max. 10W E27)",
     "loading": "Betöltés...",
     "error_loading": "Nem sikerült betölteni a konfigurátort. Frissítse az oldalt.",
-    "no_products": "Még nincsenek termékek konfigurálva. Adjon hozzá termékeket az adminisztrációban."
+    "no_products": "Még nincsenek termékek konfigurálva. Adjon hozzá termékeket az adminisztrációban.",
+    "page_heading": "Tervezd meg a lámpádat"
   },
   "configurator_product": {
     "notice_heading": "Egyéni konfiguráció szükséges",
@@ -124,7 +125,8 @@
     "select_point": "Átvételi pont választása",
     "change_point": "Módosítás",
     "free_shipping": "Ingyenes szállítás minden rendelésre",
-    "go_to_cart": "Kosárhoz"
+    "go_to_cart": "Kosárhoz",
+    "made_to_order": "Rendelésre készül — kérjük, számoljon néhány plusz nappal a gyártásra"
   },
   "checkout": {
     "title": "Rendelés",
@@ -150,7 +152,14 @@
     "payment_not_found_body": "Nem sikerült ellenőrizni a fizetést. Ha az összeget levonták, kérjük, lépjen kapcsolatba velünk.",
     "payment_retry": "Fizetés újrapróbálása",
     "back_to_checkout": "Vissza a pénztárhoz",
-    "error_generic": "Hiba történt. Kérjük, próbálja újra."
+    "error_generic": "Hiba történt. Kérjük, próbálja újra.",
+    "error_no_pickup": "Kérjük, válasszon Packeta átvételi pontot.",
+    "pickup_required": "Kötelező",
+    "pickup_heading": "Szállítás — Packeta átvételi pont",
+    "trust_payment": "Biztonságos fizetés a GoPay-en keresztül — Visa, Mastercard, Apple Pay és Google Pay",
+    "trust_free_shipping": "Ingyenes szállítás az átvételi pontra",
+    "trust_returns": "14 napos visszaküldés",
+    "qty": "Db"
   },
   "gallery": {
     "title": "Lámpa galéria",
@@ -159,7 +168,9 @@
     "customize_cta": "Lámpa személyre szabása",
     "add_to_cart": "Kosárba",
     "page_title": "Lámpáink",
-    "load_more": "Több betöltése"
+    "load_more": "Több betöltése",
+    "empty_title": "Még nincsenek lámpák",
+    "empty_body": "Kollekciónk készül. Addig is tervezze meg saját lámpáját."
   },
   "hero": {
     "tagline": "Egy ár · Végtelen kombinációk",
@@ -233,5 +244,26 @@
     "item2_body": "Összes lámpánk megfelel az európai biztonsági szabványoknak. Minőség és biztonság, amelyben megbízhat",
     "item3_title": "Ingyenes szállítás",
     "item3_body": "Ingyenes szállítás az összes EU-rendelésre. A lámpa biztonságosan megérkezik az ajtajához"
+  },
+  "meta": {
+    "default_title": "Svetlana Lampe — 3D-nyomtatott dizájn asztali lámpák",
+    "default_description": "Kézzel készített 3D-nyomtatott dizájn asztali lámpák. Tervezd meg a sajátodat — végtelen szín- és formakombinációk, rendelésre.",
+    "home_title": "Dizájn 3D-nyomtatott asztali lámpák",
+    "home_description": "Színes, rendelésre készülő asztali lámpák, amelyeket te tervezel. Végtelen szín- és formakombináció, egy áron.",
+    "configurator_title": "Tervezd meg saját asztali lámpádat",
+    "configurator_description": "Használd a lámpakonfigurátort: válaszd ki a talpat, a búrát, a színeket, a kábelt és az izzót, majd rendeld meg egyedi lámpádat."
+  },
+  "a11y": {
+    "theme_toggle": "Világos és sötét téma váltása",
+    "currency": "Pénznem",
+    "language": "Nyelv",
+    "announcement_region": "Promóciós közlemény",
+    "use_promo_code": "{code} promóciós kód használata",
+    "hero_alt": "Színes, 3D-nyomtatott Svetlana asztali lámpák egy modern enteriőrben",
+    "preview_base_alt": "{shape} lámpatalp {color} színben",
+    "preview_shade_alt": "{shape} lámpabúra {color} színben",
+    "selected_color": "Kiválasztott szín: {color}",
+    "shape_option": "{name} ({height} × {diameter} mm)",
+    "cart": "Kosár ({count})"
   }
 }

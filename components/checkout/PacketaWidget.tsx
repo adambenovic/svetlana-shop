@@ -7,6 +7,8 @@ export interface PacketaPoint {
   id: number
   name: string
   city: string
+  /** ISO alpha-2 country of the pickup point (Packeta returns e.g. "cz", "sk") */
+  country?: string
 }
 
 declare global {

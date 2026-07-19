@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { checkRateLimit } from '@/lib/rate-limit'
 
 export async function GET(req: NextRequest) {
+  const limited = checkRateLimit(req, 'discount-validate', 20, 60_000)
+  if (limited) return limited
+
   const code = req.nextUrl.searchParams.get('code')?.trim().toUpperCase()
   if (!code) return NextResponse.json({ valid: false })
 

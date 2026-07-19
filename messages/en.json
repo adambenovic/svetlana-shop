@@ -96,7 +96,8 @@
     "care_content": "Wipe gently with a dry or slightly damp cloth · Avoid harsh chemicals · Use only LED bulbs (max 10W E27)",
     "loading": "Loading...",
     "error_loading": "Failed to load configurator. Please refresh.",
-    "no_products": "No products configured yet. Please add products via the admin."
+    "no_products": "No products configured yet. Please add products via the admin.",
+    "page_heading": "Design your lamp"
   },
   "configurator_product": {
     "notice_heading": "Custom configuration required",
@@ -124,7 +125,8 @@
     "select_point": "Select pickup point",
     "change_point": "Change",
     "free_shipping": "Free shipping on all orders",
-    "go_to_cart": "Go to cart"
+    "go_to_cart": "Go to cart",
+    "made_to_order": "Made to order — please allow a few extra days for crafting"
   },
   "checkout": {
     "title": "Order",
@@ -150,7 +152,14 @@
     "payment_not_found_body": "We could not verify your payment. If you have been charged, please contact us.",
     "payment_retry": "Try paying again",
     "back_to_checkout": "Back to checkout",
-    "error_generic": "Something went wrong. Please try again."
+    "error_generic": "Something went wrong. Please try again.",
+    "error_no_pickup": "Please select a Packeta pickup point.",
+    "pickup_required": "Required",
+    "pickup_heading": "Delivery — Packeta pickup point",
+    "trust_payment": "Secure payment via GoPay — Visa, Mastercard, Apple Pay & Google Pay",
+    "trust_free_shipping": "Free shipping to your pickup point",
+    "trust_returns": "14-day returns",
+    "qty": "Qty"
   },
   "gallery": {
     "title": "Lamp Gallery",
@@ -159,7 +168,9 @@
     "customize_cta": "Customize this lamp",
     "add_to_cart": "Add to cart",
     "page_title": "Our Lamps",
-    "load_more": "Load more"
+    "load_more": "Load more",
+    "empty_title": "No lamps here yet",
+    "empty_body": "Our collection is being crafted. Design your own lamp in the meantime."
   },
   "hero": {
     "tagline": "One price · Endless combinations",
@@ -233,5 +244,26 @@
     "item2_body": "All our lamps meet European safety standards. Quality and safety you can trust",
     "item3_title": "Free Shipping",
     "item3_body": "Free shipping on all EU orders. Your lamp arrives safely to your door"
+  },
+  "meta": {
+    "default_title": "Svetlana Lampe — 3D-printed designer table lamps",
+    "default_description": "Handcrafted 3D-printed designer table lamps. Design your own — infinite color and shape combinations, made to order.",
+    "home_title": "Designer 3D-printed table lamps",
+    "home_description": "Colourful, made-to-order table lamps you design yourself. Endless color and shape combinations, one simple price.",
+    "configurator_title": "Design your own table lamp",
+    "configurator_description": "Use the 3D lamp configurator: choose your base, shade, colors, cable and bulb, then order your one-of-a-kind lamp."
+  },
+  "a11y": {
+    "theme_toggle": "Toggle light and dark theme",
+    "currency": "Currency",
+    "language": "Language",
+    "announcement_region": "Promotional announcement",
+    "use_promo_code": "Use promo code {code}",
+    "hero_alt": "Colourful 3D-printed Svetlana table lamps glowing in a modern interior",
+    "preview_base_alt": "Lamp base {shape} in {color}",
+    "preview_shade_alt": "Lamp shade {shape} in {color}",
+    "selected_color": "Selected color: {color}",
+    "shape_option": "{name} ({height} × {diameter} mm)",
+    "cart": "Cart ({count})"
   }
 }

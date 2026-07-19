@@ -96,7 +96,8 @@
     "care_content": "Pulire delicatamente con un panno asciutto o leggermente umido · Evitare prodotti chimici aggressivi · Usare solo lampadine LED (max 10W E27)",
     "loading": "Caricamento...",
     "error_loading": "Impossibile caricare il configuratore. Aggiornare la pagina.",
-    "no_products": "Nessun prodotto configurato. Aggiungili tramite il pannello di amministrazione."
+    "no_products": "Nessun prodotto configurato. Aggiungili tramite il pannello di amministrazione.",
+    "page_heading": "Progetta la tua lampada"
   },
   "configurator_product": {
     "notice_heading": "Configurazione personalizzata richiesta",
@@ -124,7 +125,8 @@
     "select_point": "Seleziona punto di ritiro",
     "change_point": "Cambia",
     "free_shipping": "Spedizione gratuita su tutti gli ordini",
-    "go_to_cart": "Vai al carrello"
+    "go_to_cart": "Vai al carrello",
+    "made_to_order": "Realizzato su ordinazione — considera qualche giorno in più per la lavorazione"
   },
   "checkout": {
     "title": "Ordine",
@@ -150,7 +152,14 @@
     "payment_not_found_body": "Non siamo riusciti a verificare il tuo pagamento. Se ti è stato addebitato l’importo, contattaci.",
     "payment_retry": "Riprova il pagamento",
     "back_to_checkout": "Torna alla cassa",
-    "error_generic": "Si è verificato un errore. Per favore riprova."
+    "error_generic": "Si è verificato un errore. Per favore riprova.",
+    "error_no_pickup": "Seleziona un punto di ritiro Packeta.",
+    "pickup_required": "Obbligatorio",
+    "pickup_heading": "Consegna — punto di ritiro Packeta",
+    "trust_payment": "Pagamento sicuro tramite GoPay — Visa, Mastercard, Apple Pay e Google Pay",
+    "trust_free_shipping": "Spedizione gratuita al tuo punto di ritiro",
+    "trust_returns": "Reso entro 14 giorni",
+    "qty": "Qtà"
   },
   "gallery": {
     "title": "Galleria lampade",
@@ -159,7 +168,9 @@
     "customize_cta": "Personalizza questa lampada",
     "add_to_cart": "Aggiungi al carrello",
     "page_title": "Le nostre lampade",
-    "load_more": "Carica altro"
+    "load_more": "Carica altro",
+    "empty_title": "Ancora nessuna lampada",
+    "empty_body": "La nostra collezione è in preparazione. Nel frattempo, progetta la tua lampada."
   },
   "hero": {
     "tagline": "Un prezzo · Combinazioni infinite",
@@ -233,5 +244,26 @@
     "item2_body": "Tutte le nostre lampade soddisfano gli standard di sicurezza europei. Qualità e sicurezza di cui ci si può fidare",
     "item3_title": "Spedizione gratuita",
     "item3_body": "Spedizione gratuita su tutti gli ordini UE. La tua lampada arriverà in modo sicuro alla tua porta"
+  },
+  "meta": {
+    "default_title": "Svetlana Lampe — lampade da tavolo di design stampate in 3D",
+    "default_description": "Lampade da tavolo di design stampate in 3D e fatte a mano. Progetta la tua: infinite combinazioni di colori e forme, su ordinazione.",
+    "home_title": "Lampade da tavolo di design stampate in 3D",
+    "home_description": "Lampade da tavolo colorate e su ordinazione che progetti tu. Infinite combinazioni di colori e forme a un prezzo unico.",
+    "configurator_title": "Progetta la tua lampada da tavolo",
+    "configurator_description": "Usa il configuratore di lampade: scegli base, paralume, colori, cavo e lampadina e ordina la tua lampada unica."
+  },
+  "a11y": {
+    "theme_toggle": "Alterna tema chiaro e scuro",
+    "currency": "Valuta",
+    "language": "Lingua",
+    "announcement_region": "Annuncio promozionale",
+    "use_promo_code": "Usa il codice promozionale {code}",
+    "hero_alt": "Colorate lampade da tavolo Svetlana stampate in 3D che brillano in un interno moderno",
+    "preview_base_alt": "Base della lampada {shape} in {color}",
+    "preview_shade_alt": "Paralume {shape} in {color}",
+    "selected_color": "Colore selezionato: {color}",
+    "shape_option": "{name} ({height} × {diameter} mm)",
+    "cart": "Carrello ({count})"
   }
 }
