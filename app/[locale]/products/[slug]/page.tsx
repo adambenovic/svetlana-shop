@@ -3,7 +3,10 @@ import Image from 'next/image'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { Button } from '@/components/ui/Button'
+import { Price } from '@/components/ui/Price'
+import { productPriceMap } from '@/lib/prices'
 import { getTranslations } from 'next-intl/server'
+import { getPathname } from '@/i18n/navigation'
 import styles from './page.module.css'
 
 export default async function ProductPage({
@@ -24,7 +27,6 @@ export default async function ProductPage({
 
   if (!docs[0]) notFound()
   const product = docs[0]
-  const prefix = locale === 'sk' ? '' : `/${locale}`
 
   return (
     <div className={`page-width ${styles.wrap}`}>
@@ -38,10 +40,10 @@ export default async function ProductPage({
       <div className={styles.info}>
         <h1 className={styles.title}>{product.title}</h1>
         <p className={styles.price}>
-          {((product.basePrice as number) / 100).toFixed(2)} {product.currency}
+          <Price prices={productPriceMap(product)} />
         </p>
         {product.partsKey && (
-          <Button as="a" href={`${prefix}/configurator?product=${product.partsKey}`} size="lg">
+          <Button as="a" href={getPathname({ href: { pathname: '/configurator', query: { product: product.partsKey } }, locale })} size="lg">
             {t('add_to_cart')}
           </Button>
         )}

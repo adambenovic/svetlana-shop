@@ -2,13 +2,11 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 export type Currency = 'EUR' | 'CZK' | 'PLN' | 'HUF'
+export const CURRENCIES: Currency[] = ['EUR', 'CZK', 'PLN', 'HUF']
 
-const EUR_RATES: Record<Currency, number> = {
-  EUR: 1,
-  CZK: 25.5,
-  PLN: 4.25,
-  HUF: 395,
-}
+// Prices are entered manually per currency in the admin (no FX conversion).
+// A missing currency falls back to EUR — see pickPrice.
+export type PriceMap = Partial<Record<Currency, number>>
 
 interface CurrencyState {
   currency: Currency
@@ -25,22 +23,19 @@ export const useCurrency = create<CurrencyState>()(
   )
 )
 
-export function formatPrice(amountInCents: number, productCurrency: string, displayCurrency: Currency): string {
-  let amount = amountInCents / 100
-  let outCurrency: string = productCurrency
+/** Resolve the amount to display: the selected currency if the product has a
+ *  manual price for it, otherwise the EUR price. */
+export function pickPrice(prices: PriceMap, currency: Currency): { amount: number; currency: Currency } {
+  const amount = prices[currency]
+  if (typeof amount === 'number') return { amount, currency }
+  return { amount: prices.EUR ?? 0, currency: 'EUR' }
+}
 
-  const srcRate = EUR_RATES[productCurrency as Currency] ?? 1
-  const dstRate = EUR_RATES[displayCurrency] ?? 1
-
-  if (productCurrency !== displayCurrency) {
-    amount = (amount / srcRate) * dstRate
-    outCurrency = displayCurrency
-  }
-
+export function formatPrice(amountInCents: number, currency: string): string {
   return new Intl.NumberFormat(undefined, {
     style: 'currency',
-    currency: outCurrency,
+    currency,
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount)
+    maximumFractionDigits: 2,
+  }).format(amountInCents / 100)
 }

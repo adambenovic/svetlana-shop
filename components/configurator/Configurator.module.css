@@ -14,7 +14,7 @@
   align-self: start;
   width: 100%;
   aspect-ratio: 3 / 4;
-  background: #1A1A1A;
+  background: var(--color-surface);
   border-radius: 12px;
   overflow: hidden;
   transition: box-shadow 0.8s ease;
@@ -52,7 +52,10 @@
   .preview {
     grid-column: 1;
     grid-row: auto;
-    position: static;
+    /* relative, not static — the lamp images are position:absolute and must
+       stay anchored to this panel when it stops being sticky */
+    position: relative;
+    top: auto;
     aspect-ratio: 3 / 4;
     max-width: 420px;
     margin: 0 auto;

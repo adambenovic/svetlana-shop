@@ -1,13 +1,22 @@
 'use client'
 import { useTranslations } from 'next-intl'
-import Link from 'next/link'
+import { useLocale } from 'next-intl'
+import { Link, getPathname } from '@/i18n/navigation'
 import { useCart } from '@/store/cart'
+import { useCurrency, pickPrice, formatPrice } from '@/store/currency'
 import { Button } from '@/components/ui/Button'
+import { lampImages, configuratorQuery } from '@/lib/prices'
+import { LampThumb } from '@/components/cart/LampThumb'
+import { DiscountCode } from '@/components/cart/DiscountCode'
+import { QtyInput } from '@/components/cart/QtyInput'
 import styles from './page.module.css'
 
 export default function CartPage() {
   const t = useTranslations('cart')
-  const { items, removeItem, updateQuantity, total } = useCart()
+  const locale = useLocale()
+  const { items, removeItem, updateQuantity, subtotal, total, pricedIn, discount } = useCart()
+  const selected = useCurrency(s => s.currency)
+  const currency = pricedIn(selected) ? selected : 'EUR'
 
   if (items.length === 0) {
     return (
@@ -22,33 +31,49 @@ export default function CartPage() {
     <div className={`page-width ${styles.wrap}`}>
       <h1>{t('title')}</h1>
       <ul className={styles.list}>
-        {items.map(item => (
-          <li key={item.id} className={styles.item}>
-            <div className={styles.info}>
-              <span className={styles.itemTitle}>{item.title}</span>
-              <span className={styles.itemConfig}>
-                {Object.entries(item.configuration).map(([k, v]) => `${k}: ${v}`).join(' · ')}
-              </span>
-            </div>
-            <div className={styles.qty}>
-              <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>−</button>
-              <span>{item.quantity}</span>
-              <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
-            </div>
-            <span className={styles.itemPrice}>
-              {((item.unitPrice * item.quantity) / 100).toFixed(2)} {item.currency}
-            </span>
-            <button className={styles.remove} onClick={() => removeItem(item.id)}>
-              {t('remove')}
-            </button>
-          </li>
-        ))}
+        {items.map(item => {
+          const unit = pickPrice(item.prices ?? { EUR: item.unitPrice }, currency)
+          return (
+            <li key={item.id} className={styles.item}>
+              <Link
+                href={{ pathname: '/configurator', query: configuratorQuery(item.configuration) }}
+                className={styles.itemLink}
+                aria-label={item.title}
+              >
+                <LampThumb {...lampImages(item.configuration, item)} alt={item.title} />
+                <div className={styles.info}>
+                  <span className={styles.itemTitle}>{item.title}</span>
+                  <span className={styles.itemConfig}>
+                    {Object.entries(item.configuration).filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join(' · ')}
+                  </span>
+                </div>
+              </Link>
+              <div className={styles.controls}>
+                <QtyInput value={item.quantity} onChange={q => updateQuantity(item.id, q)} />
+                <span className={styles.itemPrice}>{formatPrice(unit.amount * item.quantity, unit.currency)}</span>
+                <button className={styles.remove} onClick={() => removeItem(item.id)}>
+                  {t('remove')}
+                </button>
+              </div>
+            </li>
+          )
+        })}
       </ul>
+
+      <DiscountCode />
+
       <div className={styles.footer}>
-        <span className={styles.totalLabel}>
-          {t('total')}: <strong>{(total() / 100).toFixed(2)}</strong>
-        </span>
-        <Button as="a" href="/checkout" size="lg">{t('checkout')}</Button>
+        <div className={styles.totals}>
+          {discount && (
+            <span className={styles.subtotalLine}>
+              {formatPrice(subtotal(currency), currency)} → −{discount.percent}%
+            </span>
+          )}
+          <span className={styles.totalLabel}>
+            {t('total')}: <strong>{formatPrice(total(currency), currency)}</strong>
+          </span>
+        </div>
+        <Button as="a" href={getPathname({ href: '/checkout', locale })} size="lg">{t('checkout')}</Button>
       </div>
     </div>
   )

@@ -1,23 +1,24 @@
 'use client'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/Button'
+import { Price } from '@/components/ui/Price'
+import type { PriceMap } from '@/store/currency'
 import styles from './Configurator.module.css'
 
 interface PriceSummaryProps {
-  totalPrice: number
-  currency: string
+  prices: PriceMap
   copied: boolean
   onAddToCart: () => void
   onShare: () => void
 }
 
-export function PriceSummary({ totalPrice, currency, copied, onAddToCart, onShare }: PriceSummaryProps) {
+export function PriceSummary({ prices, copied, onAddToCart, onShare }: PriceSummaryProps) {
   const t = useTranslations('configurator')
 
   return (
     <div className={styles.summary}>
       <span className={styles.total}>
-        {(totalPrice / 100).toFixed(2)} {currency}
+        <Price prices={prices} />
       </span>
       <Button onClick={onAddToCart} size="lg">
         {t('add_to_cart')}

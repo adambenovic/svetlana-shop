@@ -1,0 +1,29 @@
+.thumb {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* The renders are full 1200×1600 frames; the lamp occupies roughly y 5%–70%.
+     Zoom + shift so the composed lamp fills the thumbnail. */
+  transform-origin: 50% 38%;
+  transform: translateY(10%) scale(1.35);
+}
+
+.placeholder {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  flex-shrink: 0;
+}

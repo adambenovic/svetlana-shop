@@ -1,8 +1,13 @@
 'use client'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { useCart } from '@/store/cart'
+import { useCurrency, pickPrice, formatPrice } from '@/store/currency'
+import { lampImages, configuratorQuery } from '@/lib/prices'
+import { LampThumb } from './LampThumb'
+import { QtyInput } from './QtyInput'
+import { DiscountCode } from './DiscountCode'
 import styles from './CartDrawer.module.css'
 
 export function CartDrawer({ locale }: { locale: string }) {
@@ -13,7 +18,10 @@ export function CartDrawer({ locale }: { locale: string }) {
   const updateQuantity = useCart(s => s.updateQuantity)
   const open = useCart(s => s.drawerOpen)
   const close = useCart(s => s.closeDrawer)
-  const prefix = locale === 'sk' ? '' : `/${locale}`
+  const pricedIn = useCart(s => s.pricedIn)
+  const selected = useCurrency(s => s.currency)
+  // Totals must be a single currency — fall back to EUR unless every item has a manual price
+  const currency = pricedIn(selected) ? selected : 'EUR'
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') close() }
@@ -27,8 +35,6 @@ export function CartDrawer({ locale }: { locale: string }) {
   }, [open])
 
   if (!open) return null
-
-  const currency = items[0]?.currency ?? 'EUR'
 
   return (
     <>
@@ -46,51 +52,48 @@ export function CartDrawer({ locale }: { locale: string }) {
         ) : (
           <>
             <ul className={styles.list}>
-              {items.map(item => (
-                <li key={item.id} className={styles.item}>
-                  {item.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title}
-                      className={styles.itemThumb}
-                      onError={(e) => { e.currentTarget.replaceWith(Object.assign(document.createElement('div'), { className: styles.itemThumbPlaceholder })) }}
-                    />
-                  ) : (
-                    <div className={styles.itemThumbPlaceholder} />
-                  )}
-                  <div className={styles.info}>
-                    <span className={styles.itemTitle}>{item.title}</span>
-                    <span className={styles.itemConfig}>
-                      {Object.entries(item.configuration)
-                        .filter(([, v]) => v)
-                        .map(([k, v]) => `${k}: ${v}`)
-                        .join(' · ')}
+              {items.map(item => {
+                const unit = pickPrice(item.prices ?? { EUR: item.unitPrice }, currency)
+                return (
+                  <li key={item.id} className={styles.item}>
+                    <Link
+                      href={{ pathname: '/configurator', query: configuratorQuery(item.configuration) }}
+                      className={styles.itemLink}
+                      onClick={close}
+                      aria-label={item.title}
+                    >
+                      <LampThumb {...lampImages(item.configuration, item)} alt={item.title} />
+                      <div className={styles.info}>
+                        <span className={styles.itemTitle}>{item.title}</span>
+                        <span className={styles.itemConfig}>
+                          {Object.entries(item.configuration)
+                            .filter(([, v]) => v)
+                            .map(([k, v]) => `${k}: ${v}`)
+                            .join(' · ')}
+                        </span>
+                      </div>
+                    </Link>
+                    <QtyInput value={item.quantity} onChange={q => updateQuantity(item.id, q)} />
+                    <span className={styles.price}>
+                      {formatPrice(unit.amount * item.quantity, unit.currency)}
                     </span>
-                  </div>
-                  <div className={styles.qty}>
-                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)} aria-label="Decrease">−</button>
-                    <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)} aria-label="Increase">+</button>
-                  </div>
-                  <span className={styles.price}>
-                    {((item.unitPrice * item.quantity) / 100).toFixed(2)} {item.currency}
-                  </span>
-                  <button className={styles.remove} onClick={() => remove(item.id)} aria-label={t('remove')}>
-                    {t('remove')}
-                  </button>
-                </li>
-              ))}
+                    <button className={styles.remove} onClick={() => remove(item.id)} aria-label={t('remove')}>
+                      {t('remove')}
+                    </button>
+                  </li>
+                )
+              })}
             </ul>
             <div className={styles.footer}>
+              <DiscountCode />
               <div className={styles.totalRow}>
                 <span>{t('label_total')}</span>
-                <strong>{(total() / 100).toFixed(2)} {currency}</strong>
+                <strong>{formatPrice(total(currency), currency)}</strong>
               </div>
-              <Link href={`${prefix}/checkout`} className={styles.checkoutBtn} onClick={close}>
+              <Link href="/checkout" className={styles.checkoutBtn} onClick={close}>
                 {t('checkout')}
               </Link>
-              <Link href={`${prefix}/cart`} className={styles.viewCart} onClick={close}>
+              <Link href="/cart" className={styles.viewCart} onClick={close}>
                 {t('view_cart')}
               </Link>
             </div>

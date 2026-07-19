@@ -81,10 +81,11 @@
 .item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px 12px;
   padding: 12px;
   background: var(--color-surface);
   border-radius: var(--radius-sm);
+  flex-wrap: wrap;
 }
 
 .itemThumb {
@@ -105,7 +106,8 @@
 }
 
 .info {
-  flex: 1;
+  /* claim the rest of the thumb row; qty/price/remove wrap to a second row */
+  flex: 1 1 calc(100% - 76px);
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -158,7 +160,7 @@
   text-align: center;
 }
 
-.price {
+.price { margin-left: auto;
   font-weight: 600;
   font-size: 13px;
   min-width: 64px;
@@ -174,6 +176,7 @@
   cursor: pointer;
   font-size: 12px;
   flex-shrink: 0;
+  white-space: nowrap;
   transition: color var(--transition);
 }
 
@@ -220,3 +223,14 @@
 }
 
 .viewCart:hover { color: var(--color-text); }
+
+.itemLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1 1 calc(100% - 0px);
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+.itemLink:hover .itemTitle { text-decoration: underline; }

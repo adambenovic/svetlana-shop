@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { Configurator } from '@/components/configurator/Configurator'
+import { productPriceMap } from '@/lib/prices'
 import { getTranslations } from 'next-intl/server'
 
 export default async function ConfiguratorPage({
@@ -62,8 +63,7 @@ export default async function ConfiguratorPage({
       <Suspense fallback={<div style={{ color: 'var(--color-text-muted)' }}>Loading configurator...</div>}>
         <Configurator
           partsKey={product.partsKey ?? ''}
-          basePrice={product.basePrice as number}
-          currency={product.currency as string}
+          prices={productPriceMap(product)}
           productId={String(product.id)}
           productTitle={typeof product.title === 'string' ? product.title : ''}
         />

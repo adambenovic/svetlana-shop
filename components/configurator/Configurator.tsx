@@ -8,13 +8,14 @@ import { BulbPicker } from './BulbPicker'
 import { PriceSummary } from './PriceSummary'
 import { ConfiguratorPreview } from './ConfiguratorPreview'
 import { useCart } from '@/store/cart'
+import type { PriceMap } from '@/store/currency'
+import { applyModifier } from '@/lib/prices'
 import type { PartsData } from '@/types/parts'
 import styles from './Configurator.module.css'
 
 interface ConfiguratorProps {
   partsKey: string
-  basePrice: number
-  currency: string
+  prices: PriceMap
   productId: string
   productTitle: string
 }
@@ -22,7 +23,7 @@ interface ConfiguratorProps {
 type BulbType = 'warm' | 'cold' | 'none'
 type Tab = 'base' | 'shade' | 'cable' | 'bulb'
 
-export function Configurator({ partsKey, basePrice, currency, productId, productTitle }: ConfiguratorProps) {
+export function Configurator({ partsKey, prices, productId, productTitle }: ConfiguratorProps) {
   const t = useTranslations('configurator')
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -82,12 +83,12 @@ export function Configurator({ partsKey, basePrice, currency, productId, product
     baseColor, base, shadeColor, shade, cable, switch: sw, plug, bulb,
   }), [baseColor, base, shadeColor, shade, cable, sw, plug, bulb])
 
-  const totalPrice = useMemo(() => {
-    if (!parts) return basePrice
+  const totalPrices = useMemo(() => {
+    if (!parts) return prices
     const baseMod = parts.bases.find(p => p.id === base)?.priceModifier ?? 0
     const shadeMod = parts.shades.find(p => p.id === shade)?.priceModifier ?? 0
-    return basePrice + baseMod + shadeMod
-  }, [parts, basePrice, base, shade])
+    return applyModifier(prices, baseMod + shadeMod)
+  }, [parts, prices, base, shade])
 
   // Derived display values
   const selectedBase = parts?.bases.find(p => p.id === base)
@@ -99,12 +100,19 @@ export function Configurator({ partsKey, basePrice, currency, productId, product
   const selectedPlug = parts?.plug_options.find(c => c.id === plug)
 
   function handleAddToCart() {
-    const imageUrl = shade && shadeColor
-      ? `/assets/shades/${shade.replace(/ /g, '%20')}-${shadeColor}.webp`
-      : base && baseColor
-        ? `/assets/bases/${base.replace(/ /g, '%20')}-${baseColor}.webp`
-        : undefined
-    addItem({ productId, title: productTitle, configuration, quantity: 1, unitPrice: totalPrice, currency, imageUrl })
+    const shadeImg = shade && shadeColor ? `/assets/shades/${shade.replace(/ /g, '%20')}-${shadeColor}.webp` : undefined
+    const baseImg = base && baseColor ? `/assets/bases/${base.replace(/ /g, '%20')}-${baseColor}.webp` : undefined
+    addItem({
+      productId,
+      title: productTitle,
+      configuration,
+      quantity: 1,
+      unitPrice: totalPrices.EUR ?? 0,
+      currency: 'EUR',
+      prices: totalPrices,
+      imageUrl: shadeImg ?? baseImg,
+      baseImageUrl: shadeImg ? baseImg : undefined,
+    })
   }
 
   function handleShare() {
@@ -242,8 +250,7 @@ export function Configurator({ partsKey, basePrice, currency, productId, product
 
         {/* Price + actions */}
         <PriceSummary
-          totalPrice={totalPrice}
-          currency={currency}
+          prices={totalPrices}
           copied={copied}
           onAddToCart={handleAddToCart}
           onShare={handleShare}
