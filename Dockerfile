@@ -1,22 +1,24 @@
 # ── deps ──────────────────────────────────────────────────────────
-FROM node:20-alpine AS deps
+FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
 # ── builder ───────────────────────────────────────────────────────
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# NEXT_PUBLIC_APP_URL must be passed as build arg for the standalone build
+# NEXT_PUBLIC_* vars are inlined into client bundles at build time — pass as build args
 ARG NEXT_PUBLIC_APP_URL=http://localhost:3000
 ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
+ARG NEXT_PUBLIC_PACKETA_WIDGET_KEY=
+ENV NEXT_PUBLIC_PACKETA_WIDGET_KEY=$NEXT_PUBLIC_PACKETA_WIDGET_KEY
 ENV NODE_ENV=production
 RUN npm run build
 
 # ── runner ────────────────────────────────────────────────────────
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 

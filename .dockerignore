@@ -6,3 +6,5 @@ docker-compose*.yml
 Caddyfile
 README.md
 docs/
+public/assets/bases/
+public/assets/shades/

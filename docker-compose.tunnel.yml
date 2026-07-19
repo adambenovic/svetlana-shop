@@ -1,0 +1,62 @@
+# Local deployment served through a Cloudflare tunnel running on the host.
+# The app is published only on 127.0.0.1:43117 — point the tunnel at
+# http://localhost:43117. No reverse proxy needed (Cloudflare terminates TLS).
+#
+#   docker compose -f docker-compose.tunnel.yml --env-file .env.tunnel up -d
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-svetlana}
+      POSTGRES_USER: ${POSTGRES_USER:-svetlana}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-svetlana}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: svetlana-shop:latest
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URI: postgresql://${POSTGRES_USER:-svetlana}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-svetlana}
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
+      GOPAY_ENV: ${GOPAY_ENV:-prod}
+      GOPAY_API_URL: ${GOPAY_API_URL}
+      GOPAY_CLIENT_ID: ${GOPAY_CLIENT_ID}
+      GOPAY_CLIENT_SECRET: ${GOPAY_CLIENT_SECRET}
+      GOPAY_GO_ID: ${GOPAY_GO_ID}
+      GOPAY_TEST_API_URL: ${GOPAY_TEST_API_URL:-https://gw.sandbox.gopay.com/api}
+      GOPAY_TEST_CLIENT_ID: ${GOPAY_TEST_CLIENT_ID}
+      GOPAY_TEST_CLIENT_SECRET: ${GOPAY_TEST_CLIENT_SECRET}
+      GOPAY_TEST_GO_ID: ${GOPAY_TEST_GO_ID}
+      PACKETA_API_KEY: ${PACKETA_API_KEY}
+      NEXT_PUBLIC_PACKETA_WIDGET_KEY: ${NEXT_PUBLIC_PACKETA_WIDGET_KEY}
+      BREVO_API_KEY: ${BREVO_API_KEY}
+      EMAIL_FROM: ${EMAIL_FROM}
+      INVOICE_BACKFILL_TOKEN: ${INVOICE_BACKFILL_TOKEN}
+    volumes:
+      - media:/app/public/media
+      # Generated invoices (PDF) — NOT under public/, served only via tokenized route
+      - invoices:/app/invoices
+      # Configurator render images — converted from benoshop/renders, not in git
+      # or the image (see .dockerignore). Next serves public/ files at request time.
+      - ./public/assets/bases:/app/public/assets/bases:ro
+      - ./public/assets/shades:/app/public/assets/shades:ro
+      # Legal texts source for POST /api/seed-pages
+      - /home/adam/projects/benoshop/legal:/app/legal-source:ro
+    ports:
+      - "127.0.0.1:43117:3000"
+
+volumes:
+  pgdata:
+  media:
+  invoices:
