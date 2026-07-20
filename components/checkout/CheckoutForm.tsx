@@ -9,6 +9,7 @@ import { BILLING_COUNTRIES, DEFAULT_COUNTRY } from '@/lib/countries'
 import { lampImages } from '@/lib/prices'
 import { lampConfigSummary } from '@/lib/lamp-config-display'
 import { LampThumb } from '@/components/cart/LampThumb'
+import { DiscountCode } from '@/components/cart/DiscountCode'
 import { PacketaWidget, type PacketaPoint } from './PacketaWidget'
 import styles from './CheckoutForm.module.css'
 
@@ -130,6 +131,7 @@ export function CheckoutForm({ locale }: CheckoutFormProps) {
             )
           })}
         </ul>
+        <DiscountCode />
         {discount && (
           <span className={styles.discountLine}>
             {discount.code}: {formatPrice(subtotal(currency), currency, locale)} −{discount.percent}%

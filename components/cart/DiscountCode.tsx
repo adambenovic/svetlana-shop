@@ -13,9 +13,8 @@ export function DiscountCode() {
   const [error, setError] = useState(false)
   const [checking, setChecking] = useState(false)
 
-  async function apply(e: React.FormEvent) {
-    e.preventDefault()
-    if (!code.trim()) return
+  async function apply() {
+    if (!code.trim() || checking) return
     setChecking(true)
     setError(false)
     try {
@@ -43,19 +42,22 @@ export function DiscountCode() {
     )
   }
 
+  // Not a <form> — this component is embedded inside the checkout <form>, and
+  // nested forms are invalid HTML. Enter and the button call apply() directly.
   return (
-    <form className={styles.row} onSubmit={apply}>
+    <div className={styles.row}>
       <input
         type="text"
         value={code}
         placeholder={t('discount_placeholder')}
         onChange={e => { setCode(e.target.value); setError(false) }}
+        onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); apply() } }}
         aria-label={t('discount_placeholder')}
       />
-      <button type="submit" className={styles.apply} disabled={checking || !code.trim()}>
+      <button type="button" className={styles.apply} disabled={checking || !code.trim()} onClick={apply}>
         {t('discount_apply')}
       </button>
       {error && <p className={styles.error} role="alert">{t('discount_invalid')}</p>}
-    </form>
+    </div>
   )
 }
