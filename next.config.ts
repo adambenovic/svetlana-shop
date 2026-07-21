@@ -11,6 +11,17 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'svetlanalampe.sk' },
     ],
   },
+  async redirects() {
+    return [
+      {
+        // Vanity link → the English lamp-manual page currently in use.
+        // 307 (not cached) so the target can be retargeted later.
+        source: '/pages/manual',
+        destination: '/en/pages/lamp-manual',
+        permanent: false,
+      },
+    ]
+  },
 }
 
 export default withNextIntl(withPayload(nextConfig))
