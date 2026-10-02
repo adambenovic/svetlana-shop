@@ -47,10 +47,6 @@ services:
       - media:/app/public/media
       # Generated invoices (PDF) — NOT under public/, served only via tokenized route
       - invoices:/app/invoices
-      # Configurator render images — converted from benoshop/renders, not in git
-      # or the image (see .dockerignore). Next serves public/ files at request time.
-      - ./public/assets/bases:/app/public/assets/bases:ro
-      - ./public/assets/shades:/app/public/assets/shades:ro
     ports:
       - "127.0.0.1:43117:3000"
 

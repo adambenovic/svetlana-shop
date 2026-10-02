@@ -70,20 +70,17 @@ docker run --rm -v "$PWD/public/docs:/d" alpine sh -c '
 
 ### Configurator render images
 
-> **Warning — translucent/clear shades:** the PNG masters in `~/projects/benoshop/renders/shades`
-> hold OLD (opaque) renders for the `clear` and `translucent-*` shade colors. The correct
-> versions were pulled from the Shopify CDN (2026-07-19) directly into
-> `public/assets/shades/`. The regeneration command below skips existing files, so it
-> won't clobber them — but do NOT regenerate those 168 files from the masters.
-
-
 The configurator's lamp preview loads `/assets/bases/<Base>-<color>.webp` and
-`/assets/shades/<Shade>-<color>.webp`. These ~1,370 files are **not in git or the
-Docker image** — the PNG masters live in `~/projects/benoshop/renders/`, converted
-to webp into `public/assets/{bases,shades}` (gitignored, excluded via .dockerignore)
-and bind-mounted read-only into the container by `docker-compose.tunnel.yml`.
+`/assets/shades/<Shade>-<color>.webp`. These ~1,370 files (≈36 MB) are **committed in
+git** under `public/assets/{bases,shades}` and baked into the Docker image — the repo is
+the source of truth, nothing is mounted from outside.
 
-To regenerate after new renders are added:
+> **Translucent/clear shades:** the 168 `clear` / `translucent-*` shade renders in git are
+> the current versions (pulled from the Shopify CDN, 2026-07-19). The old PNG masters in
+> `~/projects/benoshop/renders/shades` hold outdated opaque renders for those colors — never
+> regenerate them from the masters. The command below skips existing files.
+
+Only if new renders are added (from PNG masters), convert them and commit the results:
 
 ```bash
 docker run --rm -v ~/projects/benoshop/renders:/in:ro -v "$PWD/public/assets:/out" alpine sh -c \
