@@ -1,4 +1,4 @@
-import { convertFromEur, productPriceMap, applyModifier, DEFAULT_RATES } from './prices'
+import { convertFromEur, productPriceMap, applyModifier, chargeCurrencyFor, CHARGE_CURRENCIES, DEFAULT_RATES } from './prices'
 
 const rates = { CZK: 24.459, PLN: 4.3735, HUF: 367.18 }
 
@@ -57,4 +57,14 @@ test('productPriceMap uses the supplied rates (defaults otherwise)', () => {
 test('applyModifier with no surcharge returns the same prices', () => {
   const map = productPriceMap({ basePrice: 5399 }, rates)
   expect(applyModifier(map, 0)).toEqual(map)
+})
+
+test('payments are charged in EUR — other currencies are display-only', () => {
+  // The GoPay account settles EUR only; CZK/PLN/HUF have no payment methods
+  // there, so charging in them dead-ends at the gateway ("Platba nie je aktívna").
+  expect(CHARGE_CURRENCIES).toEqual(['EUR'])
+  expect(chargeCurrencyFor('EUR')).toBe('EUR')
+  expect(chargeCurrencyFor('CZK')).toBe('EUR')
+  expect(chargeCurrencyFor('PLN')).toBe('EUR')
+  expect(chargeCurrencyFor('HUF')).toBe('EUR')
 })

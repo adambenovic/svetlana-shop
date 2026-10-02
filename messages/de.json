@@ -160,7 +160,9 @@
     "trust_free_shipping": "Kostenloser Versand an Ihren Abholpunkt",
     "trust_returns": "14 Tage Rückgaberecht",
     "qty": "Menge",
-    "error_price_changed": "Die Preise wurden inzwischen aktualisiert. Bitte prüfen Sie den Bestellbetrag und bestätigen Sie erneut."
+    "error_price_changed": "Die Preise wurden inzwischen aktualisiert. Bitte prüfen Sie den Bestellbetrag und bestätigen Sie erneut.",
+    "amount_to_pay": "Zu zahlen ({currency})",
+    "charge_note": "Die Zahlung erfolgt in {charge}. Der Betrag in {display} ist ein Richtwert — Ihre Bank rechnet zu ihrem eigenen Kurs um."
   },
   "gallery": {
     "title": "Lampen-Galerie",

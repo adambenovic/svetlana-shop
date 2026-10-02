@@ -5,7 +5,7 @@ import { Link, getPathname } from '@/i18n/navigation'
 import { useCart } from '@/store/cart'
 import { useCurrency, pickPrice, formatPrice } from '@/store/currency'
 import { Button } from '@/components/ui/Button'
-import { lampImages, configuratorQuery } from '@/lib/prices'
+import { lampImages, configuratorQuery, chargeCurrencyFor } from '@/lib/prices'
 import { lampConfigSummary } from '@/lib/lamp-config-display'
 import { LampThumb } from '@/components/cart/LampThumb'
 import { DiscountCode } from '@/components/cart/DiscountCode'
@@ -16,10 +16,12 @@ export default function CartPage() {
   const t = useTranslations('cart')
   const tc = useTranslations('configurator')
   const td = useTranslations('cart_delivery')
+  const tk = useTranslations('checkout')
   const locale = useLocale()
   const { items, removeItem, updateQuantity, subtotal, total, pricedIn, discount } = useCart()
   const selected = useCurrency(s => s.currency)
   const currency = pricedIn(selected) ? selected : 'EUR'
+  const chargeCurrency = chargeCurrencyFor(currency)
 
   if (items.length === 0) {
     return (
@@ -78,6 +80,11 @@ export default function CartPage() {
           <span className={styles.subtotalLine}>
             {td('free_shipping')} · {td('made_to_order')}
           </span>
+          {chargeCurrency !== currency && (
+            <span className={styles.subtotalLine}>
+              {tk('charge_note', { charge: chargeCurrency, display: currency })}
+            </span>
+          )}
         </div>
         <Button as="a" href={getPathname({ href: '/checkout', locale })} size="lg">{t('checkout')}</Button>
       </div>

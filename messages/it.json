@@ -160,7 +160,9 @@
     "trust_free_shipping": "Spedizione gratuita al tuo punto di ritiro",
     "trust_returns": "Reso entro 14 giorni",
     "qty": "Qtà",
-    "error_price_changed": "I prezzi sono stati aggiornati nel frattempo. Controlla l'importo dell'ordine e conferma di nuovo."
+    "error_price_changed": "I prezzi sono stati aggiornati nel frattempo. Controlla l'importo dell'ordine e conferma di nuovo.",
+    "amount_to_pay": "Importo da pagare ({currency})",
+    "charge_note": "Il pagamento viene addebitato in {charge}. L'importo in {display} è indicativo: la tua banca lo convertirà al proprio tasso."
   },
   "gallery": {
     "title": "Galleria lampade",

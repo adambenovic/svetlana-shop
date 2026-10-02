@@ -160,7 +160,9 @@
     "trust_free_shipping": "Doprava na výdejní místo zdarma",
     "trust_returns": "Vrácení do 14 dnů",
     "qty": "Ks",
-    "error_price_changed": "Ceny se mezitím aktualizovaly. Zkontrolujte prosím částku objednávky a potvrďte ji znovu."
+    "error_price_changed": "Ceny se mezitím aktualizovaly. Zkontrolujte prosím částku objednávky a potvrďte ji znovu.",
+    "amount_to_pay": "K úhradě ({currency})",
+    "charge_note": "Platba proběhne v {charge}. Částka v {display} je orientační — vaše banka ji přepočítá podle vlastního kurzu."
   },
   "gallery": {
     "title": "Galerie lamp",

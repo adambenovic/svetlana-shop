@@ -5,6 +5,8 @@ import config from '@/payload.config'
 import { createPayment, type GoPayPayment } from '@/lib/gopay'
 import { COUNTRY_ALPHA3 } from '@/lib/countries'
 import { getExchangeRates, itemPriceMap } from '@/lib/server-pricing'
+import { CHARGE_CURRENCIES } from '@/lib/prices'
+import type { Currency } from '@/store/currency'
 import { checkRateLimit } from '@/lib/rate-limit'
 import { getPathname } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
@@ -31,8 +33,9 @@ export async function POST(req: NextRequest) {
 
   const { customer, billing, items, shipping, currency, locale, discountCode } = body
 
-  const ALLOWED_CURRENCIES = ['EUR', 'CZK', 'PLN', 'HUF']
-  if (!customer?.email || !customer?.name || !items?.length || !shipping?.packetaPointId || !ALLOWED_CURRENCIES.includes(currency)) {
+  // Only currencies the GoPay account can settle — others are display-only and
+  // the checkout charges them in EUR (see CHARGE_CURRENCIES).
+  if (!customer?.email || !customer?.name || !items?.length || !shipping?.packetaPointId || !CHARGE_CURRENCIES.includes(currency as Currency)) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
   }
   if (!billing?.street || !billing?.city || !billing?.zip || !(billing?.country in COUNTRY_ALPHA3)) {

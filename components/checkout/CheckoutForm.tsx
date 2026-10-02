@@ -6,7 +6,7 @@ import { useCart, repriceCart } from '@/store/cart'
 import { useCurrency, pickPrice, formatPrice } from '@/store/currency'
 import { Button } from '@/components/ui/Button'
 import { BILLING_COUNTRIES, DEFAULT_COUNTRY } from '@/lib/countries'
-import { lampImages } from '@/lib/prices'
+import { lampImages, chargeCurrencyFor } from '@/lib/prices'
 import { lampConfigSummary } from '@/lib/lamp-config-display'
 import { LampThumb } from '@/components/cart/LampThumb'
 import { DiscountCode } from '@/components/cart/DiscountCode'
@@ -24,9 +24,13 @@ export function CheckoutForm({ locale }: CheckoutFormProps) {
   const router = useRouter()
   const { items, subtotal, total, pricedIn, discount } = useCart()
   const selected = useCurrency(s => s.currency)
-  // Charge in the selected currency once every line carries a price for it
-  // (always true after the server re-price; EUR covers legacy lines until then)
+  // Display in the selected currency once every line carries a price for it
+  // (always true after the server re-price; EUR covers legacy lines until then)…
   const currency = pricedIn(selected) ? selected : 'EUR'
+  // …but charge in a currency the GoPay account can settle (EUR). When the two
+  // differ, the binding EUR amount is shown before the customer pays.
+  const chargeCurrency = chargeCurrencyFor(currency)
+  const converted = chargeCurrency !== currency
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -78,7 +82,7 @@ export function CheckoutForm({ locale }: CheckoutFormProps) {
             title: i.title,
             configuration: i.configuration,
             quantity: i.quantity,
-            unitPrice: i.prices?.[currency] ?? i.unitPrice,
+            unitPrice: i.prices?.[chargeCurrency] ?? i.unitPrice,
           })),
           shipping: {
             packetaPointId: point.id,
@@ -87,8 +91,8 @@ export function CheckoutForm({ locale }: CheckoutFormProps) {
             // ISO alpha-2 (uppercased); Packeta returns a lowercase country code.
             packetaPointCountry: point.country ? point.country.toUpperCase() : undefined,
           },
-          totalAmount: total(currency),
-          currency,
+          totalAmount: total(chargeCurrency),
+          currency: chargeCurrency,
           locale,
           ...(discount ? { discountCode: discount.code } : {}),
         }),
@@ -153,8 +157,17 @@ export function CheckoutForm({ locale }: CheckoutFormProps) {
         <p className={styles.madeToOrder}>{td('made_to_order')}</p>
         <div className={styles.totalRow}>
           <span>{t('total')}</span>
-          <strong>{formatPrice(total(currency), currency, locale)}</strong>
+          <strong>{converted && '≈ '}{formatPrice(total(currency), currency, locale)}</strong>
         </div>
+        {converted && (
+          <>
+            <div className={styles.chargeRow}>
+              <span>{t('amount_to_pay', { currency: chargeCurrency })}</span>
+              <strong>{formatPrice(total(chargeCurrency), chargeCurrency, locale)}</strong>
+            </div>
+            <p className={styles.chargeNote}>{t('charge_note', { charge: chargeCurrency, display: currency })}</p>
+          </>
+        )}
       </section>
 
       <div className={styles.field}>

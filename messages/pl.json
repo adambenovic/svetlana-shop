@@ -160,7 +160,9 @@
     "trust_free_shipping": "Bezpłatna dostawa do punktu odbioru",
     "trust_returns": "Zwrot w ciągu 14 dni",
     "qty": "Szt.",
-    "error_price_changed": "Ceny zostały w międzyczasie zaktualizowane. Sprawdź kwotę zamówienia i potwierdź ponownie."
+    "error_price_changed": "Ceny zostały w międzyczasie zaktualizowane. Sprawdź kwotę zamówienia i potwierdź ponownie.",
+    "amount_to_pay": "Do zapłaty ({currency})",
+    "charge_note": "Płatność zostanie zrealizowana w {charge}. Kwota w {display} jest orientacyjna — Twój bank przeliczy ją według własnego kursu."
   },
   "gallery": {
     "title": "Galeria lamp",

@@ -160,7 +160,9 @@
     "trust_free_shipping": "Ingyenes szállítás az átvételi pontra",
     "trust_returns": "14 napos visszaküldés",
     "qty": "Db",
-    "error_price_changed": "Az árak időközben frissültek. Kérjük, ellenőrizze a rendelés összegét, és erősítse meg újra."
+    "error_price_changed": "Az árak időközben frissültek. Kérjük, ellenőrizze a rendelés összegét, és erősítse meg újra.",
+    "amount_to_pay": "Fizetendő ({currency})",
+    "charge_note": "A fizetés {charge} pénznemben történik. A(z) {display} összeg tájékoztató jellegű — bankja saját árfolyamán számolja át."
   },
   "gallery": {
     "title": "Lámpa galéria",

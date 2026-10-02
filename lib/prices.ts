@@ -2,6 +2,19 @@ import type { Currency, PriceMap } from '@/store/currency'
 
 export type ForeignCurrency = Exclude<Currency, 'EUR'>
 
+/** Currencies a payment can actually be charged in. GoPay only accepts a
+ *  currency the merchant account has payment methods (and a settlement bank
+ *  account) for — this shop settles in EUR only. Every other currency is
+ *  display-only: prices are shown converted, the payment is charged in EUR and
+ *  the EUR amount is shown before the customer confirms. To charge in e.g. CZK,
+ *  get CZK activated on the production GoPay account, then add it here. */
+export const CHARGE_CURRENCIES: readonly Currency[] = ['EUR']
+
+/** The currency a payment is charged in when the visitor browses in `display`. */
+export function chargeCurrencyFor(display: Currency): Currency {
+  return CHARGE_CURRENCIES.includes(display) ? display : 'EUR'
+}
+
 /** 1 EUR = N units of each currency. The live values come from the admin
  *  "Currency settings" global (see lib/server-pricing.ts); these are only the
  *  fallback — ECB reference rates of 1 Oct 2026. */

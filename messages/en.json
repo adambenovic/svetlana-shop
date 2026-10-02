@@ -160,7 +160,9 @@
     "trust_free_shipping": "Free shipping to your pickup point",
     "trust_returns": "14-day returns",
     "qty": "Qty",
-    "error_price_changed": "Prices have been updated in the meantime. Please review your order total and confirm again."
+    "error_price_changed": "Prices have been updated in the meantime. Please review your order total and confirm again.",
+    "amount_to_pay": "Amount to pay ({currency})",
+    "charge_note": "Payment is charged in {charge}. The {display} amount is indicative — your bank converts it at its own rate."
   },
   "gallery": {
     "title": "Lamp Gallery",

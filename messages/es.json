@@ -160,7 +160,9 @@
     "trust_free_shipping": "Envío gratuito a tu punto de recogida",
     "trust_returns": "Devoluciones en 14 días",
     "qty": "Cant.",
-    "error_price_changed": "Los precios se han actualizado. Revisa el importe del pedido y vuelve a confirmar."
+    "error_price_changed": "Los precios se han actualizado. Revisa el importe del pedido y vuelve a confirmar.",
+    "amount_to_pay": "Importe a pagar ({currency})",
+    "charge_note": "El pago se cobra en {charge}. El importe en {display} es orientativo: tu banco lo convertirá a su propio tipo de cambio."
   },
   "gallery": {
     "title": "Galería de lámparas",

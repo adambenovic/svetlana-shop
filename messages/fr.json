@@ -160,7 +160,9 @@
     "trust_free_shipping": "Livraison gratuite vers votre point de retrait",
     "trust_returns": "Retours sous 14 jours",
     "qty": "Qté",
-    "error_price_changed": "Les prix ont été mis à jour entre-temps. Veuillez vérifier le montant de la commande et confirmer à nouveau."
+    "error_price_changed": "Les prix ont été mis à jour entre-temps. Veuillez vérifier le montant de la commande et confirmer à nouveau.",
+    "amount_to_pay": "Montant à payer ({currency})",
+    "charge_note": "Le paiement est débité en {charge}. Le montant en {display} est indicatif — votre banque le convertit à son propre taux."
   },
   "gallery": {
     "title": "Galerie de lampes",
