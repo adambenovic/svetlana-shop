@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { Configurator } from '@/components/configurator/Configurator'
 import { productPriceMap } from '@/lib/prices'
+import { getExchangeRates } from '@/lib/server-pricing'
 import { getTranslations } from 'next-intl/server'
 import { alternatesFor, absoluteUrl, openGraphFor } from '@/components/layout/seo'
 
@@ -34,6 +35,7 @@ export default async function ConfiguratorPage({
   const { locale } = await params
   const { product: partsKey } = await searchParams
   const payload = await getPayload({ config })
+  const rates = await getExchangeRates(payload)
 
   // Prefer the dedicated configurator product; fall back to partsKey match or any published
   const { docs: configDocs } = await payload.find({
@@ -113,7 +115,7 @@ export default async function ConfiguratorPage({
       <Suspense fallback={<div style={{ color: 'var(--color-text-muted)' }}>{t('loading')}</div>}>
         <Configurator
           partsKey={product.partsKey ?? ''}
-          prices={productPriceMap(product)}
+          prices={productPriceMap(product, rates)}
           productId={String(product.id)}
           productTitle={typeof product.title === 'string' ? product.title : ''}
         />

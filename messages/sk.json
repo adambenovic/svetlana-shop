@@ -159,7 +159,8 @@
     "trust_payment": "Bezpečná platba cez GoPay — Visa, Mastercard, Apple Pay a Google Pay",
     "trust_free_shipping": "Doprava na výdajné miesto zdarma",
     "trust_returns": "Vrátenie do 14 dní",
-    "qty": "Ks"
+    "qty": "Ks",
+    "error_price_changed": "Ceny sa medzičasom aktualizovali. Skontrolujte prosím sumu objednávky a potvrďte ju znova."
   },
   "gallery": {
     "title": "Galéria lámp",

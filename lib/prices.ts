@@ -1,16 +1,43 @@
-import type { PriceMap } from '@/store/currency'
+import type { Currency, PriceMap } from '@/store/currency'
+
+export type ForeignCurrency = Exclude<Currency, 'EUR'>
+
+/** 1 EUR = N units of each currency. The live values come from the admin
+ *  "Currency settings" global (see lib/server-pricing.ts); these are only the
+ *  fallback — ECB reference rates of 1 Oct 2026. */
+export type ExchangeRates = Record<ForeignCurrency, number>
+export const DEFAULT_RATES: ExchangeRates = { CZK: 24.459, PLN: 4.3735, HUF: 367.18 }
+
+/** Convert an EUR amount (cents) into a clean retail price in the target
+ *  currency (minor units), charm-rounded like the EUR prices (€53.99):
+ *  CZK → …9 Kč, PLN → …,99 zł, HUF → …90 Ft. */
+export function convertFromEur(eurCents: number, currency: ForeignCurrency, rates: ExchangeRates): number {
+  if (!(eurCents > 0)) return 0
+  const major = (eurCents / 100) * rates[currency]
+  switch (currency) {
+    case 'CZK': return Math.max(9, Math.round(major / 10) * 10 - 1) * 100
+    case 'PLN': return Math.max(99, Math.round(major) * 100 - 1)
+    case 'HUF': return Math.max(90, Math.round(major / 100) * 100 - 10) * 100
+  }
+}
 
 /** Build the per-currency price map from a Payload product document.
- *  basePrice is the canonical EUR price; prices.* are manual admin entries.
- *  Accepts the untyped Payload doc shape. */
-export function productPriceMap(productDoc: unknown): PriceMap {
+ *  basePrice is the canonical EUR price. CZK/PLN/HUF are converted from it with
+ *  the exchange rates — unless the product sets a manual override in prices.*,
+ *  which wins. Converting by default keeps every currency in sync when the EUR
+ *  price changes. Accepts the untyped Payload doc shape. */
+export function productPriceMap(productDoc: unknown, rates: ExchangeRates = DEFAULT_RATES): PriceMap {
   const product = (productDoc ?? {}) as { basePrice?: unknown; prices?: unknown }
-  const prices = (product.prices ?? {}) as { czk?: number | null; pln?: number | null; huf?: number | null }
-  const map: PriceMap = { EUR: typeof product.basePrice === 'number' ? product.basePrice : 0 }
-  if (typeof prices.czk === 'number') map.CZK = prices.czk
-  if (typeof prices.pln === 'number') map.PLN = prices.pln
-  if (typeof prices.huf === 'number') map.HUF = prices.huf
-  return map
+  const overrides = (product.prices ?? {}) as Partial<Record<'czk' | 'pln' | 'huf', number | null>>
+  const eur = typeof product.basePrice === 'number' ? product.basePrice : 0
+  const price = (override: number | null | undefined, currency: ForeignCurrency) =>
+    typeof override === 'number' && override > 0 ? override : convertFromEur(eur, currency, rates)
+  return {
+    EUR: eur,
+    CZK: price(overrides.czk, 'CZK'),
+    PLN: price(overrides.pln, 'PLN'),
+    HUF: price(overrides.huf, 'HUF'),
+  }
 }
 
 /** Apply an EUR-denominated modifier (e.g. configurator part surcharge) to every

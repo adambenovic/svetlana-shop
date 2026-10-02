@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { Price } from '@/components/ui/Price'
 import { productPriceMap, lampImages, configuratorQuery } from '@/lib/prices'
 import { lexicalToHtml } from '@/lib/lexical-to-html'
+import { getExchangeRates } from '@/lib/server-pricing'
 import { getTranslations } from 'next-intl/server'
 import { getPathname } from '@/i18n/navigation'
 import styles from './page.module.css'
@@ -62,6 +63,7 @@ export default async function ProductPage({
 
   const product = await findProduct(locale, slug)
   if (!product) notFound()
+  const rates = await getExchangeRates(await getPayload({ config }))
 
   const title = typeof product.title === 'string' ? product.title : slug
   const descriptionHtml = lexicalToHtml(product.description)
@@ -101,7 +103,7 @@ export default async function ProductPage({
       <div className={styles.info}>
         <h1 className={styles.title}>{title}</h1>
         <p className={styles.price}>
-          <Price prices={productPriceMap(product)} />
+          <Price prices={productPriceMap(product, rates)} />
         </p>
         {descriptionHtml && (
           <div className={`prose ${styles.description}`} dangerouslySetInnerHTML={{ __html: descriptionHtml }} />

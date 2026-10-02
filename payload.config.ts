@@ -7,6 +7,7 @@ import { Media } from './collections/Media'
 import { Users } from './collections/Users'
 import { Pages } from './collections/Pages'
 import { Discounts } from './collections/Discounts'
+import { CurrencySettings } from './globals/CurrencySettings'
 import { migrations } from './migrations'
 import { ensureConfiguratorProduct } from './lib/configurator-product'
 
@@ -21,6 +22,7 @@ export default buildConfig({
   },
   admin: { user: 'users' },
   collections: [Products, Orders, Media, Users, Pages, Discounts],
+  globals: [CurrencySettings],
   editor: lexicalEditor({}),
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URI },

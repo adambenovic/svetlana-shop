@@ -7,7 +7,9 @@ import { GalleryGrid } from '@/components/gallery/GalleryGrid'
 import { Hero } from '@/components/home/Hero'
 import { WhySection } from '@/components/home/WhySection'
 import { alternatesFor, openGraphFor } from '@/components/layout/seo'
-import type { Product } from '@/types/product'
+import type { GalleryProduct } from '@/components/gallery/GalleryCard'
+import { productPriceMap } from '@/lib/prices'
+import { getExchangeRates } from '@/lib/server-pricing'
 import styles from './page.module.css'
 
 export async function generateMetadata({
@@ -31,6 +33,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'gallery' })
   const payload = await getPayload({ config })
+  const rates = await getExchangeRates(payload)
 
   const { docs } = await payload.find({
     collection: 'products',
@@ -39,18 +42,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     limit: 6,
   })
 
-  const products: Product[] = docs.map(p => ({
+  const products: GalleryProduct[] = docs.map(p => ({
     id: p.id,
     slug: p.slug,
     title: typeof p.title === 'string' ? p.title : '',
-    basePrice: p.basePrice,
-    currency: p.currency,
     images: (p.images ?? []).map((img: { image: { url: string }; alt?: string }) => ({
       url: img.image?.url ?? '',
       alt: img.alt ?? '',
     })),
     hasBg: !!p.hasBg,
     partsKey: p.partsKey ?? undefined,
+    configuration: (p as { configuration?: Record<string, string> | null }).configuration ?? null,
+    prices: productPriceMap(p, rates),
   }))
 
   return (

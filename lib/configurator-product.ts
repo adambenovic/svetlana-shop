@@ -38,8 +38,8 @@ export async function ensureConfiguratorProduct(
       slug: 'configurator-lamp',
       basePrice: 8900,
       currency: 'EUR',
-      // Manual per-currency prices (smallest unit) — adjust in the admin
-      prices: { czk: 229000, pln: 37900, huf: 3590000 },
+      // No fixed CZK/PLN/HUF prices — they convert from the EUR price via the
+      // admin "Currency settings" rates (a fixed value would drift when EUR changes)
       partsKey: 'leah',
       status: 'published',
       configuratorOnly: true,

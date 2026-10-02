@@ -8,7 +8,7 @@ The centerpiece is a live **lamp configurator**: customers pick a base shape, sh
 
 - **Configurator** — URL-backed state (shareable/deep-linkable), live composited preview from render assets, per-part pricing.
 - **10 locales** — sk (default), cs, de, pl, hu, uk, en, es, fr, it — with **fully localized URL pathnames** (`/konfigurator`, `/de/warenkorb`, `/fr/panier`, …) via `next-intl`.
-- **Multi-currency** — manual per-currency prices (EUR/CZK/PLN/HUF) set in the admin; displayed and charged in the selected currency with EUR fallback.
+- **Multi-currency** — products are priced in EUR; CZK/PLN/HUF are converted with exchange rates editable in the admin (**Currency settings**) and rounded to clean retail prices, with optional fixed per-product overrides. The server price is authoritative, and carts re-price themselves on load so price changes reach existing carts.
 - **Payments** — [GoPay](https://gopay.com) gateway (cards, Google Pay, Apple Pay) with a runtime prod/sandbox switch. Prices recomputed and discounts re-validated server-side; the webhook verifies payment state against GoPay before fulfilling.
 - **Shipping** — [Packeta](https://www.packeta.com) pickup points; delivery to SK, CZ, AT, PL, HU only (enforced client- and server-side).
 - **Discount codes** — admin-managed, usage-capped, counted atomically on payment.

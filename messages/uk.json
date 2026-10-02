@@ -159,7 +159,8 @@
     "trust_payment": "Безпечна оплата через GoPay — Visa, Mastercard, Apple Pay та Google Pay",
     "trust_free_shipping": "Безкоштовна доставка до пункту видачі",
     "trust_returns": "Повернення протягом 14 днів",
-    "qty": "Кількість"
+    "qty": "Кількість",
+    "error_price_changed": "Ціни тим часом оновилися. Будь ласка, перевірте суму замовлення та підтвердьте ще раз."
   },
   "gallery": {
     "title": "Галерея ламп",

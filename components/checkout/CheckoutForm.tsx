@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
-import { useCart } from '@/store/cart'
+import { useCart, repriceCart } from '@/store/cart'
 import { useCurrency, pickPrice, formatPrice } from '@/store/currency'
 import { Button } from '@/components/ui/Button'
 import { BILLING_COUNTRIES, DEFAULT_COUNTRY } from '@/lib/countries'
@@ -24,7 +24,8 @@ export function CheckoutForm({ locale }: CheckoutFormProps) {
   const router = useRouter()
   const { items, subtotal, total, pricedIn, discount } = useCart()
   const selected = useCurrency(s => s.currency)
-  // Charge in the selected currency only when every item has a manual price for it
+  // Charge in the selected currency once every line carries a price for it
+  // (always true after the server re-price; EUR covers legacy lines until then)
   const currency = pricedIn(selected) ? selected : 'EUR'
 
   const [name, setName] = useState('')
@@ -93,6 +94,14 @@ export function CheckoutForm({ locale }: CheckoutFormProps) {
         }),
       })
 
+      if (res.status === 409) {
+        // Prices moved since the cart was priced — refresh them and let the
+        // customer confirm the updated total instead of charging a surprise.
+        await repriceCart()
+        setError(t('error_price_changed'))
+        setSubmitting(false)
+        return
+      }
       if (!res.ok) throw new Error('Order creation failed')
       const { gopayUrl } = await res.json() as { gopayUrl: string }
       // Clear cart only after successful return from GoPay (on success page), not here.

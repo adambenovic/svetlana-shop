@@ -17,11 +17,11 @@ export const Products: CollectionConfig = {
     {
       name: 'prices',
       type: 'group',
-      admin: { description: 'Manual prices per currency, in smallest unit (haléře/grosze/fillér). Empty = customers paying in that currency see the EUR price.' },
+      admin: { description: 'OPTIONAL fixed prices per currency, in smallest unit (haléře/grosze/fillér). Leave EMPTY (recommended) to convert automatically from the EUR price using Currency settings — converted prices follow every EUR price change. A value here stays fixed even when the EUR price changes.' },
       fields: [
-        { name: 'czk', type: 'number', admin: { description: 'CZK price in haléře. 2290 Kč = 229000' } },
-        { name: 'pln', type: 'number', admin: { description: 'PLN price in grosze. 379 zł = 37900' } },
-        { name: 'huf', type: 'number', admin: { description: 'HUF price ×100. 35900 Ft = 3590000' } },
+        { name: 'czk', type: 'number', admin: { description: 'Fixed CZK price in haléře (1319 Kč = 131900). Empty = auto-convert.' } },
+        { name: 'pln', type: 'number', admin: { description: 'Fixed PLN price in grosze (235,99 zł = 23599). Empty = auto-convert.' } },
+        { name: 'huf', type: 'number', admin: { description: 'Fixed HUF price ×100 (19 790 Ft = 1979000). Empty = auto-convert.' } },
       ],
     },
     {

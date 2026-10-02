@@ -1,37 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { randomBytes } from 'crypto'
-import fs from 'fs'
-import path from 'path'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { createPayment, type GoPayPayment } from '@/lib/gopay'
 import { COUNTRY_ALPHA3 } from '@/lib/countries'
-import { productPriceMap, applyModifier } from '@/lib/prices'
+import { getExchangeRates, itemPriceMap } from '@/lib/server-pricing'
 import { checkRateLimit } from '@/lib/rate-limit'
 import { getPathname } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
-
-// Configurator part surcharges live in public/parts.json (applied client-side via
-// applyModifier). We re-read them server-side so a client can never pay the bare
-// basePrice while selecting an up-charged base/shade. Cached per process.
-interface Part { id: string; priceModifier?: number }
-interface Parts { bases: Part[]; shades: Part[] }
-let partsCache: Parts | null = null
-function loadParts(): Parts {
-  if (partsCache) return partsCache
-  const raw = fs.readFileSync(path.join(process.cwd(), 'public/parts.json'), 'utf-8')
-  const parsed = JSON.parse(raw) as Parts
-  partsCache = { bases: parsed.bases ?? [], shades: parsed.shades ?? [] }
-  return partsCache
-}
-
-function surchargeEur(configuration: Record<string, string> | undefined, parts: Parts): number {
-  const base = configuration?.base
-  const shade = configuration?.shade
-  const baseMod = (base && parts.bases.find(p => p.id === base)?.priceModifier) || 0
-  const shadeMod = (shade && parts.shades.find(p => p.id === shade)?.priceModifier) || 0
-  return baseMod + shadeMod
-}
 
 export async function POST(req: NextRequest) {
   const limited = checkRateLimit(req, 'orders', 10, 60_000)
@@ -64,8 +40,8 @@ export async function POST(req: NextRequest) {
   }
 
   // Validate item shapes before touching the DB. Quantity: positive integer
-  // within a sane bound; unitPrice: non-negative integer (client value is only
-  // ever floored upward below, never trusted downward).
+  // within a sane bound; unitPrice: non-negative integer (informational only —
+  // the charged price is always recomputed server-side below).
   for (const item of items) {
     if (!item?.productId || typeof item.productId !== 'string') {
       return NextResponse.json({ error: 'Invalid item' }, { status: 400 })
@@ -81,12 +57,14 @@ export async function POST(req: NextRequest) {
   const orderNumber = `SL-${Date.now()}-${randomBytes(3).toString('hex')}`
   const payload = await getPayload({ config })
   const safeLocale = (routing.locales as readonly string[]).includes(locale) ? locale as (typeof routing.locales)[number] : routing.defaultLocale
-  const parts = loadParts()
+  const rates = await getExchangeRates(payload)
 
-  // Recompute totalAmount server-side — never trust client-submitted price.
-  // For each item: verify the product exists and floor unitPrice at the
-  // surcharge-inclusive price (basePrice + configurator part modifiers) for the
-  // charged currency. The stored title is derived from the product, not the client.
+  // The server price is authoritative — never trust the client-submitted price.
+  // For each item: verify the product exists and charge the surcharge-inclusive
+  // price (EUR base + part modifiers, converted with the current exchange rates)
+  // for the charged currency. A stale cart can therefore neither underpay nor be
+  // overcharged with an outdated higher price. The stored title is derived from
+  // the product, not the client.
   const cur = currency.toUpperCase() as 'EUR' | 'CZK' | 'PLN' | 'HUF'
   const verifiedItems: typeof items = []
   for (const item of items) {
@@ -100,15 +78,14 @@ export async function POST(req: NextRequest) {
     if (!product) {
       return NextResponse.json({ error: `Unknown product: ${item.productId}` }, { status: 400 })
     }
-    const withSurcharge = applyModifier(productPriceMap(product), surchargeEur(item.configuration, parts))
-    const minPrice = withSurcharge[cur]
-    if (typeof minPrice !== 'number') {
+    const unitPrice = itemPriceMap(product, item.configuration, rates)[cur]
+    if (typeof unitPrice !== 'number' || unitPrice <= 0) {
       return NextResponse.json({ error: `No ${currency} price for product: ${item.productId}` }, { status: 400 })
     }
     verifiedItems.push({
       ...item,
       title: (product.title as string) ?? item.title,
-      unitPrice: Math.max(item.unitPrice, minPrice),
+      unitPrice,
     })
   }
   const subtotal = verifiedItems.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0)
@@ -137,6 +114,13 @@ export async function POST(req: NextRequest) {
   const totalAmount = discount
     ? subtotal - Math.round(subtotal * discount.percent / 100)
     : subtotal
+
+  // Never charge more than the total the customer was shown (e.g. a price went
+  // up while the cart sat in their browser). The client re-prices its cart and
+  // asks the customer to confirm the new total. A lower server total is fine.
+  if (typeof body.totalAmount === 'number' && totalAmount > body.totalAmount) {
+    return NextResponse.json({ error: 'price_changed', totalAmount }, { status: 409 })
+  }
 
   // VAT is charged for the destination (where the goods arrive). The frontend
   // sends the Packeta pickup-point country; fall back to the billing country.

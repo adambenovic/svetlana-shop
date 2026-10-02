@@ -159,7 +159,8 @@
     "trust_payment": "Sichere Zahlung über GoPay — Visa, Mastercard, Apple Pay & Google Pay",
     "trust_free_shipping": "Kostenloser Versand an Ihren Abholpunkt",
     "trust_returns": "14 Tage Rückgaberecht",
-    "qty": "Menge"
+    "qty": "Menge",
+    "error_price_changed": "Die Preise wurden inzwischen aktualisiert. Bitte prüfen Sie den Bestellbetrag und bestätigen Sie erneut."
   },
   "gallery": {
     "title": "Lampen-Galerie",

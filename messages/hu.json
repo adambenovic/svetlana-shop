@@ -159,7 +159,8 @@
     "trust_payment": "Biztonságos fizetés a GoPay-en keresztül — Visa, Mastercard, Apple Pay és Google Pay",
     "trust_free_shipping": "Ingyenes szállítás az átvételi pontra",
     "trust_returns": "14 napos visszaküldés",
-    "qty": "Db"
+    "qty": "Db",
+    "error_price_changed": "Az árak időközben frissültek. Kérjük, ellenőrizze a rendelés összegét, és erősítse meg újra."
   },
   "gallery": {
     "title": "Lámpa galéria",

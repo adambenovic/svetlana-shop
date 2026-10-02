@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { GalleryGrid } from '@/components/gallery/GalleryGrid'
 import type { GalleryProduct } from '@/components/gallery/GalleryCard'
 import { productPriceMap } from '@/lib/prices'
+import { getExchangeRates } from '@/lib/server-pricing'
 import styles from './page.module.css'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -20,6 +21,7 @@ export default async function GalleryPage({ params }: { params: Promise<{ locale
   const t = await getTranslations({ locale, namespace: 'gallery' })
   const tp = await getTranslations({ locale, namespace: 'configurator_product' })
   const payload = await getPayload({ config })
+  const rates = await getExchangeRates(payload)
 
   const { docs } = await payload.find({
     collection: 'products',
@@ -40,7 +42,7 @@ export default async function GalleryPage({ params }: { params: Promise<{ locale
         alt: img.alt ?? '',
       })),
       configuration: doc.configuration ?? null,
-      prices: productPriceMap(doc),
+      prices: productPriceMap(doc, rates),
     }
   })
 

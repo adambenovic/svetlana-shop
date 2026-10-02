@@ -159,7 +159,8 @@
     "trust_payment": "Paiement sécurisé via GoPay — Visa, Mastercard, Apple Pay et Google Pay",
     "trust_free_shipping": "Livraison gratuite vers votre point de retrait",
     "trust_returns": "Retours sous 14 jours",
-    "qty": "Qté"
+    "qty": "Qté",
+    "error_price_changed": "Les prix ont été mis à jour entre-temps. Veuillez vérifier le montant de la commande et confirmer à nouveau."
   },
   "gallery": {
     "title": "Galerie de lampes",

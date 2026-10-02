@@ -36,15 +36,6 @@ const DESC: Record<string, string> = {
   it: '{name} — lampada da tavolo d’autore stampata in 3D. Configurazione fissa e curata a mano nel nostro atelier.',
 }
 
-// EUR→other-currency ratios matching the configurator product (8900 → 229000 / 37900 / 3590000).
-function prices(basePriceEur: number) {
-  return {
-    czk: Math.round(basePriceEur * 229000 / 8900),
-    pln: Math.round(basePriceEur * 37900 / 8900),
-    huf: Math.round(basePriceEur * 3590000 / 8900),
-  }
-}
-
 interface Signature {
   name: string
   slug: string
@@ -90,7 +81,6 @@ export async function POST(req: NextRequest) {
         description: DESC.en.replace('{name}', sig.name),
         basePrice: sig.basePrice,
         currency: 'EUR',
-        prices: prices(sig.basePrice),
         configuration: sig.configuration,
         partsKey: 'leah',
         status: 'published',

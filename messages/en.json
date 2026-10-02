@@ -159,7 +159,8 @@
     "trust_payment": "Secure payment via GoPay — Visa, Mastercard, Apple Pay & Google Pay",
     "trust_free_shipping": "Free shipping to your pickup point",
     "trust_returns": "14-day returns",
-    "qty": "Qty"
+    "qty": "Qty",
+    "error_price_changed": "Prices have been updated in the meantime. Please review your order total and confirm again."
   },
   "gallery": {
     "title": "Lamp Gallery",
