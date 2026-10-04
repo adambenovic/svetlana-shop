@@ -59,12 +59,12 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  // The middleware skips paths with a dot (/.env, /wp-login.php, /favicon.ico),
+  // The proxy (proxy.ts) skips paths with a dot (/.env, /wp-login.php, /favicon.ico),
   // which then land here with that segment as "locale" — 404 them instead of
   // rendering the home page with <html lang=".env">.
   if (!hasLocale(routing.locales, locale)) notFound()
   // Bind next-intl's request locale to the URL segment (also for requests the
-  // middleware did not see), so server translations always match <html lang>.
+  // proxy did not see), so server translations always match <html lang>.
   setRequestLocale(locale)
   const messages = await getMessages()
   const ta = await getTranslations({ locale, namespace: 'accessibility' })
