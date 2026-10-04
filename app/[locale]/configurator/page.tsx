@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
-import { Suspense } from 'react'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { Configurator } from '@/components/configurator/Configurator'
+import { SELECTION_KEYS, resolveSelection } from '@/components/configurator/selection'
+import partsData from '@/public/parts.json'
+import type { PartsData } from '@/types/parts'
 import { productPriceMap } from '@/lib/prices'
 import { getExchangeRates } from '@/lib/server-pricing'
 import { getTranslations } from 'next-intl/server'
@@ -30,10 +32,11 @@ export default async function ConfiguratorPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>
-  searchParams: Promise<{ product?: string }>
+  searchParams: Promise<Record<string, string | string[] | undefined>>
 }) {
   const { locale } = await params
-  const { product: partsKey } = await searchParams
+  const query = await searchParams
+  const partsKey = typeof query.product === 'string' ? query.product : undefined
   const payload = await getPayload({ config })
   const rates = await getExchangeRates(payload)
 
@@ -77,6 +80,7 @@ export default async function ConfiguratorPage({
   }
 
   const product = doc
+  const initial = resolveSelection(query, partsData as unknown as PartsData)
 
   const t = await getTranslations({ locale, namespace: 'configurator' })
   const tHeader = await getTranslations({ locale, namespace: 'sections.header' })
@@ -108,18 +112,19 @@ export default async function ConfiguratorPage({
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      {/* Server-rendered h1 (visually hidden) so it is always present in the
-          initial HTML — the client Configurator gates its render on parts. */}
       <h1 className="visually-hidden">{t('page_heading')}</h1>
-      {/* Suspense required because Configurator uses useSearchParams() */}
-      <Suspense fallback={<div style={{ color: 'var(--color-text-muted)' }}>{t('loading')}</div>}>
-        <Configurator
-          partsKey={product.partsKey ?? ''}
-          prices={productPriceMap(product, rates)}
-          productId={String(product.id)}
-          productTitle={typeof product.title === 'string' ? product.title : ''}
-        />
-      </Suspense>
+      {/* Selection resolved here, so the server HTML is the finished configurator
+          (unknown/missing URL ids already replaced by defaults). */}
+      <Configurator
+        // Remount when a link brings in a different configuration.
+        key={SELECTION_KEYS.map(k => initial[k]).join('|')}
+        partsKey={product.partsKey ?? ''}
+        prices={productPriceMap(product, rates)}
+        rates={rates}
+        productId={String(product.id)}
+        productTitle={typeof product.title === 'string' ? product.title : ''}
+        initial={initial}
+      />
     </div>
   )
 }

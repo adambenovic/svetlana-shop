@@ -58,7 +58,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   return (
     <>
-      <Hero locale={locale} />
+      <Hero locale={locale} showGallery={products.length > 0} />
 
       {products.length > 0 && (
         <section className={styles.gallerySection}>

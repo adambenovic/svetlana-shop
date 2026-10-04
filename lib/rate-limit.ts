@@ -18,12 +18,21 @@ function sweep(now: number, windowMs: number) {
   }
 }
 
-/** Extract a best-effort client IP from proxy headers. */
+/** Extract a best-effort client IP from proxy headers.
+ *  Order: Cloudflare's `cf-connecting-ip` (set by the edge, overwrites any
+ *  client value), then the LAST X-Forwarded-For entry (appended by the proxy
+ *  nearest to us — the first entries are client-controlled and trivially
+ *  spoofed to dodge the limiter), then x-real-ip. */
 export function getClientIp(req: Request): string {
+  const cf = req.headers.get('cf-connecting-ip')?.trim()
+  if (cf) return cf
   const xff = req.headers.get('x-forwarded-for')
-  if (xff) return xff.split(',')[0]!.trim()
-  const real = req.headers.get('x-real-ip')
-  if (real) return real.trim()
+  if (xff) {
+    const last = xff.split(',').map(s => s.trim()).filter(Boolean).pop()
+    if (last) return last
+  }
+  const real = req.headers.get('x-real-ip')?.trim()
+  if (real) return real
   return 'unknown'
 }
 
@@ -51,6 +60,13 @@ export function rateLimit(key: string, limit: number, windowMs: number): RateLim
   return { ok: true, retryAfter: 0 }
 }
 
+function tooManyRequests(retryAfter: number): NextResponse {
+  return NextResponse.json(
+    { error: 'Too many requests' },
+    { status: 429, headers: { 'Retry-After': String(retryAfter) } },
+  )
+}
+
 /** Convenience: enforce a limit keyed by IP + bucket name, returning a 429 when exceeded. */
 export function checkRateLimit(
   req: Request,
@@ -60,9 +76,13 @@ export function checkRateLimit(
 ): NextResponse | null {
   const ip = getClientIp(req)
   const { ok, retryAfter } = rateLimit(`${bucket}:${ip}`, limit, windowMs)
-  if (ok) return null
-  return NextResponse.json(
-    { error: 'Too many requests' },
-    { status: 429, headers: { 'Retry-After': String(retryAfter) } },
-  )
+  return ok ? null : tooManyRequests(retryAfter)
+}
+
+/** A cap shared by ALL clients for one bucket — bounds the total rate of an
+ *  expensive endpoint (e.g. orders, which create real gateway payments) even
+ *  when requests arrive from many IPs. */
+export function checkGlobalRateLimit(bucket: string, limit: number, windowMs = 60_000): NextResponse | null {
+  const { ok, retryAfter } = rateLimit(`${bucket}:*global*`, limit, windowMs)
+  return ok ? null : tooManyRequests(retryAfter)
 }

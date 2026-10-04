@@ -263,12 +263,18 @@
   overflow: hidden;
 }
 
-.cablePreviewImg {
+/* Square photo cropped to at most 220px tall (next/image fill needs a sized box). */
+.cablePreviewFrame {
+  position: relative;
   width: 100%;
+  aspect-ratio: 1 / 1;
   max-height: 220px;
-  object-fit: cover;
-  display: block;
   border-radius: 10px;
+  overflow: hidden;
+}
+
+.cablePreviewImg {
+  object-fit: cover;
 }
 
 .cablePreviewName {
@@ -347,6 +353,31 @@
   line-height: 1.6;
 }
 
+.accordionList {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.accordionLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin-top: 12px;
+}
+
+.accordionLinks a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  /* ≥24px tap target */
+  display: inline-block;
+  padding: 2px 0;
+  min-height: 24px;
+}
+
 /* Disclaimer */
 .disclaimer {
   font-size: 12px;
@@ -373,6 +404,12 @@
   margin-right: auto;
 }
 
+.invalidNote {
+  flex-basis: 100%;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
 .loading {
   color: var(--color-text-muted);
   padding: 32px 0;
@@ -385,6 +422,18 @@
 }
 
 @media (max-width: 900px) {
+  /* Reserve the bar's height at the end of the page (footer legal links stay
+     reachable) and in focus/scroll-into-view (focused controls never end up
+     underneath it). Only on pages that render the bar. */
+  :global(html):has(.stickyBar) {
+    --sticky-bar-h: 76px;
+    scroll-padding-bottom: calc(var(--sticky-bar-h) + env(safe-area-inset-bottom, 0px));
+  }
+
+  :global(body):has(.stickyBar) {
+    padding-bottom: calc(var(--sticky-bar-h) + env(safe-area-inset-bottom, 0px));
+  }
+
   .stickyBar {
     display: flex;
     align-items: center;
@@ -394,11 +443,21 @@
     right: 0;
     bottom: 0;
     z-index: 50;
+    box-sizing: border-box;
+    min-height: calc(var(--sticky-bar-h) + env(safe-area-inset-bottom, 0px));
     padding: 12px 16px;
-    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     background: var(--color-surface);
     border-top: 1px solid var(--color-border);
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.18);
+    transition: transform 0.2s ease, visibility 0.2s;
+  }
+
+  /* Inline summary on screen: slide the bar away (visibility also takes its
+     button out of the tab order and the accessibility tree). */
+  .stickyBarHidden {
+    transform: translateY(100%);
+    visibility: hidden;
   }
 
   .stickyPrice {
@@ -407,10 +466,5 @@
     color: var(--color-accent);
     font-family: var(--font-heading);
     margin-right: auto;
-  }
-
-  /* Room so the fixed bar never covers the last controls. */
-  .controls {
-    padding-bottom: 72px;
   }
 }

@@ -1,12 +1,26 @@
 import Link from 'next/link'
+import { fontVariables } from '@/styles/fonts'
+import { THEME_BOOTSTRAP_SCRIPT } from '@/styles/theme-bootstrap'
 import '@/styles/globals.css'
 
 // Root-level 404: rendered outside the [locale] segment (and therefore outside
-// NextIntlClientProvider), so copy is in English and links to the site root.
+// NextIntlClientProvider) — for URLs whose first segment is not a locale
+// (/.env, /wp-login.php). Copy is in English and links to the site root.
 // It must supply its own <html>/<body> because the root layout is a passthrough.
+// Robots: Next.js adds noindex to every not-found response by itself.
+// The title is a JSX <title>, not a `metadata` export: this page is only reached
+// via notFound() in the [locale] layout (and its generateMetadata), so Next.js
+// 16 serves its error shell and renders this component on the client — the
+// metadata export would never be resolved, while React hoists <title> itself.
+
 export default function NotFound() {
   return (
-    <html lang="en">
+    <html lang="en" className={fontVariables} suppressHydrationWarning>
+      <head>
+        <title>Page not found | Svetlana Lampe</title>
+        <link rel="icon" href="/icon.png" />
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />
+      </head>
       <body>
         <main
           style={{

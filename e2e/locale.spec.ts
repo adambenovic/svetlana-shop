@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { dismissCookieBanner } from './helpers'
+import { dismissCookieBanner, seedCart } from './helpers'
 
 const SUPPORTED_LOCALES = [
   { path: '/', lang: 'sk' },
@@ -53,12 +53,15 @@ test.describe('Locale — translated content', () => {
     await expect(page.locator('main')).toContainText('Váš košík je prázdny')
   })
 
+  // The checkout redirects an empty cart to the cart page — seed one line.
   test('EN /en/checkout shows English checkout title', async ({ page }) => {
+    await seedCart(page)
     await page.goto('/en/checkout')
     await expect(page.locator('h1')).toContainText('Order')
   })
 
   test('SK /checkout shows Slovak checkout title', async ({ page }) => {
+    await seedCart(page)
     await page.goto('/pokladna')
     await expect(page.locator('h1')).toContainText('Objednávka')
   })

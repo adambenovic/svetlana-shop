@@ -5,6 +5,8 @@ const BASE_URL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3000'
 const SECRET = process.env.PAYLOAD_SECRET ?? 'change-this-in-production'
 
 export default async function globalTeardown() {
+  // Nothing was seeded (e.g. a run against the deployed site) — nothing to clean.
+  if (!existsSync(FIXTURE_STATE_FILE)) return
   try {
     const url = `${BASE_URL}/api/test-fixtures?action=clean&secret=${encodeURIComponent(SECRET)}`
     const res = await fetch(url)
@@ -18,7 +20,5 @@ export default async function globalTeardown() {
     console.warn('[fixtures] Teardown skipped (server may be down):', String(err))
   }
 
-  if (existsSync(FIXTURE_STATE_FILE)) {
-    unlinkSync(FIXTURE_STATE_FILE)
-  }
+  unlinkSync(FIXTURE_STATE_FILE)
 }

@@ -31,11 +31,15 @@ export function pickPrice(prices: PriceMap, currency: Currency): { amount: numbe
   return { amount: prices.EUR ?? 0, currency: 'EUR' }
 }
 
+/** Locale-formatted money. Whole units drop the decimals ("89 €", "1 319 Kč");
+ *  anything else always shows both ("43,20 €" — never "43,2 €"). */
 export function formatPrice(amountInCents: number, currency: string, locale?: string): string {
+  const cents = Math.round(amountInCents)
+  const digits = cents % 100 === 0 ? 0 : 2
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(amountInCents / 100)
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }).format(cents / 100)
 }

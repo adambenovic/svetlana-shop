@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import fs from 'fs'
 import path from 'path'
+import { DOCUMENT_SLUGS, LEGAL_HANDLES, pageTitle } from '@/app/[locale]/policies/legal-pages'
 
 /** Operator-only gate — `Authorization: Bearer $INVOICE_BACKFILL_TOKEN`. Fails closed if unset. */
 function authorized(req: NextRequest): boolean {
@@ -15,34 +16,15 @@ function authorized(req: NextRequest): boolean {
   return !!expected && a.length === b.length && timingSafeEqual(a, b)
 }
 
-// Bind-mounted into the container by docker-compose.tunnel.yml (source: benoshop repo)
 // Legal texts live in-repo and are baked into the image (see Dockerfile) — no
 // external mount. Overridable via LEGAL_DIR for local dev if needed.
 const LEGAL_DIR = process.env.LEGAL_DIR ?? path.join(process.cwd(), 'legal')
 
 const LOCALES = ['sk', 'cs', 'de', 'pl', 'hu', 'uk', 'en', 'es', 'fr', 'it'] as const
 
-const SLUGS = [
-  'privacy-policy',
-  'refund-policy',
-  'shipping-policy',
-  'terms-of-service',
-  'contact-information',
-  'cookie-preferences',
-  'lamp-manual',
-  'declaration-of-conformity',
-] as const
-
-const TITLES: Record<string, Record<string, string>> = {
-  'privacy-policy': { sk: 'Ochrana osobných údajov', en: 'Privacy Policy', cs: 'Ochrana osobních údajů', de: 'Datenschutzerklärung', pl: 'Polityka prywatności', hu: 'Adatvédelmi irányelvek', uk: 'Політика конфіденційності', es: 'Política de privacidad', fr: 'Politique de confidentialité', it: 'Informativa sulla privacy' },
-  'refund-policy': { sk: 'Reklamácie', en: 'Refund Policy', cs: 'Reklamační řád', de: 'Rückgaberichtlinie', pl: 'Polityka zwrotów', hu: 'Visszatérítési szabályzat', uk: 'Політика повернення', es: 'Política de reembolso', fr: 'Politique de remboursement', it: 'Politica di rimborso' },
-  'shipping-policy': { sk: 'Zásady doručenia', en: 'Shipping Policy', cs: 'Zásady doručení', de: 'Versandrichtlinie', pl: 'Polityka wysyłki', hu: 'Szállítási szabályzat', uk: 'Політика доставки', es: 'Política de envíos', fr: "Politique d'expédition", it: 'Politica di spedizione' },
-  'terms-of-service': { sk: 'Obchodné podmienky', en: 'Terms of Service', cs: 'Obchodní podmínky', de: 'Nutzungsbedingungen', pl: 'Regulamin', hu: 'Felhasználási feltételek', uk: 'Умови використання', es: 'Términos de servicio', fr: "Conditions d'utilisation", it: 'Termini di servizio' },
-  'contact-information': { sk: 'Kontaktné informácie', en: 'Contact Information', cs: 'Kontaktní informace', de: 'Kontaktinformationen', pl: 'Dane kontaktowe', hu: 'Kapcsolati adatok', uk: 'Контактна інформація', es: 'Información de contacto', fr: 'Coordonnées', it: 'Informazioni di contatto' },
-  'cookie-preferences': { sk: 'Nastavenia cookies', en: 'Cookie Preferences', cs: 'Nastavení cookies', de: 'Cookie-Einstellungen', pl: 'Ustawienia plików cookie', hu: 'Cookie beállítások', uk: 'Налаштування cookies', es: 'Preferencias de cookies', fr: 'Paramètres des cookies', it: 'Impostazioni cookie' },
-  'lamp-manual': { sk: 'Manuál k lampe', en: 'Lamp Manual', cs: 'Návod k lampě', de: 'Lampen-Handbuch', pl: 'Instrukcja lampy', hu: 'Lámpa kézikönyv', uk: 'Посібник до лампи', es: 'Manual de la lámpara', fr: 'Manuel de la lampe', it: 'Manuale della lampada' },
-  'declaration-of-conformity': { sk: 'Vyhlásenie o zhode', en: 'Declaration of Conformity', cs: 'Prohlášení o shodě', de: 'Konformitätserklärung', pl: 'Deklaracja zgodności', hu: 'Megfelelőségi nyilatkozat', uk: 'Декларація відповідності', es: 'Declaración de conformidad', fr: 'Déclaration de conformité', it: 'Dichiarazione di conformità' },
-}
+// Legal documents first, then the PDF-backed help documents. Titles (shared with
+// the order email's link labels) live in app/[locale]/policies/legal-pages.ts.
+const SLUGS = [...LEGAL_HANDLES, ...DOCUMENT_SLUGS] as const
 
 // The two document pages show pre-rendered page images (native PDF embeds don't
 // render on mobile browsers) plus a download link to the actual PDF.
@@ -104,7 +86,7 @@ export async function POST(req: NextRequest) {
         collection: 'pages',
         data: {
           slug,
-          title: TITLES[slug]?.['en'] ?? slug,
+          title: pageTitle(slug, 'en'),
         },
         locale: 'en',
       })
@@ -120,7 +102,7 @@ export async function POST(req: NextRequest) {
         id: pageId,
         locale,
         data: {
-          title: TITLES[slug]?.[locale] ?? TITLES[slug]?.['en'] ?? slug,
+          title: pageTitle(slug, locale),
           ...(html ? { bodyHtml: html } : {}),
         },
       })

@@ -1,21 +1,24 @@
 import type { MetadataRoute } from 'next'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
-import { getPathname } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
+import { absoluteUrl } from '@/components/layout/seo'
 
 // Queries Payload — must render at request time, not during `next build`
 // (the Docker builder has no database or PAYLOAD_SECRET).
 export const dynamic = 'force-dynamic'
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
-const LOCALES = routing.locales
-
-type Href = Parameters<typeof getPathname>[0]['href']
-
-function url(locale: (typeof LOCALES)[number], href: Href) {
-  return `${BASE_URL}${getPathname({ href, locale })}`
-}
+// Legal texts are canonical under the policies route. The two document pages
+// (lamp-manual, declaration-of-conformity) are left out: they are noindex — the
+// same English PDF rendered as images in every locale.
+const LEGAL_HANDLES = new Set([
+  'privacy-policy',
+  'terms-of-service',
+  'refund-policy',
+  'shipping-policy',
+  'cookie-preferences',
+  'contact-information',
+])
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const payload = await getPayload({ config })
@@ -23,7 +26,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [{ docs: products }, { docs: pages }] = await Promise.all([
     payload.find({
       collection: 'products',
-      where: { status: { equals: 'published' } },
+      // The configurator base product has no page (it redirects to the configurator).
+      where: { and: [{ status: { equals: 'published' } }, { configuratorOnly: { not_equals: true } }] },
       limit: 500,
       select: { slug: true, updatedAt: true },
     }),
@@ -34,20 +38,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   ])
 
-  // Cart/checkout are transactional (noindex) — never in the sitemap.
-  const staticRoutes = ['/', '/configurator', '/gallery'] as const
-
-  // Utility/help pages carry no SEO value — keep them out of the sitemap.
-  const EXCLUDED_PAGE_SLUGS = new Set(['cookie-preferences', 'lamp-manual', 'declaration-of-conformity'])
+  // Cart/checkout are transactional — never in the sitemap. The gallery is
+  // listed only while it has products (an empty gallery is a thin page).
+  const staticRoutes = products.length > 0
+    ? (['/', '/configurator', '/gallery'] as const)
+    : (['/', '/configurator'] as const)
 
   const entries: MetadataRoute.Sitemap = []
 
-  for (const locale of LOCALES) {
+  for (const locale of routing.locales) {
     for (const route of staticRoutes) {
       // No lastModified on static routes — a per-request `new Date()` is fake
       // precision that only churns the sitemap.
       entries.push({
-        url: url(locale, route),
+        url: absoluteUrl(locale, route),
         changeFrequency: 'weekly',
         priority: route === '/' ? 1 : 0.8,
       })
@@ -55,16 +59,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const p of products) {
       if (!p.slug) continue
       entries.push({
-        url: url(locale, { pathname: '/products/[slug]', params: { slug: String(p.slug) } }),
+        url: absoluteUrl(locale, { pathname: '/products/[slug]', params: { slug: String(p.slug) } }),
         lastModified: new Date(p.updatedAt as string),
         changeFrequency: 'monthly',
         priority: 0.7,
       })
     }
     for (const p of pages) {
-      if (!p.slug || EXCLUDED_PAGE_SLUGS.has(String(p.slug))) continue
+      const slug = String(p.slug ?? '')
+      if (!LEGAL_HANDLES.has(slug)) continue
       entries.push({
-        url: url(locale, { pathname: '/pages/[slug]', params: { slug: String(p.slug) } }),
+        url: absoluteUrl(locale, { pathname: '/policies/[handle]', params: { handle: slug } }),
         lastModified: new Date(p.updatedAt as string),
         changeFrequency: 'yearly',
         priority: 0.5,

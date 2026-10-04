@@ -1,26 +1,25 @@
 'use client'
 import { useTranslations } from 'next-intl'
 import styles from './Configurator.module.css'
-
-type BulbType = 'warm' | 'cold' | 'none'
+import { BULB_TYPES, type BulbType } from './selection'
+import { useRovingRadio } from './useRovingRadio'
 
 export function BulbPicker({ selected, onChange }: { selected: BulbType; onChange: (b: BulbType) => void }) {
   const t = useTranslations('configurator')
-  const options: { id: BulbType; label: string }[] = [
-    { id: 'warm', label: t('bulb_warm') },
-    { id: 'cold', label: t('bulb_cold') },
-    { id: 'none', label: t('bulb_none') },
-  ]
+  const roving = useRovingRadio(BULB_TYPES, selected, onChange)
   return (
-    <div className={styles.bulbOptions}>
-      {options.map(o => (
+    <div className={styles.bulbOptions} role="radiogroup" aria-label={t('pick_bulb')}>
+      {BULB_TYPES.map((id, i) => (
         <button
-          key={o.id}
-          className={[styles.bulbOption, selected === o.id ? styles.bulbSelected : ''].join(' ')}
-          onClick={() => onChange(o.id)}
-          aria-pressed={selected === o.id}
+          key={id}
+          type="button"
+          role="radio"
+          aria-checked={selected === id}
+          className={[styles.bulbOption, selected === id ? styles.bulbSelected : ''].join(' ')}
+          onClick={() => onChange(id)}
+          {...roving(i)}
         >
-          {o.label}
+          {t(`bulb_${id}`)}
         </button>
       ))}
     </div>

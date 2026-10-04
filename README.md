@@ -27,7 +27,7 @@ The centerpiece is a live **lamp configurator**: customers pick a base shape, sh
 | Client state | Zustand (cart, currency) |
 | PDF | pdfkit |
 | Payments / Shipping / Email | GoPay · Packeta · Brevo |
-| Deploy | Docker, behind a Cloudflare tunnel |
+| Deploy | Docker (non-root image), behind a Cloudflare tunnel; systemd user timers for backups + payment reconciliation |
 
 > ⚠️ **Read `AGENTS.md` before contributing.** This project pins a specific Next.js version whose APIs and conventions differ from older releases — consult the bundled docs in `node_modules/next/dist/docs/` rather than relying on memory.
 
@@ -45,7 +45,8 @@ store/               Zustand stores (cart, currency)
 i18n/                routing (localized pathnames) + navigation helpers
 messages/            Translation catalogs, one per locale
 legal/               Legal texts (privacy, terms, refund, shipping, cookies, contact) × 10 locales
-migrations/          Payload/Drizzle SQL migrations (auto-run on start)
+migrations/          Payload/Drizzle SQL migrations (auto-run in production on first DB access)
+ops/                 Host-side scripts + systemd user units: nightly backup, payment reconciliation
 public/              parts.json, fonts, render assets (bases/shades — see DEPLOY.md), docs (PDFs)
 ```
 
@@ -60,7 +61,7 @@ cp .env.example .env                    # then fill in values (see table below)
 npm run dev                             # http://localhost:3000
 ```
 
-Migrations run automatically on server start (`prodMigrations`). On a fresh database, create the first admin at `/admin`, then seed content (endpoints are Bearer-gated — see below).
+In dev, Payload pushes the schema directly; in production, pending migrations (`prodMigrations`) run when Payload first initialises — on the first request that touches the database, not at container start. On a fresh database, create the first admin at `/admin`, then seed content (endpoints are Bearer-gated — see below).
 
 ### Seeding
 
@@ -91,18 +92,24 @@ npm run test:e2e    # Playwright end-to-end (e2e/)
 | `PACKETA_API_KEY` | Packeta REST API password |
 | `NEXT_PUBLIC_PACKETA_WIDGET_KEY` | Packeta pickup-point widget key (build-time) |
 | `BREVO_API_KEY` / `EMAIL_FROM` | Transactional email (verified sender) |
-| `INVOICE_BACKFILL_TOKEN` | Bearer token gating the seed/backfill operator endpoints |
+| `INVOICE_BACKFILL_TOKEN` | Bearer token gating the seed/backfill/reconcile operator endpoints |
+| `OPS_EMAIL` | Operator alert recipients (comma-separated); empty = alerts only logged |
+| `HC_URL` | *(host-side, not read by the app)* healthchecks.io ping URL for `ops/backup.sh` |
 
 `NEXT_PUBLIC_*` values are inlined at build time — pass them as Docker build args (see `DEPLOY.md`).
 
 ## Deployment
 
-Production runs as a Docker image published on a loopback port behind a **Cloudflare tunnel** (Cloudflare terminates TLS; no reverse proxy in the stack). Legal texts and render assets, the invoice volume, the GoPay prod/sandbox switch, and regeneration commands are all documented in **[`DEPLOY.md`](./DEPLOY.md)**.
+Production runs as a Docker image published on a loopback port behind a **Cloudflare tunnel** (Cloudflare terminates TLS; no reverse proxy in the stack). The app container runs as the non-root `node` user (uid 1000) with all capabilities dropped, a memory/PID limit, a healthcheck on `GET /api/health`, `TZ=Europe/Bratislava`, and logs to the host journal (`journalctl CONTAINER_NAME=svetlana-shop-app-1`). Host-side systemd user timers run a nightly backup (`ops/backup.sh`, 02:30) and payment reconciliation every 15 minutes (`ops/reconcile.sh`).
+
+Everything operational — the deploy checklist, rollback via git-SHA image tags, backups and the restore drill, legal texts and render assets, the invoice volume, the GoPay prod/sandbox switch, and the owner's Cloudflare/security to-dos — is in **[`DEPLOY.md`](./DEPLOY.md)**.
 
 ```bash
 docker build --build-arg NEXT_PUBLIC_APP_URL=https://svetlanalampe.sk \
-  --build-arg NEXT_PUBLIC_PACKETA_WIDGET_KEY="…" -t svetlana-shop:latest .
+  --build-arg NEXT_PUBLIC_PACKETA_WIDGET_KEY="…" \
+  -t svetlana-shop:$(git rev-parse --short HEAD) -t svetlana-shop:latest .
 docker compose -f docker-compose.tunnel.yml --env-file .env.tunnel up -d
+curl -fsS http://127.0.0.1:43117/api/health
 ```
 
 ## License

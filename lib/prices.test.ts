@@ -57,6 +57,36 @@ test('productPriceMap uses the supplied rates (defaults otherwise)', () => {
 test('applyModifier with no surcharge returns the same prices', () => {
   const map = productPriceMap({ basePrice: 5399 }, rates)
   expect(applyModifier(map, 0)).toEqual(map)
+  expect(applyModifier(map, 0, rates)).toEqual(map)
+})
+
+test('applyModifier re-converts converted currencies from EUR + surcharge (charm-rounded)', () => {
+  const map = productPriceMap({ basePrice: 5399 }, rates)
+  const out = applyModifier(map, 1000, rates) // +€10
+  expect(out.EUR).toBe(6399)
+  // identical to a product whose base price already includes the surcharge
+  expect(out).toEqual(productPriceMap({ basePrice: 6399 }, rates))
+  expect(out.CZK! % 1000).toBe(900)    // …9 Kč
+  expect(out.PLN! % 100).toBe(99)      // …,99 zł
+  expect(out.HUF! % 10000).toBe(9000)  // …90 Ft
+})
+
+test('applyModifier scales a manual override instead of converting it', () => {
+  const map = productPriceMap({ basePrice: 5000, prices: { czk: 130000 } }, rates)
+  const out = applyModifier(map, 500, rates) // +10 %
+  expect(out.EUR).toBe(5500)
+  expect(out.CZK).toBe(143000)
+  expect(out.PLN).toBe(convertFromEur(5500, 'PLN', rates))
+})
+
+test('applyModifier gives client and server the same result for the same inputs', () => {
+  const map = productPriceMap({ basePrice: 8900 }, rates)
+  expect(applyModifier({ ...map }, 750, rates)).toEqual(applyModifier({ ...map }, 750, rates))
+})
+
+test('applyModifier without rates scales every currency (legacy)', () => {
+  const out = applyModifier({ EUR: 10000, CZK: 250000 }, 1000)
+  expect(out).toEqual({ EUR: 11000, CZK: 275000 })
 })
 
 test('payments are charged in EUR — other currencies are display-only', () => {

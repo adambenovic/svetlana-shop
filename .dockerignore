@@ -5,4 +5,14 @@ node_modules
 docker-compose*.yml
 Caddyfile
 README.md
+DEPLOY.md
 docs/
+.git
+.playwright-mcp
+e2e
+.review-fixes
+test-results
+playwright-report
+# host-side ops scripts/units — not part of the image (and editing them
+# shouldn't invalidate the build cache)
+ops/

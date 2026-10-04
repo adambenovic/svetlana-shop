@@ -1,0 +1,25 @@
+/* 40px tap target around the 22px icon. */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: color var(--transition);
+}
+
+.toggle:hover { color: var(--color-text); }
+
+.dome { fill: none; }
+.rays { display: none; }
+
+/* Lit bulb in the light theme — driven by the class the bootstrap script sets,
+   so there is no flash before hydration. */
+:global(html.light) .dome { fill: currentColor; }
+:global(html.light) .rays { display: inline; }

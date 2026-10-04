@@ -1,14 +1,25 @@
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { lexicalToHtml } from '@/lib/lexical-to-html'
 import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { alternatesFor, absoluteUrl, openGraphFor } from '@/components/layout/seo'
+import { getPathname } from '@/i18n/navigation'
+import { isLegalHandle } from '../../policies/legal-pages'
+import { localizeInternalHrefs } from '../../policies/localize-html'
 import styles from './page.module.css'
 
 // Utility/help pages that carry no SEO value — keep them out of the index.
 const NOINDEX_SLUGS = new Set(['cookie-preferences', 'lamp-manual', 'declaration-of-conformity'])
+
+// The six legal documents are canonical under the policies route (contract C-i):
+// /stranky/<legal-handle> and friends answer with a permanent (308) redirect.
+function redirectLegalHandle(slug: string, locale: string) {
+  if (isLegalHandle(slug)) {
+    permanentRedirect(getPathname({ href: { pathname: '/policies/[handle]', params: { handle: slug } }, locale }))
+  }
+}
 
 export async function generateMetadata({
   params,
@@ -16,6 +27,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string; locale: string }>
 }): Promise<Metadata> {
   const { slug, locale } = await params
+  // The page itself issues the redirect — throwing it from (possibly streamed)
+  // metadata could degrade it to a client-side meta refresh.
+  if (isLegalHandle(slug)) return {}
   const alternates = alternatesFor({ pathname: '/pages/[slug]', params: { slug } }, locale)
   const robots = NOINDEX_SLUGS.has(slug) ? { index: false, follow: true } : undefined
   const payload = await getPayload({ config })
@@ -44,6 +58,7 @@ export default async function PageRoute({
   params: Promise<{ slug: string; locale: string }>
 }) {
   const { slug, locale } = await params
+  redirectLegalHandle(slug, locale)
   const payload = await getPayload({ config })
   let docs: Array<Record<string, unknown>> = []
   try {
@@ -62,7 +77,7 @@ export default async function PageRoute({
   const page = docs[0]
   const title = typeof page.title === 'string' ? page.title : ''
   const rawHtml = typeof page.bodyHtml === 'string' ? page.bodyHtml : ''
-  const html = rawHtml || lexicalToHtml(page.body)
+  const html = localizeInternalHrefs(rawHtml || lexicalToHtml(page.body), locale)
 
   const tHeader = await getTranslations({ locale, namespace: 'sections.header' })
   const breadcrumbJsonLd = {

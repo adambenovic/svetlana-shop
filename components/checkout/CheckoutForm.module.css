@@ -1,34 +1,59 @@
+/* Error red with ≥4.5:1 contrast in both themes (#e05a5a is only ~3.3:1 on the
+   light background). --color-error wins if the design tokens ever define one. */
+.form { --sv-error: var(--color-error, #f07070); }
+:global(.light) .form { --sv-error: var(--color-error, #b42318); }
+
 .form { display: flex; flex-direction: column; gap: 20px; max-width: 480px; }
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label { font-size: 14px; color: var(--color-text-muted); font-weight: 500; }
-.field input { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 10px 14px; color: var(--color-text); font-family: var(--font-body); font-size: 16px; }
-.field input:focus { outline: none; border-color: var(--color-accent); }
-.field select { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 10px 14px; color: var(--color-text); font-family: var(--font-body); font-size: 16px; }
-.field select:focus { outline: none; border-color: var(--color-accent); }
+/* Input borders use the ≥3:1 token (WCAG 1.4.11); focus gets a visible 2px ring. */
+.field input,
+.field select { background: var(--color-surface); border: 1px solid var(--color-input-border, var(--color-text-muted)); border-radius: var(--radius-sm); padding: 10px 14px; color: var(--color-text); font-family: var(--font-body); font-size: 16px; }
+.field input:focus,
+.field select:focus { outline: 2px solid var(--focus-ring, var(--color-accent)); outline-offset: 2px; }
+.field input[aria-invalid="true"] { border-color: var(--sv-error); }
+.fieldError { color: var(--sv-error); font-size: 13px; margin: 0; }
 .sectionTitle { font-size: 16px; font-weight: 600; margin: 8px 0 0; }
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .row .field { min-width: 0; }
 .summary { padding: 16px; background: var(--color-surface); border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 10px; }
+/* Same footprint as a one-line summary, shown until the persisted cart is restored. */
+.summarySkeleton { min-height: 280px; opacity: 0.5; }
 .summaryTitle { font-size: 16px; font-weight: 600; margin: 0; }
 .summaryList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
 .summaryItem { display: flex; align-items: flex-start; gap: 12px; }
+.summaryItemBlocked { outline: 1px solid var(--sv-error); outline-offset: 4px; border-radius: var(--radius-sm); }
 .summaryInfo { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .summaryItemTitle { font-weight: 600; font-size: 14px; }
 .summaryConfig { font-size: 12px; color: var(--color-text-muted); overflow-wrap: anywhere; }
 .summaryQty { font-size: 12px; color: var(--color-text-muted); }
+.summaryIssue { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+/* ≥24px tap target (WCAG 2.5.8) */
+.removeLine { background: none; border: none; color: var(--color-text-muted); cursor: pointer; font-size: 13px; text-decoration: underline; min-height: 24px; padding: 4px 6px; }
+.removeLine:hover { color: var(--color-text); }
 .summaryPrice { font-weight: 600; font-size: 14px; white-space: nowrap; text-align: right; }
 .summaryRow { display: flex; justify-content: space-between; font-size: 14px; color: var(--color-text-muted); border-top: 1px solid var(--color-border); padding-top: 10px; }
 .madeToOrder { font-size: 12px; color: var(--color-text-muted); margin: 0; }
-.totalRow { display: flex; justify-content: space-between; font-size: 18px; font-weight: 600; }
+.totalRow { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 18px; font-weight: 600; }
+.totalAmount { text-align: right; }
 .discountLine { font-size: 14px; color: var(--color-success); }
 
 .pickup { display: flex; flex-direction: column; gap: 8px; }
-.required { color: #e05a5a; }
+.required { color: var(--sv-error); }
 .pickupRequired { font-size: 13px; color: var(--color-text-muted); margin: 0; }
 
-.error { color: #e05a5a; font-size: 14px; }
+.error { color: var(--sv-error); font-size: 14px; display: flex; flex-direction: column; gap: 4px; }
+.error a { color: inherit; text-decoration: underline; }
+.newTotal { font-weight: 700; }
 
-.trust { list-style: none; margin: 0; padding: 12px 0 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--color-text-muted); }
+/* Pre-contractual information block, directly above the order button. */
+.precontract { display: flex; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid var(--color-border); }
+.precontractTotal { font-size: 16px; font-weight: 700; margin: 0; }
+.legal { font-size: 13px; line-height: 1.5; color: var(--color-text-muted); margin: 0; }
+.legal a { color: var(--color-text); text-decoration: underline; }
+.seller { font-size: 12px; color: var(--color-text-muted); margin: 0; }
+
+.trust { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--color-text-muted); }
 .trust li { display: flex; align-items: center; gap: 8px; }
 .trust li::before { content: "✓"; color: var(--color-success); font-weight: 700; }
 

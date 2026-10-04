@@ -35,7 +35,7 @@ export function absoluteUrl(locale: string, href: Href): string {
 }
 
 export const OG_IMAGE = {
-  url: '/banner-desktop.webp',
+  url: '/og-image.jpg',
   width: 1200,
   height: 630,
   alt: 'Svetlana Lampe',

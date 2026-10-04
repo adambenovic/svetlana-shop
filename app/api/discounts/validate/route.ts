@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   if (limited) return limited
 
   const code = req.nextUrl.searchParams.get('code')?.trim().toUpperCase()
-  if (!code) return NextResponse.json({ valid: false })
+  if (!code || code.length > 64) return NextResponse.json({ valid: false })
 
   const payload = await getPayload({ config })
   const { docs } = await payload.find({
@@ -18,10 +18,15 @@ export async function GET(req: NextRequest) {
   })
   const d = docs[0]
 
+  // Same rules as the atomic reservation at order time (lib/payment-sync.ts
+  // sqlReserveDiscount) — this is only a preview; the order route decides.
+  // usedCount includes uses reserved by orders still awaiting payment.
+  const percent = d?.percent as number
   const valid = !!d
     && d.active === true
     && (d.maxUses == null || (d.usedCount as number ?? 0) < (d.maxUses as number))
     && (d.validUntil == null || new Date(d.validUntil as string) > new Date())
+    && percent > 0 && percent < 100
 
   return NextResponse.json(valid ? { valid: true, code: d.code, percent: d.percent } : { valid: false })
 }

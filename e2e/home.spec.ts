@@ -25,14 +25,15 @@ test.describe('Homepage', () => {
 
   test('cart icon button is visible in header', async ({ page }) => {
     await page.goto('/')
-    // Cart icon is now a button that opens the drawer (not a link to /cart)
-    const cartBtn = page.locator('button[aria-label^="Cart"]')
+    // Cart icon is a button that opens the drawer (not a link to /cart);
+    // its label is localized: "Košík (0)" on the SK root.
+    const cartBtn = page.getByRole('button', { name: /^Košík \(\d+\)$/ })
     await expect(cartBtn).toBeVisible()
   })
 
   test('clicking cart icon opens cart drawer', async ({ page }) => {
     await page.goto('/')
-    await page.locator('button[aria-label^="Cart"]').click()
+    await page.getByRole('button', { name: /^Košík \(\d+\)$/ }).click()
     // Drawer opens as a dialog
     await expect(page.getByRole('dialog', { name: /košík|cart/i })).toBeVisible()
   })

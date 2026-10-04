@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 export const Orders: CollectionConfig = {
   slug: 'orders',
-  admin: { useAsTitle: 'orderNumber', defaultColumns: ['orderNumber', 'status', 'customer', 'totalAmount', 'createdAt'] },
+  admin: { useAsTitle: 'orderNumber', defaultColumns: ['orderNumber', 'status', 'needsReview', 'customer', 'totalAmount', 'createdAt'] },
   fields: [
     { name: 'orderNumber', type: 'text', required: true, unique: true },
     {
@@ -16,6 +16,7 @@ export const Orders: CollectionConfig = {
         { label: 'Cancelled', value: 'cancelled' },
         { label: 'Failed', value: 'failed' },
         { label: 'Refunded', value: 'refunded' },
+        { label: 'Partially refunded', value: 'partially_refunded' },
       ],
       defaultValue: 'pending',
     },
@@ -64,7 +65,21 @@ export const Orders: CollectionConfig = {
     { name: 'currency', type: 'text', defaultValue: 'EUR' },
     { name: 'discountCode', type: 'text' },
     { name: 'discountPercent', type: 'number' },
+    {
+      name: 'discountReserved',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: { readOnly: true, description: 'This order holds one use of its discount code — reserved at checkout, kept when paid, released when the payment fails or is abandoned' },
+    },
     { name: 'gopayId', type: 'text' },
+    { name: 'paidAt', type: 'date', admin: { readOnly: true, date: { pickerAppearance: 'dayAndTime' }, description: 'When GoPay confirmed the payment' } },
+    { name: 'confirmationSentAt', type: 'date', admin: { readOnly: true, date: { pickerAppearance: 'dayAndTime' }, description: 'When the order confirmation email was sent (empty = not sent yet; the reconcile job retries)' } },
+    {
+      name: 'needsReview',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: { position: 'sidebar', description: 'Set automatically when something needs a human (amount mismatch, invoice/email failure, payment on a cancelled order). Clear it once handled.' },
+    },
     { name: 'invoiceNumber', type: 'text', admin: { description: 'Assigned from a DB sequence when the order is paid' } },
     { name: 'invoiceToken', type: 'text', admin: { description: 'Unguessable token for the customer invoice link' } },
     { name: 'invoiceIssuedAt', type: 'date' },

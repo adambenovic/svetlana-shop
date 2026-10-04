@@ -2,19 +2,25 @@
 import { Link } from '@/i18n/navigation'
 import { useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
-import { useCart } from '@/store/cart'
-import { useCurrency, pickPrice, formatPrice } from '@/store/currency'
+import { useCart, useCartHydrated, isBlockedLine } from '@/store/cart'
+import { useCurrency } from '@/store/currency'
+import { Price } from '@/components/ui/Price'
 import { lampImages, configuratorQuery } from '@/lib/prices'
 import { lampConfigSummary } from '@/lib/lamp-config-display'
 import { LampThumb } from './LampThumb'
 import { QtyInput } from './QtyInput'
 import { DiscountCode } from './DiscountCode'
+import { LineIssue } from './LineIssue'
 import styles from './CartDrawer.module.css'
 
-export function CartDrawer({ locale }: { locale: string }) {
+export const CartDrawer: React.FC = function CartDrawer() {
   const t = useTranslations('cart_drawer')
   const tc = useTranslations('configurator')
   const td = useTranslations('cart_delivery')
+  const ta = useTranslations('accessibility')
+  const tk = useTranslations('cart')
+  const ty = useTranslations('a11y')
+  const hydrated = useCartHydrated()
   const items = useCart(s => s.items)
   const remove = useCart(s => s.removeItem)
   const updateQuantity = useCart(s => s.updateQuantity)
@@ -24,9 +30,13 @@ export function CartDrawer({ locale }: { locale: string }) {
   const selected = useCurrency(s => s.currency)
   // Totals must be a single currency — fall back to EUR unless every item has a manual price
   const currency = pricedIn(selected) ? selected : 'EUR'
-  // Subscribe to the derived total (not the fn reference) so the row re-computes
+  // Subscribe to the derived totals (not the fn reference) so the row re-computes
   // synchronously when items OR the discount change — fixes the first-apply lag.
   const totalAmount = useCart(s => s.total(currency))
+  const totalEur = useCart(s => s.total('EUR'))
+  // Match the header badge: count units, not lines.
+  const units = items.reduce((sum, i) => sum + i.quantity, 0)
+  const blocked = items.some(isBlockedLine)
 
   const drawerRef = useRef<HTMLElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -79,58 +89,81 @@ export function CartDrawer({ locale }: { locale: string }) {
       <div className={styles.overlay} onClick={close} />
       <aside ref={drawerRef} className={styles.drawer} role="dialog" aria-modal="true" aria-label={t('title')}>
         <div className={styles.header}>
-          <h2 className={styles.title}>{t('title')} ({items.length})</h2>
-          <button ref={closeRef} className={styles.close} onClick={close} aria-label="Close cart">✕</button>
+          <h2 className={styles.title}>{t('title')}{hydrated && ` (${units})`}</h2>
+          <button ref={closeRef} className={styles.close} onClick={close} aria-label={ta('close')}>✕</button>
         </div>
 
-        {items.length === 0 ? (
+        {!hydrated ? (
+          // The persisted cart is still being restored — hold the space instead
+          // of flashing "your cart is empty".
+          <div className={styles.skeleton} aria-busy="true" data-testid="cart-skeleton">
+            <div className={styles.skeletonLine} />
+          </div>
+        ) : items.length === 0 ? (
           <div className={styles.empty}>
             <p>{t('empty')}</p>
+            <Link href="/configurator" className={styles.checkoutBtn} onClick={close}>
+              {tc('page_heading')}
+            </Link>
           </div>
         ) : (
           <>
             <ul className={styles.list}>
-              {items.map(item => {
-                const unit = pickPrice(item.prices ?? { EUR: item.unitPrice }, currency)
-                return (
-                  <li key={item.id} className={styles.item}>
-                    <Link
-                      href={{ pathname: '/configurator', query: configuratorQuery(item.configuration) }}
-                      className={styles.itemLink}
-                      onClick={close}
-                      aria-label={item.title}
-                    >
-                      <LampThumb {...lampImages(item.configuration, item)} alt={item.title} />
-                      <div className={styles.info}>
-                        <span className={styles.itemTitle}>{item.title}</span>
-                        <span className={styles.itemConfig}>
-                          {lampConfigSummary(item.configuration, tc)}
-                        </span>
-                      </div>
-                    </Link>
-                    <QtyInput value={item.quantity} onChange={q => updateQuantity(item.id, q)} />
-                    <span className={styles.price}>
-                      {formatPrice(unit.amount * item.quantity, unit.currency, locale)}
-                    </span>
-                    <button className={styles.remove} onClick={() => remove(item.id)} aria-label={t('remove')}>
-                      {t('remove')}
-                    </button>
-                  </li>
-                )
-              })}
+              {items.map(item => (
+                <li key={item.id} className={`${styles.item} ${isBlockedLine(item) ? styles.itemBlocked : ''}`}>
+                  <Link
+                    href={{ pathname: '/configurator', query: configuratorQuery(item.configuration) }}
+                    className={styles.itemLink}
+                    onClick={close}
+                    aria-label={item.title}
+                  >
+                    <LampThumb {...lampImages(item.configuration, item)} alt={item.title} />
+                    <div className={styles.info}>
+                      <span className={styles.itemTitle}>{item.title}</span>
+                      <span className={styles.itemConfig}>
+                        {lampConfigSummary(item.configuration, tc)}
+                      </span>
+                    </div>
+                  </Link>
+                  {isBlockedLine(item) ? (
+                    <LineIssue item={item} className={styles.issue} />
+                  ) : (
+                    <>
+                      <QtyInput value={item.quantity} onChange={q => updateQuantity(item.id, q)} label={item.title} />
+                      <span className={styles.price}>
+                        <Price prices={item.prices ?? { EUR: item.unitPrice }} quantity={item.quantity} compact />
+                      </span>
+                    </>
+                  )}
+                  <button
+                    type="button"
+                    className={styles.remove}
+                    onClick={() => remove(item.id)}
+                    aria-label={ty('remove_item', { item: item.title })}
+                  >
+                    {t('remove')}
+                  </button>
+                </li>
+              ))}
             </ul>
             <div className={styles.footer}>
               <DiscountCode />
               <div className={styles.totalRow}>
                 <span>{t('label_total')}</span>
-                <strong>{formatPrice(totalAmount, currency, locale)}</strong>
+                <strong className={styles.totalAmount}>
+                  <Price prices={{ EUR: totalEur, [currency]: totalAmount }} />
+                </strong>
               </div>
               <p className={styles.deliveryNote}>
                 {td('free_shipping')} · {td('made_to_order')}
               </p>
-              <Link href="/checkout" className={styles.checkoutBtn} onClick={close}>
-                {t('checkout')}
-              </Link>
+              {blocked ? (
+                <p className={styles.blocked} role="alert">{tk('blocked')}</p>
+              ) : (
+                <Link href="/checkout" className={styles.checkoutBtn} onClick={close}>
+                  {t('checkout')}
+                </Link>
+              )}
               <Link href="/cart" className={styles.viewCart} onClick={close}>
                 {t('view_cart')}
               </Link>

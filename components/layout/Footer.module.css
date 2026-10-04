@@ -33,10 +33,18 @@
 
 .social {
   display: flex;
-  gap: 16px;
+  gap: 8px;
+  /* Icons sit in 36px targets; pull the row back so the first icon still
+     lines up with the text above. */
+  margin-left: -8px;
 }
 
 .socialLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
   font-size: 13px;
   color: var(--color-text-muted);
   text-decoration: none;
@@ -62,6 +70,9 @@
 }
 
 .linkList a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   font-size: 14px;
   color: var(--color-text-muted);
   text-decoration: none;
@@ -80,7 +91,7 @@
   gap: 12px;
   margin-top: 32px;
   padding-top: 24px;
-  padding-bottom: 28px;
+  padding-bottom: 20px;
   border-top: 1px solid var(--color-border);
 }
 
@@ -102,11 +113,15 @@
 
 .policyRow {
   display: flex;
-  gap: 16px;
+  gap: 4px 16px;
   flex-wrap: wrap;
 }
 
+/* ≥24px tall tap targets for the small legal links. */
 .policyLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   font-size: 12px;
   color: var(--color-text-muted);
   text-decoration: none;
@@ -127,3 +142,23 @@
   flex-wrap: wrap;
   margin-top: 16px;
 }
+
+/* Trader identity line under the legal links. */
+.footer .identity {
+  padding-top: 16px;
+  padding-bottom: 28px;
+  border-top: 1px solid var(--color-border);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.identity a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  /* inline links in running text: enlarge the hit area without moving the line */
+  padding: 4px 0;
+}
+
+.identity a:hover { color: var(--color-text); }

@@ -5,6 +5,7 @@ import * as migration_20260719_092033_currency_and_discounts from './20260719_09
 import * as migration_20260719_131755_invoices from './20260719_131755_invoices';
 import * as migration_20260719_184233_review_fixes from './20260719_184233_review_fixes';
 import * as migration_20261002_091605_currency_settings from './20261002_091605_currency_settings';
+import * as migration_20261004_112523_audit_fixes from './20261004_112523_audit_fixes';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20261002_091605_currency_settings.up,
     down: migration_20261002_091605_currency_settings.down,
-    name: '20261002_091605_currency_settings'
+    name: '20261002_091605_currency_settings',
+  },
+  {
+    up: migration_20261004_112523_audit_fixes.up,
+    down: migration_20261004_112523_audit_fixes.down,
+    name: '20261004_112523_audit_fixes'
   },
 ];

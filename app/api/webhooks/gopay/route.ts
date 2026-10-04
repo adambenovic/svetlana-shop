@@ -1,134 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { sql } from 'drizzle-orm'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
-import { getPayment } from '@/lib/gopay'
-import { sendOrderConfirmation } from '@/lib/email'
-import { ensureInvoice } from '@/lib/invoice'
-
-// Minimal view of the drizzle handle exposed by the Payload postgres adapter.
-type DrizzleExec = {
-  execute: (q: unknown) => Promise<{ rows: Array<Record<string, unknown>> }>
-}
-function drizzle(payload: Awaited<ReturnType<typeof getPayload>>): DrizzleExec {
-  return (payload.db as unknown as { drizzle: DrizzleExec }).drizzle
-}
+import { syncPayment } from '@/lib/payment-sync'
+import { checkRateLimit } from '@/lib/rate-limit'
 
 // GoPay delivers payment-state notifications as HTTP GET ?id=<paymentId>.
-// POST is kept for manual replays.
+// POST is kept for manual replays. The state handling lives in
+// lib/payment-sync.ts (shared with the success page and the reconcile job):
+// the local order is looked up first and GoPay is only asked about payments
+// that belong to an order, so junk ids cost no API call.
 export { handleNotification as GET, handleNotification as POST }
 
 async function handleNotification(req: NextRequest) {
-  const { searchParams } = new URL(req.url)
-  const gopayId = searchParams.get('id')
-  // GoPay payment ids are numeric — reject junk before spending a token on the API.
-  if (!gopayId || !/^\d+$/.test(gopayId)) {
+  const limited = checkRateLimit(req, 'gopay-webhook', 60)
+  if (limited) return limited
+
+  const gopayId = req.nextUrl.searchParams.get('id')
+  // GoPay payment ids are numeric
+  if (!gopayId || !/^\d{1,20}$/.test(gopayId)) {
     return NextResponse.json({ error: 'missing id' }, { status: 400 })
   }
 
-  const payload = await getPayload({ config })
-  const db = drizzle(payload)
-
-  const payment = await getPayment(gopayId)
-
-  // Match the order by gopayId first. Fallback: if the gopayId was never
-  // persisted (createPayment succeeded but the update storing it failed), match
-  // by the order_number GoPay echoes back. Any status — terminal states below
-  // (refund) act on already-paid orders.
-  let { docs } = await payload.find({
-    collection: 'orders',
-    where: { gopayId: { equals: gopayId } },
-    limit: 1,
-  })
-  if (!docs.length && payment.order_number) {
-    ;({ docs } = await payload.find({
-      collection: 'orders',
-      where: { orderNumber: { equals: payment.order_number } },
-      limit: 1,
-    }))
-  }
-  const order = docs[0]
-  if (!order) return NextResponse.json({ ok: true })
-
-  const state = payment.state
-
-  // ── Terminal failures on a still-pending order ──────────────────────────
-  if (state === 'CANCELED' || state === 'TIMEOUTED') {
-    await db.execute(sql`UPDATE orders SET status = 'failed' WHERE id = ${order.id} AND status = 'pending'`)
-    return NextResponse.json({ ok: true })
-  }
-
-  // ── Refunds on an already-paid order ────────────────────────────────────
-  if (state === 'REFUNDED' || state === 'PARTIALLY_REFUNDED') {
-    await db.execute(sql`UPDATE orders SET status = 'refunded' WHERE id = ${order.id} AND status = 'paid'`)
-    return NextResponse.json({ ok: true })
-  }
-
-  if (state !== 'PAID') return NextResponse.json({ ok: true })
-
-  // Amount/currency reconciliation — never mark paid if GoPay charged a different
-  // amount/currency than the order total we recorded.
-  if (
-    (typeof payment.amount === 'number' && payment.amount !== (order.totalAmount as number)) ||
-    (payment.currency && payment.currency !== (order.currency as string))
-  ) {
-    console.error(
-      `[webhook] amount/currency mismatch for order ${order.orderNumber}: ` +
-      `gopay=${payment.amount} ${payment.currency} vs order=${order.totalAmount} ${order.currency} — skipping`,
-    )
-    return NextResponse.json({ ok: true })
-  }
-
-  // Atomic pending→paid transition. RETURNING tells us whether THIS request won
-  // the race; concurrent GoPay retries that lose it return no row and stop here,
-  // so the invoice/email/discount side effects run exactly once. Also backfills
-  // gopayId when we matched via order_number.
-  const res = await db.execute(
-    sql`UPDATE orders SET status = 'paid', gopay_id = ${gopayId} WHERE id = ${order.id} AND status = 'pending' RETURNING id`,
-  )
-  if (!res.rows.length) return NextResponse.json({ ok: true })
-
-  // Consume the discount now (paid), atomically and guarded against overuse.
-  if (order.discountCode) {
-    try {
-      await db.execute(
-        sql`UPDATE discounts SET used_count = used_count + 1 WHERE code = ${order.discountCode as string} AND active = true AND (max_uses IS NULL OR used_count < max_uses)`,
-      )
-    } catch (err) {
-      console.error('[webhook] discount usedCount increment failed:', err)
+  try {
+    const payload = await getPayload({ config })
+    const result = await syncPayment(payload, gopayId, { source: 'webhook' })
+    // A matched order whose status check failed → non-2xx so GoPay retries the
+    // notification. Everything else (incl. unknown ids) is acknowledged.
+    if (result.outcome === 'gateway_error') {
+      return NextResponse.json({ error: 'status check failed' }, { status: 500 })
     }
-  }
-
-  // Invoice (faktúra): generated once per order, stored outside public/, sent
-  // as an attachment and via a tokenized link. Failure must not break the
-  // payment flow — it is logged and the invoice can be regenerated by link.
-  let invoice: Awaited<ReturnType<typeof ensureInvoice>> | null = null
-  try {
-    invoice = await ensureInvoice(payload, order.id)
+    return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error('[webhook] invoice generation failed:', err)
+    console.error(`[webhook] processing GoPay payment ${gopayId} failed:`, err)
+    return NextResponse.json({ error: 'processing failed' }, { status: 500 })
   }
-
-  // Packeta shipments are created MANUALLY by the operator (in the Packeta client,
-  // using the pickup point stored on the order) — deliberately not automated.
-  // The operator then sets the order to "shipped" in the admin.
-  try {
-    await sendOrderConfirmation({
-      to: (order.customer as { email: string }).email,
-      orderNumber: order.orderNumber as string,
-      items: order.items as Array<{ title: string; configuration: Record<string, string>; quantity: number; unitPrice: number }>,
-      totalAmount: order.totalAmount as number,
-      currency: order.currency as string,
-      packetaPointName: (order.shipping as { packetaPointName: string }).packetaPointName,
-      locale: order.locale as string,
-      ...(invoice ? {
-        invoiceUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api/invoices/${invoice.invoiceToken}`,
-        invoicePdf: { filename: `${invoice.invoiceNumber}.pdf`, content: invoice.pdf },
-      } : {}),
-    })
-  } catch (err) {
-    console.error('Email send failed:', err)
-  }
-
-  return NextResponse.json({ ok: true })
 }

@@ -53,6 +53,15 @@ async function getToken(): Promise<string> {
   return promise
 }
 
+/** A non-2xx GoPay API response; `status` lets callers tell an unknown
+ *  payment (404) from a transient failure. */
+export class GoPayError extends Error {
+  constructor(message: string, readonly status: number) {
+    super(message)
+    this.name = 'GoPayError'
+  }
+}
+
 export type GoPayState = 'CREATED' | 'PAYMENT_METHOD_CHOSEN' | 'AUTHORIZED' | 'PAID' | 'CANCELED' | 'TIMEOUTED' | 'REFUNDED' | 'PARTIALLY_REFUNDED'
 
 export interface GoPayPayment {
@@ -110,8 +119,13 @@ export async function createPayment(p: {
       target: { type: 'ACCOUNT', goid: Number(goId) },
     }),
   })
-  if (!res.ok) throw new Error(`GoPay createPayment failed: ${res.status} ${await res.text()}`)
+  if (!res.ok) throw new GoPayError(`GoPay createPayment failed: ${res.status} ${await res.text()}`, res.status)
   return res.json() as Promise<GoPayPayment>
+}
+
+/** True when GoPay answered that the payment does not exist (for this account). */
+export function isUnknownPaymentError(err: unknown): boolean {
+  return err instanceof GoPayError && err.status === 404
 }
 
 export async function getPayment(gopayId: string): Promise<GoPayPayment> {
@@ -120,6 +134,6 @@ export async function getPayment(gopayId: string): Promise<GoPayPayment> {
   const res = await fetch(`${api}/payments/payment/${gopayId}`, {
     headers: { Authorization: `Bearer ${token}` },
   })
-  if (!res.ok) throw new Error(`GoPay getPayment failed: ${res.status}`)
+  if (!res.ok) throw new GoPayError(`GoPay getPayment failed: ${res.status}`, res.status)
   return res.json() as Promise<GoPayPayment>
 }

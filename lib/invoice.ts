@@ -4,6 +4,7 @@ import { randomBytes } from 'crypto'
 import { sql } from 'drizzle-orm'
 import PDFDocument from 'pdfkit'
 import type { Payload } from 'payload'
+import { configuratorTranslator, configurationLines, isEmailLocale } from './email'
 
 // ── Company identification (matches the legal pages) ───────────────────────
 export const SUPPLIER = {
@@ -15,12 +16,28 @@ export const SUPPLIER = {
   ico: '55 920 918',
   icDph: 'SK2122131110',
   register: 'OR Okresného súdu Nitra, oddiel: Sro, vložka č. 62043/N',
-  email: 'shop@benocode.sk',
+  email: 'contact@svetlanalampe.sk',
   web: 'https://svetlanalampe.sk',
 }
 
-// Standard VAT rate of the destination country (OSS — distance sales are taxed
-// where the goods arrive; verified 2026 rates). Non-EU destinations are exports (0%).
+// ── VAT ─────────────────────────────────────────────────────────────────────
+/**
+ * EU One-Stop-Shop for distance sales. BenoCode is NOT registered for OSS, so
+ * every sale carries Slovak VAT regardless of the destination. Flip to true only
+ * after OSS registration: invoices then charge the destination country's rate
+ * (VAT_RATES) and print the OSS note.
+ */
+export const OSS_ENABLED = false
+
+/** VAT country of a sale: 'SK' while OSS is off, otherwise the pickup-point (destination) country. */
+export function vatCountryFor(pickupCountry?: string | null): string {
+  if (!OSS_ENABLED) return 'SK'
+  return pickupCountry?.trim().toUpperCase() || 'SK'
+}
+
+// Standard VAT rate per country (verified 2026 rates). Only SK applies while
+// OSS_ENABLED is false; the rest is used for distance sales once OSS is on.
+// Non-EU destinations are exports (0%).
 export const VAT_RATES: Record<string, number> = {
   SK: 23, CZ: 21, AT: 20, DE: 19, PL: 23, HU: 27, ES: 21, FR: 20,
   IT: 22, NL: 21, BE: 21, SI: 22, HR: 25, RO: 21,
@@ -32,6 +49,28 @@ export function vatFromGross(grossCents: number, rate: number): { base: number; 
   return { base: grossCents - vat, vat }
 }
 
+// ── Dates (always Slovak civil time, never the container's TZ) ──────────────
+const INVOICE_TZ = 'Europe/Bratislava'
+
+function bratislavaParts(d: Date): { day: string; month: string; year: string } {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: INVOICE_TZ, day: '2-digit', month: '2-digit', year: 'numeric',
+  }).formatToParts(d)
+  const get = (type: string) => parts.find(p => p.type === type)?.value ?? ''
+  return { day: get('day'), month: get('month'), year: get('year') }
+}
+
+/** dd.mm.yyyy of `d` in Europe/Bratislava. */
+export function formatInvoiceDate(d: Date): string {
+  const { day, month, year } = bratislavaParts(d)
+  return `${day}.${month}.${year}`
+}
+
+/** Calendar year of `d` in Europe/Bratislava — the invoice-number series year. */
+export function invoiceYear(d: Date): number {
+  return Number(bratislavaParts(d).year)
+}
+
 export function formatInvoiceNumber(seq: number, year: number): string {
   return `FV-${year}-${String(seq).padStart(5, '0')}`
 }
@@ -39,14 +78,17 @@ export function formatInvoiceNumber(seq: number, year: number): string {
 const FONT = path.join(process.cwd(), 'public/fonts/DejaVuSans.ttf')
 const FONT_BOLD = path.join(process.cwd(), 'public/fonts/DejaVuSans-Bold.ttf')
 
-interface InvoiceOrder {
+export interface InvoiceOrder {
   orderNumber: string
   invoiceNumber: string
   issuedAt: Date
+  /** When the payment was received (GoPay confirmation) */
   paidAt: Date
   customer: { name: string; email: string; phone?: string }
   billing: { street: string; city: string; zip: string; country: string }
-  items: Array<{ title: string; configuration?: Record<string, string>; quantity: number; unitPrice: number }>
+  /** unitPrice is the gross (VAT-inclusive) price in cents. `details` are the
+   *  localized configuration lines; without them the raw configuration is printed. */
+  items: Array<{ title: string; details?: string[]; configuration?: Record<string, string> | null; quantity: number; unitPrice: number }>
   totalAmount: number
   currency: string
   discountCode?: string
@@ -59,8 +101,41 @@ function money(cents: number, currency: string): string {
   return `${(cents / 100).toFixed(2)} ${currency}`
 }
 
-function fmtDate(d: Date): string {
-  return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`
+export interface InvoiceLine {
+  description: string
+  quantity: number
+  /** Unit price excluding VAT, cents (Slovak VAT act §74(1)(g)) */
+  unitNet: number
+  vatRate: number
+  /** Line total including VAT, cents */
+  totalGross: number
+}
+
+/** Item rows as printed: unit price excl. VAT, VAT rate, line total incl. VAT. The
+ *  VAT summary itself is computed on the order total (after discount). */
+export function invoiceLines(o: Pick<InvoiceOrder, 'items' | 'vatRate'>): InvoiceLine[] {
+  return o.items.map(it => {
+    const details = it.details
+      ?? Object.entries(it.configuration ?? {}).filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`)
+    return {
+      description: [it.title, ...details].join('\n'),
+      quantity: it.quantity,
+      unitNet: vatFromGross(it.unitPrice, o.vatRate).base,
+      vatRate: o.vatRate,
+      totalGross: it.unitPrice * it.quantity,
+    }
+  })
+}
+
+/** Footnotes on the VAT regime. Domestic Slovak VAT needs none. */
+export function invoiceNotes(o: Pick<InvoiceOrder, 'vatCountry' | 'vatRate'>): string[] {
+  if (o.vatRate === 0) {
+    return ['Oslobodené od DPH — vývoz tovaru mimo EÚ. / VAT exempt — export outside the EU.']
+  }
+  if (OSS_ENABLED && o.vatCountry !== 'SK') {
+    return ['Predaj tovaru na diaľku — DPH krajiny určenia (osobitná úprava OSS). / Distance sale of goods — destination country VAT (OSS scheme).']
+  }
+  return []
 }
 
 /** Renders the invoice PDF (bilingual SK/EN) and resolves with its bytes. */
@@ -103,10 +178,10 @@ export function buildInvoicePdf(o: InvoiceOrder): Promise<Buffer> {
     doc.y = Math.max(leftEndY, doc.y) + 18
     doc.text('', 50)
 
-    // Dates & payment
+    // Dates & payment (§74(1)(e)/(f): issue date + date the payment was received)
     const meta: Array<[string, string]> = [
-      ['Dátum vystavenia / Issue date', fmtDate(o.issuedAt)],
-      ['Dátum dodania / Date of supply', fmtDate(o.paidAt)],
+      ['Dátum vystavenia / Issue date', formatInvoiceDate(o.issuedAt)],
+      ['Dátum prijatia platby / Date of payment', formatInvoiceDate(o.paidAt)],
       ['Objednávka / Order', o.orderNumber],
       ['Spôsob úhrady / Payment', 'Online (GoPay) — uhradené / paid'],
     ]
@@ -115,60 +190,75 @@ export function buildInvoicePdf(o: InvoiceOrder): Promise<Buffer> {
     }
     doc.moveDown(1)
 
-    // Items table
-    const tableX = 50
-    doc.font(FONT_BOLD).fontSize(9)
-    doc.text('Položka / Item', tableX, doc.y, { width: 260, continued: false })
-    const headY = doc.y - 11
-    doc.text('Ks / Qty', 320, headY, { width: 40, align: 'right' })
-    doc.text('Cena / Unit', 370, headY, { width: 80, align: 'right' })
-    doc.text('Spolu / Total', 460, headY, { width: 85, align: 'right' })
-    doc.moveTo(tableX, doc.y + 2).lineTo(545, doc.y + 2).strokeColor('#999').stroke()
+    // Items table — columns: item | qty | unit excl. VAT | VAT % | total incl. VAT
+    const COL = {
+      item: { x: 50, w: 185 },
+      qty: { x: 240, w: 35 },
+      net: { x: 280, w: 85 },
+      rate: { x: 370, w: 45 },
+      gross: { x: 420, w: 125 },
+    }
+    doc.font(FONT_BOLD).fontSize(8)
+    const headY = doc.y
+    let headEnd = headY
+    const head = (text: string, c: { x: number; w: number }, align: 'left' | 'right') => {
+      doc.text(text, c.x, headY, { width: c.w, align })
+      headEnd = Math.max(headEnd, doc.y)
+    }
+    head('Položka / Item', COL.item, 'left')
+    head('Ks / Qty', COL.qty, 'right')
+    head('Jedn. cena bez DPH / Unit price excl. VAT', COL.net, 'right')
+    head('DPH / VAT', COL.rate, 'right')
+    head('Spolu s DPH / Total incl. VAT', COL.gross, 'right')
+    doc.y = headEnd
+    doc.moveTo(50, doc.y + 2).lineTo(545, doc.y + 2).strokeColor('#999').stroke()
     doc.moveDown(0.5)
 
     doc.font(FONT).fontSize(9)
-    for (const it of o.items) {
-      const cfg = Object.entries(it.configuration ?? {}).filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join(', ')
+    for (const line of invoiceLines(o)) {
       const rowY = doc.y
-      doc.text(it.title + (cfg ? `\n${cfg}` : ''), tableX, rowY, { width: 260 })
+      doc.text(line.description, COL.item.x, rowY, { width: COL.item.w })
       const rowEnd = doc.y
-      doc.text(String(it.quantity), 320, rowY, { width: 40, align: 'right' })
-      doc.text(money(it.unitPrice, o.currency), 370, rowY, { width: 80, align: 'right' })
-      doc.text(money(it.unitPrice * it.quantity, o.currency), 460, rowY, { width: 85, align: 'right' })
+      doc.text(String(line.quantity), COL.qty.x, rowY, { width: COL.qty.w, align: 'right' })
+      doc.text(money(line.unitNet, o.currency), COL.net.x, rowY, { width: COL.net.w, align: 'right' })
+      doc.text(`${line.vatRate} %`, COL.rate.x, rowY, { width: COL.rate.w, align: 'right' })
+      doc.text(money(line.totalGross, o.currency), COL.gross.x, rowY, { width: COL.gross.w, align: 'right' })
       doc.y = Math.max(rowEnd, doc.y) + 4
     }
 
     const subtotal = o.items.reduce((s, i) => s + i.unitPrice * i.quantity, 0)
-    doc.moveTo(tableX, doc.y).lineTo(545, doc.y).strokeColor('#999').stroke()
+    doc.moveTo(50, doc.y).lineTo(545, doc.y).strokeColor('#999').stroke()
     doc.moveDown(0.5)
 
-    if (o.discountCode && o.discountPercent) {
-      doc.text(`Zľava / Discount ${o.discountCode} (−${o.discountPercent}%)`, 320, doc.y, { width: 130 })
-      doc.text(`−${money(subtotal - o.totalAmount, o.currency)}`, 460, doc.y - 11, { width: 85, align: 'right' })
-      doc.moveDown(0.4)
+    // Summary rows: label left of the amount column; a wrapped label pushes the next row down.
+    const summaryRow = (label: string, value: string, bold = false) => {
+      doc.font(bold ? FONT_BOLD : FONT).fontSize(bold ? 11 : 9)
+      const y = doc.y
+      doc.text(label, 280, y, { width: 175 })
+      const labelEnd = doc.y
+      doc.text(value, 460, y, { width: 85, align: 'right' })
+      doc.y = Math.max(labelEnd, doc.y) + 3
     }
 
-    const { base, vat } = vatFromGross(o.totalAmount, o.vatRate)
-    const totals: Array<[string, string, boolean]> = [
-      [`Základ dane / Tax base`, money(base, o.currency), false],
-      [`DPH / VAT ${o.vatRate}% (${o.vatCountry})`, money(vat, o.currency), false],
-      ['Spolu na úhradu / Total', money(o.totalAmount, o.currency), true],
-    ]
-    for (const [k, v, bold] of totals) {
-      doc.font(bold ? FONT_BOLD : FONT).fontSize(bold ? 11 : 9)
-      doc.text(k, 300, doc.y, { width: 150 })
-      doc.text(v, 460, doc.y - (bold ? 13 : 11), { width: 85, align: 'right' })
-      doc.moveDown(0.3)
+    if (subtotal > o.totalAmount) {
+      const label = o.discountCode
+        ? `Zľava / Discount ${o.discountCode}${o.discountPercent ? ` (−${o.discountPercent}\u00a0%)` : ''}`
+        : 'Zľava / Discount'
+      summaryRow(label, `−${money(subtotal - o.totalAmount, o.currency)}`)
     }
+
+    // VAT summary on the charged total (§74(1)(h)–(j))
+    const { base, vat } = vatFromGross(o.totalAmount, o.vatRate)
+    summaryRow(`Základ dane / Tax base (${o.vatRate} %)`, money(base, o.currency))
+    summaryRow(`DPH / VAT ${o.vatRate} % (${o.vatCountry})`, money(vat, o.currency))
+    summaryRow('Spolu na úhradu / Total', money(o.totalAmount, o.currency), true)
 
     doc.moveDown(1)
     doc.font(FONT).fontSize(8).fillColor('#555')
-    if (o.vatRate === 0) {
-      doc.text('Oslobodené od DPH — vývoz tovaru mimo EÚ. / VAT exempt — export outside the EU.', 50)
-    } else {
-      doc.text('Predaj tovaru na diaľku — DPH krajiny určenia (osobitná úprava OSS). / Distance sale of goods — destination country VAT (OSS scheme).', 50)
+    for (const note of invoiceNotes(o)) {
+      doc.text(note, 50)
+      doc.moveDown(0.5)
     }
-    doc.moveDown(0.5)
     doc.text(`${SUPPLIER.name} · ${SUPPLIER.email} · ${SUPPLIER.web}`, 50)
 
     doc.end()
@@ -186,9 +276,57 @@ async function nextInvoiceSeq(payload: Payload): Promise<number> {
   return Number(res.rows[0]!.nextval)
 }
 
+function toDate(v: unknown): Date | null {
+  if (!v) return null
+  const d = v instanceof Date ? v : new Date(String(v))
+  return isNaN(d.getTime()) ? null : d
+}
+
+type OrderItem = { productId?: string | null; title?: string | null; configuration?: Record<string, string> | null; quantity: number; unitPrice: number }
+
+/** Item rows in the order's language: the product's current localized title and
+ *  the localized configuration (falls back to the stored title / raw values). */
+async function localizedItems(payload: Payload, items: OrderItem[], locale: string): Promise<InvoiceOrder['items']> {
+  let t: Awaited<ReturnType<typeof configuratorTranslator>> | null = null
+  try {
+    t = await configuratorTranslator(locale)
+  } catch (err) {
+    console.error('[invoice] configurator translations unavailable:', err)
+  }
+  const titles = new Map<string, string | null>()
+  return Promise.all(items.map(async it => {
+    let title = it.title ?? ''
+    if (it.productId) {
+      if (!titles.has(it.productId)) {
+        try {
+          const product = await payload.findByID({
+            collection: 'products', id: it.productId, locale: locale as 'sk', depth: 0,
+          }) as { title?: unknown }
+          titles.set(it.productId, typeof product.title === 'string' ? product.title : null)
+        } catch {
+          titles.set(it.productId, null) // product deleted — keep the title stored on the order
+        }
+      }
+      title = titles.get(it.productId) || title
+    }
+    return {
+      title,
+      details: configurationLines(it.configuration, t),
+      quantity: it.quantity,
+      unitPrice: it.unitPrice,
+    }
+  }))
+}
+
 /** Idempotently generates invoice number/token/PDF for a paid order and stores
- *  everything on the order. Returns the fields needed for the email. */
-export async function ensureInvoice(payload: Payload, orderId: string | number): Promise<{
+ *  everything on the order. Returns the fields needed for the email.
+ *  `paidAt` = when the payment was received; defaults to the order's stored
+ *  paidAt, else now (first issue) / the original issue date (regeneration). */
+export async function ensureInvoice(
+  payload: Payload,
+  orderId: string | number,
+  opts: { paidAt?: Date } = {},
+): Promise<{
   invoiceNumber: string
   invoiceToken: string
   pdf: Buffer
@@ -197,14 +335,27 @@ export async function ensureInvoice(payload: Payload, orderId: string | number):
 
   let invoiceNumber = order.invoiceNumber as string | null
   let invoiceToken = order.invoiceToken as string | null
-  let issuedAt = order.invoiceIssuedAt ? new Date(order.invoiceIssuedAt as string) : new Date()
+  const alreadyIssued = !!(invoiceNumber && invoiceToken)
+  const issuedAt = toDate(order.invoiceIssuedAt) ?? new Date()
+  const paidAt = opts.paidAt ?? toDate((order as { paidAt?: unknown }).paidAt) ?? issuedAt
   const billing = (order.billing ?? {}) as { street?: string; city?: string; zip?: string; country?: string }
-  const vatCountry = (order.vatCountry as string) ?? billing.country ?? 'SK'
-  const vatRate = typeof order.vatRate === 'number' ? order.vatRate : (VAT_RATES[vatCountry] ?? VAT_RATES.SK)
+  const shipping = (order.shipping ?? {}) as { packetaPointCountry?: string }
 
-  if (!invoiceNumber || !invoiceToken) {
+  // An issued invoice is immutable: regenerate it with the VAT it was issued
+  // with. A new one follows the current VAT regime (Slovak VAT unless OSS).
+  let vatCountry: string
+  let vatRate: number
+  if (alreadyIssued && order.vatCountry) {
+    vatCountry = order.vatCountry as string
+    vatRate = typeof order.vatRate === 'number' ? order.vatRate : (VAT_RATES[vatCountry] ?? VAT_RATES.SK)
+  } else {
+    vatCountry = vatCountryFor((order.vatCountry as string) || shipping.packetaPointCountry || billing.country)
+    vatRate = VAT_RATES[vatCountry] ?? VAT_RATES.SK
+  }
+
+  if (!alreadyIssued) {
     const seq = await nextInvoiceSeq(payload)
-    invoiceNumber = formatInvoiceNumber(seq, issuedAt.getFullYear())
+    invoiceNumber = formatInvoiceNumber(seq, invoiceYear(issuedAt))
     invoiceToken = randomBytes(16).toString('hex')
     await payload.update({
       collection: 'orders',
@@ -219,17 +370,18 @@ export async function ensureInvoice(payload: Payload, orderId: string | number):
     })
   }
 
+  const locale = isEmailLocale(order.locale) ? order.locale : 'sk'
   const pdf = await buildInvoicePdf({
     orderNumber: order.orderNumber as string,
-    invoiceNumber,
+    invoiceNumber: invoiceNumber!,
     issuedAt,
-    paidAt: issuedAt,
+    paidAt,
     customer: order.customer as { name: string; email: string },
     billing: {
       street: billing.street ?? '', city: billing.city ?? '',
       zip: billing.zip ?? '', country: billing.country ?? '',
     },
-    items: order.items as InvoiceOrder['items'],
+    items: await localizedItems(payload, (order.items ?? []) as OrderItem[], locale),
     totalAmount: order.totalAmount as number,
     currency: order.currency as string,
     discountCode: (order.discountCode as string) ?? undefined,
@@ -241,5 +393,5 @@ export async function ensureInvoice(payload: Payload, orderId: string | number):
   fs.mkdirSync(INVOICE_DIR, { recursive: true })
   fs.writeFileSync(path.join(INVOICE_DIR, `${invoiceNumber}.pdf`), pdf)
 
-  return { invoiceNumber, invoiceToken, pdf }
+  return { invoiceNumber: invoiceNumber!, invoiceToken: invoiceToken!, pdf }
 }

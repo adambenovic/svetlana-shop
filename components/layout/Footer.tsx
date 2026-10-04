@@ -1,8 +1,9 @@
-'use client'
 import { Link } from '@/i18n/navigation'
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { LocaleSwitcher } from '@/components/ui/LocaleSwitcher'
 import { CurrencySwitcher } from '@/components/ui/CurrencySwitcher'
+import { CookieSettingsButton } from './CookieSettingsButton'
+import { hasGalleryProducts } from './gallery-visibility'
 import styles from './Footer.module.css'
 
 function InstagramIcon() {
@@ -80,15 +81,27 @@ const SOCIAL = [
 
 const PAYMENT_ICONS = [VisaIcon, MastercardIcon, GooglePayIcon, ApplePayIcon]
 
-export function Footer({ locale }: { locale: string }) {
-  const t = useTranslations('sections.footer')
+// Trader identity (also on the contact-information page) — shown on every page.
+const COMPANY = {
+  name: 'BenoCode s.r.o.',
+  address: 'Rázusova 6, 949 01 Nitra',
+  ico: '55 920 918',
+  email: 'contact@svetlanalampe.sk',
+  phone: '+421 910 610 892',
+}
+
+export async function Footer({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: 'sections.footer' })
+  const ta = await getTranslations({ locale, namespace: 'a11y' })
+  const tp = await getTranslations({ locale, namespace: 'policies' })
+  const showGallery = await hasGalleryProducts()
   const year = new Date().getFullYear()
   type Href = React.ComponentProps<typeof Link>['href']
 
   const shopLinks: Array<{ label: string; href: Href }> = [
     { label: t('menu_home'), href: '/' },
     { label: t('menu_configurator'), href: '/configurator' },
-    { label: t('menu_gallery'), href: '/gallery' },
+    ...(showGallery ? [{ label: t('menu_gallery'), href: '/gallery' as Href }] : []),
   ]
 
   const docLinks: Array<{ label: string; href: Href }> = [
@@ -101,6 +114,8 @@ export function Footer({ locale }: { locale: string }) {
     { label: t('policy_shipping'), href: { pathname: '/policies/[handle]', params: { handle: 'shipping-policy' } } },
     { label: t('policy_refund'), href: { pathname: '/policies/[handle]', params: { handle: 'refund-policy' } } },
     { label: t('policy_terms'), href: { pathname: '/policies/[handle]', params: { handle: 'terms-of-service' } } },
+    { label: tp('contact_information'), href: { pathname: '/policies/[handle]', params: { handle: 'contact-information' } } },
+    { label: t('policy_cookies'), href: { pathname: '/policies/[handle]', params: { handle: 'cookie-preferences' } } },
   ]
 
   return (
@@ -111,12 +126,12 @@ export function Footer({ locale }: { locale: string }) {
           <p className={styles.brandDesc}>{t('brand_desc')}</p>
           <div className={styles.social}>
             {SOCIAL.map(({ name, href, Icon }) => (
-              <a key={name} href={href} target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label={name}>
+              <a key={name} href={href} target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label={ta('opens_new_tab', { name })}>
                 <Icon />
               </a>
             ))}
           </div>
-          <div className={styles.paymentIcons}>
+          <div className={styles.paymentIcons} role="group" aria-label={ta('payment_methods')}>
             {PAYMENT_ICONS.map((Icon, i) => <Icon key={i} />)}
           </div>
         </div>
@@ -124,14 +139,14 @@ export function Footer({ locale }: { locale: string }) {
         <div className={styles.col}>
           <p className={styles.colTitle}>{t('shop_title')}</p>
           <ul className={styles.linkList}>
-            {shopLinks.map(l => <li key={l.label}><Link href={l.href}>{l.label}</Link></li>)}
+            {shopLinks.map(l => <li key={l.label}><Link href={l.href} prefetch={false}>{l.label}</Link></li>)}
           </ul>
         </div>
 
         <div className={styles.col}>
           <p className={styles.colTitle}>{t('docs_title')}</p>
           <ul className={styles.linkList}>
-            {docLinks.map(l => <li key={l.label}><Link href={l.href}>{l.label}</Link></li>)}
+            {docLinks.map(l => <li key={l.label}><Link href={l.href} prefetch={false}>{l.label}</Link></li>)}
           </ul>
         </div>
       </div>
@@ -144,15 +159,18 @@ export function Footer({ locale }: { locale: string }) {
         </div>
         <div className={styles.policyRow}>
           {policyLinks.map(l => (
-            <Link key={l.label} href={l.href} className={styles.policyLink}>{l.label}</Link>
+            <Link key={l.label} href={l.href} className={styles.policyLink} prefetch={false}>{l.label}</Link>
           ))}
-          <button
-            className={styles.policyLink}
-            onClick={() => window.dispatchEvent(new Event('reopenCookieBanner'))}
-          >
-            {t('cookie_prefs')}
-          </button>
+          <CookieSettingsButton label={t('cookie_prefs')} className={styles.policyLink} />
         </div>
+      </div>
+
+      <div className={`page-width ${styles.identity}`}>
+        <p>
+          {COMPANY.name} · {COMPANY.address} · IČO {COMPANY.ico} ·{' '}
+          <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a> ·{' '}
+          <a href={`tel:${COMPANY.phone.replace(/ /g, '')}`}>{COMPANY.phone}</a>
+        </p>
       </div>
     </footer>
   )

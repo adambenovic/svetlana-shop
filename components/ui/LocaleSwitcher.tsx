@@ -14,9 +14,13 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
 
   function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const locale = e.target.value as (typeof routing.locales)[number]
+    // Keep the query string (configurator selection, success-page ?id, …). Read
+    // at change time rather than via useSearchParams, which would force a
+    // Suspense boundary around the footer on every page.
+    const query = Object.fromEntries(new URLSearchParams(window.location.search))
     // @ts-expect-error -- pathname/params always match for the current route;
     // next-intl maps them to the target locale's translated pathname
-    router.replace({ pathname, params }, { locale })
+    router.replace({ pathname, params, query }, { locale })
   }
 
   return (

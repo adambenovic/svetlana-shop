@@ -103,9 +103,9 @@ test.describe('Configurator', () => {
     await page.getByRole('tab', { name: /shade|tienidlo/i }).click()
     // Debounced URL sync (150ms) — wait a bit
     await page.waitForTimeout(300)
-    const url = page.url()
-    // The URL doesn't change based on tab, but swatch/shape selections sync
-    expect(url).toContain('localhost:3000')
+    // The URL doesn't change based on tab, but swatch/shape selections sync;
+    // compare the path only so the spec runs against any baseURL.
+    expect(new URL(page.url()).pathname).toBe('/konfigurator')
   })
 })
 

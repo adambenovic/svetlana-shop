@@ -1,0 +1,8 @@
+[Unit]
+Description=Svetlana shop payment reconciliation (pending orders vs GoPay)
+Documentation=file://%h/projects/svetlana-shop/DEPLOY.md
+
+[Service]
+Type=oneshot
+ExecStart=%h/projects/svetlana-shop/ops/reconcile.sh
+TimeoutStartSec=5min

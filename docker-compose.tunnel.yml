@@ -3,6 +3,16 @@
 # http://localhost:43117. No reverse proxy needed (Cloudflare terminates TLS).
 #
 #   docker compose -f docker-compose.tunnel.yml --env-file .env.tunnel up -d
+#
+# Logs go to the host journal (survive container recreation):
+#   journalctl CONTAINER_NAME=svetlana-shop-app-1 -f
+
+# Shared logging config for both services
+x-logging: &journald
+  driver: journald
+  options:
+    tag: "{{.Name}}"
+
 services:
   postgres:
     image: postgres:16-alpine
@@ -11,6 +21,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-svetlana}
       POSTGRES_USER: ${POSTGRES_USER:-svetlana}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: Europe/Bratislava
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -18,6 +29,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    mem_limit: 512m
+    logging: *journald
 
   app:
     image: svetlana-shop:latest
@@ -43,12 +56,38 @@ services:
       BREVO_API_KEY: ${BREVO_API_KEY}
       EMAIL_FROM: ${EMAIL_FROM}
       INVOICE_BACKFILL_TOKEN: ${INVOICE_BACKFILL_TOKEN}
+      # Operator alerts (stuck payments, invoice failures); empty = log only
+      OPS_EMAIL: ${OPS_EMAIL:-}
+      TZ: Europe/Bratislava
+      # Next standalone binds to $HOSTNAME; Docker's default (container id)
+      # would make it unreachable on 127.0.0.1 for the healthcheck
+      HOSTNAME: 0.0.0.0
+      NEXT_TELEMETRY_DISABLED: "1"
     volumes:
       - media:/app/public/media
       # Generated invoices (PDF) — NOT under public/, served only via tokenized route
       - invoices:/app/invoices
     ports:
       - "127.0.0.1:43117:3000"
+    healthcheck:
+      # GET /api/health runs `select 1` — the first call also triggers pending migrations
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    mem_limit: 1g
+    pids_limit: 256
+    # Runs as the image's non-root `node` user; needs no capabilities
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    # Upstream resolvers for GoPay/Brevo/Packeta lookups (Docker's embedded
+    # DNS still resolves the `postgres` service name)
+    dns:
+      - 1.1.1.1
+      - 9.9.9.9
+    logging: *journald
 
 volumes:
   pgdata:

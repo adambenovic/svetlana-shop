@@ -1,5 +1,5 @@
 @import './variables.css';
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=DM+Sans:wght@400;500;700&display=swap');
+/* Fonts are self-hosted via next/font (styles/fonts.ts) — no third-party CSS import here. */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -8,6 +8,12 @@ body { display: flex; flex-direction: column; min-height: 100vh; }
 main { flex: 1; }
 
 html { font-family: var(--font-body); background: var(--color-bg); color: var(--color-text); }
+
+/* The configurator's fixed price/CTA bar (≤900px) would otherwise cover
+   whatever is scrolled or focused into view at the bottom of the viewport. */
+@media (max-width: 900px) {
+  html { scroll-padding-bottom: 96px; }
+}
 
 h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
 
@@ -41,9 +47,31 @@ img { max-width: 100%; display: block; }
 
 /* Keyboard focus: never suppress the ring for keyboard users. */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
+
+/* Skip link: first focusable element, revealed on keyboard focus. */
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; }
+
+/* <main tabindex="-1"> is only focused programmatically by the skip link. */
+main:focus { outline: none; }
+
+/* Announcement bar dismissed this session (set before paint by the <head>
+   bootstrap script and by the bar's dismiss button). */
+html[data-ann-dismissed] [data-announcement] { display: none; }
 
 /* Visually-hidden helper (kept accessible to screen readers). */
 .visually-hidden {

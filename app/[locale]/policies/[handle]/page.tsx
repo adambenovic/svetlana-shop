@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
@@ -5,7 +6,28 @@ import { lexicalToHtml } from '@/lib/lexical-to-html'
 import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { alternatesFor, absoluteUrl, openGraphFor } from '@/components/layout/seo'
+import { isLegalHandle } from '../legal-pages'
+import { htmlExcerpt, localizeInternalHrefs } from '../localize-html'
 import styles from './page.module.css'
+
+// Only the six legal documents live here (contract C-i); anything else is a 404
+// instead of an empty 200 page.
+
+/** The page's title + body HTML for a locale; null when not seeded yet. Cached per request (metadata + page). */
+const loadPolicy = cache(async (handle: string, locale: string) => {
+  const payload = await getPayload({ config })
+  const { docs } = await payload.find({
+    collection: 'pages',
+    where: { slug: { equals: handle } },
+    locale,
+    limit: 1,
+  })
+  const page = docs[0] as Record<string, unknown> | undefined
+  if (!page) return null
+  const title = typeof page.title === 'string' ? page.title : ''
+  const rawHtml = typeof page.bodyHtml === 'string' ? page.bodyHtml : ''
+  return { title, html: rawHtml || lexicalToHtml(page.body) }
+})
 
 export async function generateMetadata({
   params,
@@ -13,23 +35,22 @@ export async function generateMetadata({
   params: Promise<{ handle: string; locale: string }>
 }): Promise<Metadata> {
   const { handle, locale } = await params
+  if (!isLegalHandle(handle)) return {}
   const alternates = alternatesFor({ pathname: '/policies/[handle]', params: { handle } }, locale)
-  const payload = await getPayload({ config })
+  const robots = { index: true, follow: true }
   try {
-    const { docs } = await payload.find({
-      collection: 'pages',
-      where: { slug: { equals: handle } },
-      locale,
-      limit: 1,
-    })
-    const title = typeof docs[0]?.title === 'string' ? docs[0].title : ''
+    const page = await loadPolicy(handle, locale)
+    const title = page?.title ?? ''
+    const description = page?.html ? htmlExcerpt(page.html) || undefined : undefined
     return {
       title,
+      description,
       alternates,
-      openGraph: openGraphFor({ locale, href: { pathname: '/policies/[handle]', params: { handle } }, title }),
+      robots,
+      openGraph: openGraphFor({ locale, href: { pathname: '/policies/[handle]', params: { handle } }, title, description }),
     }
   } catch {
-    return { alternates }
+    return { alternates, robots }
   }
 }
 
@@ -39,21 +60,16 @@ export default async function PolicyPage({
   params: Promise<{ handle: string; locale: string }>
 }) {
   const { handle, locale } = await params
-  const payload = await getPayload({ config })
-  let docs: Array<Record<string, unknown>> = []
+  if (!isLegalHandle(handle)) notFound()
+
+  let page: Awaited<ReturnType<typeof loadPolicy>> = null
   try {
-    const result = await payload.find({
-      collection: 'pages',
-      where: { slug: { equals: handle } },
-      locale,
-      limit: 1,
-    })
-    docs = result.docs as Array<Record<string, unknown>>
+    page = await loadPolicy(handle, locale)
   } catch {
     notFound()
   }
 
-  if (!docs[0]) {
+  if (!page) {
     return (
       <div className={`page-width ${styles.wrap}`}>
         <h1 className={styles.title} style={{ textTransform: 'capitalize' }}>
@@ -63,10 +79,8 @@ export default async function PolicyPage({
       </div>
     )
   }
-  const page = docs[0]
-  const title = typeof page.title === 'string' ? page.title : ''
-  const rawHtml = typeof page.bodyHtml === 'string' ? page.bodyHtml : ''
-  const html = rawHtml || lexicalToHtml(page.body)
+  const { title } = page
+  const html = page.html ? localizeInternalHrefs(page.html, locale) : ''
 
   const tHeader = await getTranslations({ locale, namespace: 'sections.header' })
   const breadcrumbJsonLd = {

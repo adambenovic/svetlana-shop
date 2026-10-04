@@ -1,4 +1,4 @@
-import { createShipment, escapeXml } from './packeta'
+import { clampInsuredValue, createShipment, escapeXml } from './packeta'
 
 const mockFetch = jest.fn()
 global.fetch = mockFetch
@@ -54,7 +54,6 @@ test('createShipment XML body escapes special chars in name', async () => {
 })
 
 test('declared value is clamped to Packeta insurance caps', () => {
-  const { clampInsuredValue } = require('./packeta')
   expect(clampInsuredValue(5399, 'EUR')).toBe(700)
   expect(clampInsuredValue(89, 'EUR')).toBe(89)
   expect(clampInsuredValue(150000, 'CZK')).toBe(20000)

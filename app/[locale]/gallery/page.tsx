@@ -6,6 +6,7 @@ import { getPathname } from '@/i18n/navigation'
 import { Button } from '@/components/ui/Button'
 import { GalleryGrid } from '@/components/gallery/GalleryGrid'
 import type { GalleryProduct } from '@/components/gallery/GalleryCard'
+import { alternatesFor, openGraphFor } from '@/components/layout/seo'
 import { productPriceMap } from '@/lib/prices'
 import { getExchangeRates } from '@/lib/server-pricing'
 import styles from './page.module.css'
@@ -13,7 +14,15 @@ import styles from './page.module.css'
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'gallery' })
-  return { title: t('title') }
+  const tm = await getTranslations({ locale, namespace: 'meta' })
+  const title = t('title')
+  const description = tm('gallery_description')
+  return {
+    title,
+    description,
+    alternates: alternatesFor('/gallery', locale),
+    openGraph: openGraphFor({ locale, href: '/gallery', title, description }),
+  }
 }
 
 export default async function GalleryPage({ params }: { params: Promise<{ locale: string }> }) {

@@ -10,8 +10,25 @@ import { Discounts } from './collections/Discounts'
 import { CurrencySettings } from './globals/CurrencySettings'
 import { migrations } from './migrations'
 import { ensureConfiguratorProduct } from './lib/configurator-product'
+import { brevoEmailAdapter } from './lib/payload-email'
+
+// Public origin, inlined at build time (NEXT_PUBLIC_*). Absolute admin links —
+// e.g. the password-reset URL in emails — are built from it.
+const appURL = (process.env.NEXT_PUBLIC_APP_URL ?? '').replace(/\/+$/, '')
 
 export default buildConfig({
+  serverURL: appURL,
+  // Origins allowed to authenticate with the admin cookie (Payload rejects the
+  // cookie on cross-origin requests). Payload adds serverURL itself; the
+  // loopback port of the tunnel deploy allows admin access from the host.
+  csrf: [appURL, 'http://localhost:43117'].filter(Boolean),
+  email: brevoEmailAdapter(),
+  // Multipart parser limit for uploads (Media); larger files get a 413
+  upload: {
+    limits: { fileSize: 10 * 1024 * 1024 },
+    abortOnLimit: true,
+  },
+  telemetry: false,
   onInit: async (payload) => {
     try {
       const { created } = await ensureConfiguratorProduct(payload)

@@ -25,11 +25,20 @@
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.06em;
-  padding: 1px 6px;
+  min-height: 24px;
+  padding: 2px 8px;
   transition: background 0.15s;
 }
 
 .code:hover { background: rgba(255, 255, 255, 0.35); }
+
+.code[aria-disabled] { cursor: progress; }
+
+/* Promo confirmation ("Code EARLYBIRD applied (−20%)") next to the code. */
+.status:not(:empty) {
+  margin-left: 8px;
+  font-weight: 600;
+}
 
 .dismiss {
   position: absolute;
@@ -44,6 +53,8 @@
   opacity: 0.7;
   padding: 4px;
   line-height: 1;
+  min-width: 28px;
+  min-height: 28px;
 }
 
 .dismiss:hover { opacity: 1; }

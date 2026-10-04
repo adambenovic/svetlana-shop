@@ -1,0 +1,4 @@
+/* Error red with ≥4.5:1 contrast in both themes. --color-error wins if the
+   design tokens ever define one. */
+.issue { color: var(--color-error, #f07070); font-size: 13px; }
+:global(.light) .issue { color: var(--color-error, #b42318); }

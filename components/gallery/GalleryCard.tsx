@@ -22,6 +22,12 @@ export interface GalleryProduct {
   partsKey?: string
 }
 
+// Rendered card width per GalleryGrid breakpoint: 2 columns, 3 from 768px,
+// 4 from 1200px (where .page-width caps the grid at ~1150px).
+const CARD_SIZES = '(min-width: 1200px) 300px, (min-width: 768px) 33vw, 50vw'
+const RENDER_WIDTH = 1200
+const RENDER_HEIGHT = 1600
+
 interface GalleryCardProps {
   product: GalleryProduct
   locale: string
@@ -41,12 +47,31 @@ export function GalleryCard({ product }: GalleryCardProps) {
       <div className={styles.imageWrap}>
         {render?.imageUrl ? (
           <>
+            {/* Render layers are small pre-encoded WebPs (1200×1600) served as-is;
+                lazy so a long gallery only fetches the cards near the viewport. */}
             {render.baseImageUrl && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={render.baseImageUrl} alt="" aria-hidden className={styles.render} />
+              <img
+                src={render.baseImageUrl}
+                alt=""
+                aria-hidden
+                className={styles.render}
+                width={RENDER_WIDTH}
+                height={RENDER_HEIGHT}
+                loading="lazy"
+                decoding="async"
+              />
             )}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={render.imageUrl} alt={product.title} className={styles.render} />
+            <img
+              src={render.imageUrl}
+              alt={product.title}
+              className={styles.render}
+              width={RENDER_WIDTH}
+              height={RENDER_HEIGHT}
+              loading="lazy"
+              decoding="async"
+            />
           </>
         ) : image ? (
           <Image
@@ -54,7 +79,7 @@ export function GalleryCard({ product }: GalleryCardProps) {
             alt={image.alt || product.title}
             fill
             className={styles.image}
-            sizes="(max-width: 768px) 50vw, 33vw"
+            sizes={CARD_SIZES}
           />
         ) : null}
       </div>

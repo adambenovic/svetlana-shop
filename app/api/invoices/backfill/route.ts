@@ -31,7 +31,8 @@ export async function POST(req: NextRequest) {
   const results: string[] = []
   for (const order of docs) {
     try {
-      const { invoiceNumber } = await ensureInvoice(payload, order.id)
+      const paidAt = order.paidAt ? new Date(order.paidAt as string) : undefined
+      const { invoiceNumber } = await ensureInvoice(payload, order.id, { paidAt })
       results.push(`${order.orderNumber}: ${invoiceNumber}`)
     } catch (err) {
       results.push(`${order.orderNumber}: FAILED ${err instanceof Error ? err.message : err}`)

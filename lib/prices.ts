@@ -53,15 +53,27 @@ export function productPriceMap(productDoc: unknown, rates: ExchangeRates = DEFA
   }
 }
 
-/** Apply an EUR-denominated modifier (e.g. configurator part surcharge) to every
- *  currency in the map, scaled by that currency's ratio to the EUR base. */
-export function applyModifier(prices: PriceMap, modifierEur: number): PriceMap {
+/** Apply an EUR-denominated modifier (e.g. configurator part surcharge, cents)
+ *  to every currency in the map. A foreign price that is the plain conversion
+ *  of the EUR price is re-converted from (EUR + modifier), so it stays
+ *  charm-rounded (…9 Kč, …,99 zł, …90 Ft); a manual per-product override is
+ *  scaled by its ratio to the EUR base instead. Client (configurator) and
+ *  server (order, cart re-price) both call this with the same rates, so the
+ *  displayed and charged prices are identical. Without `rates` every currency
+ *  is scaled (legacy behaviour). */
+export function applyModifier(prices: PriceMap, modifierEur: number, rates?: ExchangeRates): PriceMap {
   if (!modifierEur) return { ...prices }
   const eur = prices.EUR ?? 0
   const out: PriceMap = {}
   for (const [cur, amount] of Object.entries(prices) as [keyof PriceMap, number][]) {
-    const scale = eur > 0 ? amount / eur : 1
-    out[cur] = Math.round(amount + modifierEur * scale)
+    if (cur === 'EUR') {
+      out.EUR = Math.max(0, Math.round(amount + modifierEur))
+    } else if (rates && amount === convertFromEur(eur, cur, rates)) {
+      out[cur] = convertFromEur(eur + modifierEur, cur, rates)
+    } else {
+      const scale = eur > 0 ? amount / eur : 1
+      out[cur] = Math.max(0, Math.round(amount + modifierEur * scale))
+    }
   }
   return out
 }

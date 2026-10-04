@@ -1,112 +1,115 @@
 'use client'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { preload } from 'react-dom'
+import Image from 'next/image'
 import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 import { SwatchPicker } from './SwatchPicker'
 import { ShapeGrid } from './ShapeGrid'
 import { BulbPicker } from './BulbPicker'
 import { PriceSummary } from './PriceSummary'
-import { ConfiguratorPreview } from './ConfiguratorPreview'
+import { ConfiguratorPreview, baseRenderSrc, shadeRenderSrc } from './ConfiguratorPreview'
+import { SELECTION_KEYS, isSolidColor, isValidSelection, type LampSelection, type SelectionKey } from './selection'
 import { useCart } from '@/store/cart'
 import type { PriceMap } from '@/store/currency'
-import { applyModifier } from '@/lib/prices'
+import { applyModifier, type ExchangeRates } from '@/lib/prices'
+import { shapeName, swatchName } from '@/lib/lamp-config-display'
+import partsData from '@/public/parts.json'
 import type { PartsData } from '@/types/parts'
 import styles from './Configurator.module.css'
+
+// Bundled, not fetched: the configurator renders complete on the server, so the
+// first paint is the real UI (no "Loading…" swap / layout shift).
+const parts = partsData as unknown as PartsData
+const baseColors = parts.colors.filter(c => isSolidColor(c.id))
 
 interface ConfiguratorProps {
   partsKey: string
   prices: PriceMap
+  rates?: ExchangeRates
   productId: string
   productTitle: string
+  /** Selection resolved on the server from the URL (unknown ids already replaced by defaults). */
+  initial: LampSelection
 }
 
-type BulbType = 'warm' | 'cold' | 'none'
 type Tab = 'base' | 'shade' | 'cable' | 'bulb'
 
-export function Configurator({ partsKey, prices, productId, productTitle }: ConfiguratorProps) {
+/** Configuration as a query string — keys in a fixed order so share links are stable. */
+function selectionQuery(selection: LampSelection): URLSearchParams {
+  const params = new URLSearchParams(window.location.search)
+  for (const key of SELECTION_KEYS) params.set(key, selection[key])
+  return params
+}
+
+/** " · "-separated message → list items (accordion bodies). */
+function splitItems(text: string): string[] {
+  return text.split(' · ').map(s => s.trim()).filter(Boolean)
+}
+
+export function Configurator({ prices, rates, productId, productTitle, initial }: ConfiguratorProps) {
   const t = useTranslations('configurator')
   const ta = useTranslations('a11y')
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const tf = useTranslations('sections.footer')
   const addItem = useCart(s => s.addItem)
 
-  const [parts, setParts] = useState<PartsData | null>(null)
   const [tab, setTab] = useState<Tab>('base')
-
-  const [baseColor, setBaseColor] = useState(searchParams.get('baseColor') ?? '')
-  const [base, setBase] = useState(searchParams.get('base') ?? '')
-  const [shadeColor, setShadeColor] = useState(searchParams.get('shadeColor') ?? '')
-  const [shade, setShade] = useState(searchParams.get('shade') ?? '')
-  const [cable, setCable] = useState(searchParams.get('cable') ?? '')
-  const [sw, setSw] = useState(searchParams.get('switch') ?? '')
-  const [plug, setPlug] = useState(searchParams.get('plug') ?? '')
-  const [bulb, setBulb] = useState<BulbType>((searchParams.get('bulb') as BulbType) ?? 'warm')
+  const [selection, setSelection] = useState<LampSelection>(initial)
   const [copied, setCopied] = useState(false)
-  const [partsError, setPartsError] = useState(false)
+  const { baseColor, base, shadeColor, shade, cable, bulb } = selection
+  const sw = selection.switch
 
+  // Initial layers are the LCP element: hint them from <head> during SSR.
+  for (const src of [baseRenderSrc(initial.base, initial.baseColor), shadeRenderSrc(initial.shade, initial.shadeColor)]) {
+    if (src) preload(src, { as: 'image', fetchPriority: 'high' })
+  }
+
+  // Mirror the selection into the URL (shareable, survives reload), debounced.
+  // Native history API: updates useSearchParams consumers (e.g. the locale
+  // switcher) without a server round trip. All keys are written, so the URL
+  // always names a complete lamp. A clean URL is left alone until the visitor
+  // picks something — but ids the server rejected (?base=Base%2099) are
+  // replaced right away with what is shown.
+  const touched = useRef(false)
   useEffect(() => {
-    fetch('/parts.json')
-      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
-      .then((data: PartsData) => setParts(data))
-      .catch(() => setPartsError(true))
-  }, [])
+    const params = new URLSearchParams(window.location.search)
+    const stale = SELECTION_KEYS.some(k => params.has(k) && params.get(k) !== selection[k])
+    if (!touched.current && !stale) return
+    const timer = setTimeout(() => {
+      window.history.replaceState(window.history.state, '', `?${selectionQuery(selection).toString()}`)
+    }, 150)
+    return () => clearTimeout(timer)
+  }, [selection])
 
-  useEffect(() => {
-    if (!parts) return
-    const solidColors = parts.colors.filter(c => c.id !== 'clear' && !c.id.startsWith('translucent'))
-    const firstSolid = solidColors[0]?.id ?? ''
-    if (!baseColor || baseColor === 'clear' || baseColor.startsWith('translucent')) setBaseColor(firstSolid)
-    if (!base) setBase(parts.bases[0]?.id ?? '')
-    // Skip colors without shade images (white, yellow have no image files)
-    const firstShadeColor = parts.colors.find(c => c.id !== 'white' && c.id !== 'yellow' && c.id !== 'clear' && !c.id.startsWith('translucent'))?.id ?? parts.colors[0]?.id ?? ''
-    if (!shadeColor) setShadeColor(firstShadeColor)
-    if (!shade) setShade(parts.shades[0]?.id ?? '')
-    if (!cable) setCable(parts.cable_colors[0]?.id ?? '')
-    if (!sw) setSw(parts.switch_options[0]?.id ?? '')
-    if (!plug) setPlug(parts.plug_options[0]?.id ?? '')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [parts])
+  function select(key: SelectionKey, value: string) {
+    touched.current = true
+    setSelection(s => ({ ...s, [key]: value }))
+  }
 
-  const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const syncUrl = useCallback(
-    (updates: Record<string, string>) => {
-      if (syncTimer.current) clearTimeout(syncTimer.current)
-      syncTimer.current = setTimeout(() => {
-        const params = new URLSearchParams(searchParams.toString())
-        Object.entries(updates).forEach(([k, v]) => params.set(k, v))
-        router.replace(`?${params.toString()}`, { scroll: false })
-      }, 150)
-    },
-    [router, searchParams]
-  )
-
-  const configuration = useMemo(() => ({
-    baseColor, base, shadeColor, shade, cable, switch: sw, plug, bulb,
-  }), [baseColor, base, shadeColor, shade, cable, sw, plug, bulb])
+  const valid = useMemo(() => isValidSelection(selection, parts), [selection])
 
   const totalPrices = useMemo(() => {
-    if (!parts) return prices
     const baseMod = parts.bases.find(p => p.id === base)?.priceModifier ?? 0
     const shadeMod = parts.shades.find(p => p.id === shade)?.priceModifier ?? 0
-    return applyModifier(prices, baseMod + shadeMod)
-  }, [parts, prices, base, shade])
+    return applyModifier(prices, baseMod + shadeMod, rates)
+  }, [prices, rates, base, shade])
 
   // Derived display values
-  const selectedBase = parts?.bases.find(p => p.id === base)
-  const selectedShade = parts?.shades.find(p => p.id === shade)
-  const selectedBaseColor = parts?.colors.find(c => c.id === baseColor)
-  const selectedShadeColor = parts?.colors.find(c => c.id === shadeColor)
-  const selectedCable = parts?.cable_colors.find(c => c.id === cable)
-  const selectedSwitch = parts?.switch_options.find(c => c.id === sw)
-  const selectedPlug = parts?.plug_options.find(c => c.id === plug)
+  const selectedBase = parts.bases.find(p => p.id === base)
+  const selectedShade = parts.shades.find(p => p.id === shade)
+  const selectedCable = parts.cable_colors.find(c => c.id === cable)
+  const baseColorName = swatchName('color', baseColor, t)
+  const shadeColorName = swatchName('color', shadeColor, t)
 
   function handleAddToCart() {
-    const shadeImg = shade && shadeColor ? `/assets/shades/${shade.replace(/ /g, '%20')}-${shadeColor}.webp` : undefined
-    const baseImg = base && baseColor ? `/assets/bases/${base.replace(/ /g, '%20')}-${baseColor}.webp` : undefined
+    if (!valid) return
+    const shadeImg = shadeRenderSrc(shade, shadeColor) ?? undefined
+    const baseImg = baseRenderSrc(base, baseColor) ?? undefined
     addItem({
       productId,
       title: productTitle,
-      configuration,
+      // Same key order as before — the cart line id is derived from it.
+      configuration: { baseColor, base, shadeColor, shade, cable, switch: sw, plug: selection.plug, bulb },
       quantity: 1,
       unitPrice: totalPrices.EUR ?? 0,
       currency: 'EUR',
@@ -117,10 +120,12 @@ export function Configurator({ partsKey, prices, productId, productTitle }: Conf
   }
 
   function handleShare() {
-    navigator.clipboard.writeText(window.location.href).then(() => {
+    // Built from state, not location.href — the URL sync is debounced.
+    const url = `${window.location.origin}${window.location.pathname}?${selectionQuery(selection).toString()}`
+    navigator.clipboard?.writeText(url).then(() => {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
-    })
+    }).catch(() => { /* clipboard blocked — nothing to confirm */ })
   }
 
   const tabs: { id: Tab; label: string }[] = [
@@ -144,22 +149,15 @@ export function Configurator({ partsKey, prices, productId, productTitle }: Conf
     tabRefs.current[next]?.focus()
   }
 
+  // Alt text: part number + localized colour ("Lamp base 3 in Black").
   const baseAlt = ta('preview_base_alt', {
     shape: selectedBase?.name ?? base,
-    color: selectedBaseColor?.name ?? baseColor,
+    color: baseColorName,
   })
   const shadeAlt = ta('preview_shade_alt', {
     shape: selectedShade?.name ?? shade,
-    color: selectedShadeColor?.name ?? shadeColor,
+    color: shadeColorName,
   })
-
-  if (partsError) {
-    return <div className={styles.loading} style={{ color: 'var(--color-accent)' }}>{t('error_loading')}</div>
-  }
-
-  if (!parts) {
-    return <div className={styles.loading}>{t('loading')}</div>
-  }
 
   return (
     <div className={styles.configurator}>
@@ -207,24 +205,23 @@ export function Configurator({ partsKey, prices, productId, productTitle }: Conf
             <>
               <h2 className={styles.sectionLabel}>{t('pick_base_color')}</h2>
               <SwatchPicker
-                parts={parts.colors.filter(c => c.id !== 'clear' && !c.id.startsWith('translucent'))}
+                parts={baseColors.map(c => ({ ...c, name: swatchName('color', c.id, t) }))}
                 selected={baseColor}
-                onChange={v => { setBaseColor(v); syncUrl({ baseColor: v }) }}
+                onChange={v => select('baseColor', v)}
                 label={t('pick_base_color')}
               />
-              {selectedBaseColor && (
-                <p className={styles.selectedName}>{ta('selected_color', { color: selectedBaseColor.name })}</p>
-              )}
+              <p className={styles.selectedName}>{ta('selected_color', { color: baseColorName })}</p>
               <h2 className={styles.sectionLabel}>{t('pick_base')}</h2>
               <ShapeGrid
                 parts={parts.bases}
                 selected={base}
-                onChange={v => { setBase(v); syncUrl({ base: v }) }}
+                onChange={v => select('base', v)}
+                nameOf={p => shapeName('base', p.id, t)}
                 label={t('pick_base')}
               />
               {selectedBase && (
                 <p className={styles.dims}>
-                  {t('label_height')}: {selectedBase.height_mm}mm · {t('label_diameter')}: {selectedBase.diameter_mm}mm
+                  {shapeName('base', selectedBase.id, t)} · {t('label_height')}: {selectedBase.height_mm} mm · {t('label_diameter')}: {selectedBase.diameter_mm} mm
                 </p>
               )}
             </>
@@ -234,24 +231,23 @@ export function Configurator({ partsKey, prices, productId, productTitle }: Conf
             <>
               <h2 className={styles.sectionLabel}>{t('pick_shade_color')}</h2>
               <SwatchPicker
-                parts={parts.colors}
+                parts={parts.colors.map(c => ({ ...c, name: swatchName('color', c.id, t) }))}
                 selected={shadeColor}
-                onChange={v => { setShadeColor(v); syncUrl({ shadeColor: v }) }}
+                onChange={v => select('shadeColor', v)}
                 label={t('pick_shade_color')}
               />
-              {selectedShadeColor && (
-                <p className={styles.selectedName}>{ta('selected_color', { color: selectedShadeColor.name })}</p>
-              )}
+              <p className={styles.selectedName}>{ta('selected_color', { color: shadeColorName })}</p>
               <h2 className={styles.sectionLabel}>{t('pick_shade')}</h2>
               <ShapeGrid
                 parts={parts.shades}
                 selected={shade}
-                onChange={v => { setShade(v); syncUrl({ shade: v }) }}
+                onChange={v => select('shade', v)}
+                nameOf={p => shapeName('shade', p.id, t)}
                 label={t('pick_shade')}
               />
               {selectedShade && (
                 <p className={styles.dims}>
-                  {t('label_height')}: {selectedShade.height_mm}mm · {t('label_diameter')}: {selectedShade.diameter_mm}mm
+                  {shapeName('shade', selectedShade.id, t)} · {t('label_height')}: {selectedShade.height_mm} mm · {t('label_diameter')}: {selectedShade.diameter_mm} mm
                 </p>
               )}
             </>
@@ -261,30 +257,37 @@ export function Configurator({ partsKey, prices, productId, productTitle }: Conf
             <>
               <h2 className={styles.sectionLabel}>{t('pick_cable_color')}</h2>
               <SwatchPicker
-                parts={parts.cable_colors}
+                parts={parts.cable_colors.map(c => ({ ...c, name: swatchName('cable', c.id, t) }))}
                 selected={cable}
-                onChange={v => { setCable(v); syncUrl({ cable: v }) }}
+                onChange={v => select('cable', v)}
                 label={t('pick_cable_color')}
               />
               {selectedCable?.swatch && (
                 <div className={styles.cablePreview}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={selectedCable.swatch} alt="" className={styles.cablePreviewImg} />
-                  <span className={styles.cablePreviewName}>{selectedCable.name}</span>
+                  <div className={styles.cablePreviewFrame}>
+                    <Image
+                      src={selectedCable.swatch}
+                      alt=""
+                      fill
+                      sizes="(max-width: 900px) 100vw, 50vw"
+                      className={styles.cablePreviewImg}
+                    />
+                  </div>
+                  <span className={styles.cablePreviewName}>{swatchName('cable', selectedCable.id, t)}</span>
                 </div>
               )}
               <h2 className={styles.sectionLabel}>{t('pick_switch')}</h2>
               <SwatchPicker
-                parts={parts.switch_options}
+                parts={parts.switch_options.map(c => ({ ...c, name: swatchName('switch', c.id, t) }))}
                 selected={sw}
-                onChange={v => { setSw(v); syncUrl({ switch: v }) }}
+                onChange={v => select('switch', v)}
                 label={t('pick_switch')}
               />
               <h2 className={styles.sectionLabel}>{t('pick_plug')}</h2>
               <SwatchPicker
-                parts={parts.plug_options}
-                selected={plug}
-                onChange={v => { setPlug(v); syncUrl({ plug: v }) }}
+                parts={parts.plug_options.map(c => ({ ...c, name: swatchName('plug', c.id, t) }))}
+                selected={selection.plug}
+                onChange={v => select('plug', v)}
                 label={t('pick_plug')}
               />
             </>
@@ -293,7 +296,7 @@ export function Configurator({ partsKey, prices, productId, productTitle }: Conf
           {tab === 'bulb' && (
             <BulbPicker
               selected={bulb}
-              onChange={v => { setBulb(v); syncUrl({ bulb: v }) }}
+              onChange={v => select('bulb', v)}
             />
           )}
         </div>
@@ -302,6 +305,7 @@ export function Configurator({ partsKey, prices, productId, productTitle }: Conf
         <PriceSummary
           prices={totalPrices}
           copied={copied}
+          disabled={!valid}
           onAddToCart={handleAddToCart}
           onShare={handleShare}
         />
@@ -312,18 +316,18 @@ export function Configurator({ partsKey, prices, productId, productTitle }: Conf
         {/* Combination summary */}
         <table className={styles.summaryTable} aria-label={t('label_combination')}>
           <tbody>
-            <tr><td>{t('label_base')}</td><td>{selectedBase?.name ?? '—'}</td></tr>
-            <tr><td>{t('label_base_color')}</td><td>{selectedBaseColor?.name ?? '—'}</td></tr>
-            <tr><td>{t('label_shade')}</td><td>{selectedShade?.name ?? '—'}</td></tr>
-            <tr><td>{t('label_shade_color')}</td><td>{selectedShadeColor?.name ?? '—'}</td></tr>
-            <tr><td>{t('label_cable_color')}</td><td>{selectedCable?.name ?? '—'}</td></tr>
-            <tr><td>{t('label_switch')}</td><td>{selectedSwitch?.name ?? '—'}</td></tr>
-            <tr><td>{t('label_plug')}</td><td>{selectedPlug?.name ?? '—'}</td></tr>
+            <tr><td>{t('label_base')}</td><td>{selectedBase ? shapeName('base', base, t) : '—'}</td></tr>
+            <tr><td>{t('label_base_color')}</td><td>{baseColor ? baseColorName : '—'}</td></tr>
+            <tr><td>{t('label_shade')}</td><td>{selectedShade ? shapeName('shade', shade, t) : '—'}</td></tr>
+            <tr><td>{t('label_shade_color')}</td><td>{shadeColor ? shadeColorName : '—'}</td></tr>
+            <tr><td>{t('label_cable_color')}</td><td>{cable ? swatchName('cable', cable, t) : '—'}</td></tr>
+            <tr><td>{t('label_switch')}</td><td>{sw ? swatchName('switch', sw, t) : '—'}</td></tr>
+            <tr><td>{t('label_plug')}</td><td>{selection.plug ? swatchName('plug', selection.plug, t) : '—'}</td></tr>
             <tr><td>{t('label_bulb')}</td><td>{t(`bulb_${bulb}`)}</td></tr>
             {selectedBase && selectedShade && (
               <tr>
                 <td>{t('label_total_dimensions')}</td>
-                <td>{selectedBase.height_mm + selectedShade.height_mm}mm × {Math.max(selectedBase.diameter_mm, selectedShade.diameter_mm)}mm</td>
+                <td>{selectedBase.height_mm + selectedShade.height_mm} mm × {Math.max(selectedBase.diameter_mm, selectedShade.diameter_mm)} mm</td>
               </tr>
             )}
           </tbody>
@@ -339,7 +343,22 @@ export function Configurator({ partsKey, prices, productId, productTitle }: Conf
           ] as const).map(([titleKey, bodyKey]) => (
             <details key={titleKey} className={styles.accordion}>
               <summary>{t(titleKey)}</summary>
-              <div className={styles.accordionBody}>{t(bodyKey)}</div>
+              <div className={styles.accordionBody}>
+                <ul className={styles.accordionList}>
+                  {splitItems(t(bodyKey)).map(item => <li key={item}>{item}</li>)}
+                </ul>
+                {/* GPSR: product safety documents reachable straight from the offer. */}
+                {titleKey === 'info_safety' && (
+                  <p className={styles.accordionLinks}>
+                    <Link href={{ pathname: '/pages/[slug]', params: { slug: 'lamp-manual' } }} prefetch={false}>
+                      {tf('doc_manual')}
+                    </Link>
+                    <Link href={{ pathname: '/pages/[slug]', params: { slug: 'declaration-of-conformity' } }} prefetch={false}>
+                      {tf('doc_conformity')}
+                    </Link>
+                  </p>
+                )}
+              </div>
             </details>
           ))}
         </div>

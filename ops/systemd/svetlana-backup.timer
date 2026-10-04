@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily Svetlana shop backup
+
+[Timer]
+OnCalendar=*-*-* 02:30:00
+# Catch up after the host was off/asleep at 02:30
+Persistent=true
+
+[Install]
+WantedBy=timers.target

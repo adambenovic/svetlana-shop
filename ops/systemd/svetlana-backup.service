@@ -1,0 +1,11 @@
+[Unit]
+Description=Svetlana shop backup (Postgres dump + invoices/media volumes)
+Documentation=file://%h/projects/svetlana-shop/DEPLOY.md
+
+[Service]
+Type=oneshot
+# Optional overrides: SVETLANA_BACKUP_DIR, KEEP_DAYS, HC_URL
+EnvironmentFile=-%h/.config/svetlana-backup/backup.env
+ExecStart=%h/projects/svetlana-shop/ops/backup.sh
+TimeoutStartSec=2h
+Nice=10

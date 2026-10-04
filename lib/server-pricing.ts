@@ -55,5 +55,5 @@ export function itemPriceMap(
   configuration: Record<string, string> | undefined,
   rates: ExchangeRates,
 ): PriceMap {
-  return applyModifier(productPriceMap(product, rates), surchargeEur(configuration, loadParts()))
+  return applyModifier(productPriceMap(product, rates), surchargeEur(configuration, loadParts()), rates)
 }
