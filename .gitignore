@@ -45,3 +45,6 @@ next-env.d.ts
 e2e/.fixture-state.json
 test-results/
 playwright-report/
+
+# Playwright MCP browser session artifacts
+/.playwright-mcp/
