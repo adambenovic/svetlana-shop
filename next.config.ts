@@ -60,9 +60,12 @@ function legacyRedirects() {
     }
     out.push({ source: `${prefix}/collections/:path*`, destination: prefix + localizedPath('/configurator'), permanent: true })
   }
+  // The first segment is restricted to [A-Za-z0-9-] so the destination can never
+  // start with `//` or `/\` (a protocol-relative open redirect), independent of
+  // Next.js collapsing repeated slashes before matching.
   out.push(
     { source: `/${routing.defaultLocale}`, destination: '/', permanent: true },
-    { source: `/${routing.defaultLocale}/:path*`, destination: '/:path*', permanent: true },
+    { source: `/${routing.defaultLocale}/:first([A-Za-z0-9-]+)/:rest*`, destination: '/:first/:rest*', permanent: true },
   )
   return out
 }
