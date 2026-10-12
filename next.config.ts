@@ -1,6 +1,7 @@
 import createNextIntlPlugin from 'next-intl/plugin'
 import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
+import { routing } from './i18n/routing'
 
 const withNextIntl = createNextIntlPlugin('./i18n.ts')
 
@@ -33,6 +34,38 @@ const TOP_LEVEL_IMAGES = [
 ]
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? ''
+
+/**
+ * Permanent redirects for URLs Google still knows from earlier versions of the
+ * site. next-intl alone would answer some of them with a temporary 307, which
+ * keeps the old URL in Google's index.
+ * - Before 19 July every locale used the internal paths (/cart, /cs/configurator,
+ *   /de/products/…); they now point at the localized ones (/kosik, /cs/konfigurator…).
+ * - The old Shopify store linked /collections/…; the configurator sells those lamps now.
+ * - The default locale has no prefix: /sk/… → /….
+ */
+function legacyRedirects() {
+  const toPattern = (path: string) => path.replace(/\[(\w+)\]/g, ':$1')
+  const out: { source: string; destination: string; permanent: true }[] = []
+  for (const locale of routing.locales) {
+    const prefix = locale === routing.defaultLocale ? '' : `/${locale}`
+    const localizedPath = (internal: string) => {
+      const value = (routing.pathnames as Record<string, string | Record<string, string>>)[internal]
+      return typeof value === 'string' ? value : value[locale]
+    }
+    for (const internal of Object.keys(routing.pathnames)) {
+      const external = localizedPath(internal)
+      if (external === internal) continue
+      out.push({ source: prefix + toPattern(internal), destination: prefix + toPattern(external), permanent: true })
+    }
+    out.push({ source: `${prefix}/collections/:path*`, destination: prefix + localizedPath('/configurator'), permanent: true })
+  }
+  out.push(
+    { source: `/${routing.defaultLocale}`, destination: '/', permanent: true },
+    { source: `/${routing.defaultLocale}/:path*`, destination: '/:path*', permanent: true },
+  )
+  return out
+}
 
 const nextConfig: NextConfig = {
   output: 'standalone',
@@ -73,6 +106,8 @@ const nextConfig: NextConfig = {
         destination: '/en/pages/lamp-manual',
         permanent: false,
       },
+      // After /pages/manual: the first matching rule wins.
+      ...legacyRedirects(),
     ]
   },
 }

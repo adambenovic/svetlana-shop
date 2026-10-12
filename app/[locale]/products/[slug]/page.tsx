@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { notFound, permanentRedirect } from 'next/navigation'
+import { permanentRedirect } from 'next/navigation'
 import Image from 'next/image'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
@@ -98,7 +98,9 @@ export default async function ProductPage({
   const t = await getTranslations({ locale, namespace: 'configurator_product' })
 
   const product = await findProduct(locale, slug)
-  if (!product) notFound()
+  // Unknown handles are mostly old Shopify product URLs; those lamps are sold
+  // through the configurator now.
+  if (!product) permanentRedirect(getPathname({ href: '/configurator', locale }))
   redirectIfConfiguratorOnly(product, locale)
   const rates = await getExchangeRates(await getPayload({ config }))
 

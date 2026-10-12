@@ -15,9 +15,18 @@ const NOINDEX_SLUGS = new Set(['cookie-preferences', 'lamp-manual', 'declaration
 
 // The six legal documents are canonical under the policies route (contract C-i):
 // /stranky/<legal-handle> and friends answer with a permanent (308) redirect.
+// Page handles from the old Shopify store whose content now lives in a legal page.
+const SHOPIFY_HANDLES: Record<string, string> = { contact: 'contact-information' }
+
+function legalHandleFor(slug: string): string | null {
+  const handle = SHOPIFY_HANDLES[slug] ?? slug
+  return isLegalHandle(handle) ? handle : null
+}
+
 function redirectLegalHandle(slug: string, locale: string) {
-  if (isLegalHandle(slug)) {
-    permanentRedirect(getPathname({ href: { pathname: '/policies/[handle]', params: { handle: slug } }, locale }))
+  const handle = legalHandleFor(slug)
+  if (handle) {
+    permanentRedirect(getPathname({ href: { pathname: '/policies/[handle]', params: { handle } }, locale }))
   }
 }
 
@@ -29,7 +38,7 @@ export async function generateMetadata({
   const { slug, locale } = await params
   // The page itself issues the redirect — throwing it from (possibly streamed)
   // metadata could degrade it to a client-side meta refresh.
-  if (isLegalHandle(slug)) return {}
+  if (legalHandleFor(slug)) return {}
   const alternates = alternatesFor({ pathname: '/pages/[slug]', params: { slug } }, locale)
   const robots = NOINDEX_SLUGS.has(slug) ? { index: false, follow: true } : undefined
   const payload = await getPayload({ config })
