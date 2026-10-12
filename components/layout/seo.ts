@@ -1,10 +1,40 @@
 import { getPathname } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
+import { SHIPPING_COUNTRIES } from '@/lib/countries'
 
 // Shared SEO helpers used across localized pages so canonical/hreflang URLs
 // are always built from the LOCALIZED pathname (via next-intl getPathname).
 
 export const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
+
+/**
+ * Shipping and return terms for Product → Offer structured data (Google
+ * merchant listings). Must match the legal texts: free delivery to Packeta
+ * pickup points in SHIPPING_COUNTRIES, made to order in 3–5 working days, then
+ * 2–5 days in transit; 14-day withdrawal by mail, return postage paid by the
+ * customer, goods returned to Slovakia.
+ */
+export const OFFER_TERMS = {
+  shippingDetails: SHIPPING_COUNTRIES.map(country => ({
+    '@type': 'OfferShippingDetails',
+    shippingRate: { '@type': 'MonetaryAmount', value: 0, currency: 'EUR' },
+    shippingDestination: { '@type': 'DefinedRegion', addressCountry: country },
+    deliveryTime: {
+      '@type': 'ShippingDeliveryTime',
+      handlingTime: { '@type': 'QuantitativeValue', minValue: 3, maxValue: 5, unitCode: 'DAY' },
+      transitTime: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 5, unitCode: 'DAY' },
+    },
+  })),
+  hasMerchantReturnPolicy: {
+    '@type': 'MerchantReturnPolicy',
+    applicableCountry: [...SHIPPING_COUNTRIES],
+    returnPolicyCountry: 'SK',
+    returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+    merchantReturnDays: 14,
+    returnMethod: 'https://schema.org/ReturnByMail',
+    returnFees: 'https://schema.org/ReturnFeesCustomerResponsibility',
+  },
+}
 
 type Href = Parameters<typeof getPathname>[0]['href']
 

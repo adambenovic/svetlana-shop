@@ -32,6 +32,8 @@ const TOP_LEVEL_IMAGES = [
   'logo.svg',
 ]
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? ''
+
 const nextConfig: NextConfig = {
   output: 'standalone',
   poweredByHeader: false,
@@ -43,6 +45,8 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: '/:path*', headers: SECURITY_HEADERS },
+      // The admin is crawlable (robots.txt blocks only /api/) so this can be seen.
+      { source: '/admin/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
       { source: '/assets/:path*', headers: STATIC_ASSET_CACHE },
       { source: '/docs/:path*', headers: STATIC_ASSET_CACHE },
       { source: '/parts.json', headers: STATIC_ASSET_CACHE },
@@ -51,6 +55,17 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Plain-HTTP visitors (Cloudflare reports the visitor's scheme in
+      // CF-Visitor; the tunnel itself reaches the app over http) → HTTPS.
+      // Local requests (healthcheck, ops scripts) carry no CF-Visitor header.
+      ...(APP_URL.startsWith('https://')
+        ? [{
+            source: '/:path*',
+            has: [{ type: 'header' as const, key: 'cf-visitor', value: '.*"scheme":"http".*' }],
+            destination: `${APP_URL}/:path*`,
+            permanent: true,
+          }]
+        : []),
       {
         // Vanity link → the English lamp-manual page currently in use.
         // 307 (not cached) so the target can be retargeted later.

@@ -10,7 +10,7 @@ import { lexicalToHtml } from '@/lib/lexical-to-html'
 import { getExchangeRates } from '@/lib/server-pricing'
 import { getTranslations } from 'next-intl/server'
 import { getPathname } from '@/i18n/navigation'
-import { BASE_URL, absoluteUrl, alternatesFor, openGraphFor } from '@/components/layout/seo'
+import { BASE_URL, OFFER_TERMS, absoluteUrl, alternatesFor, openGraphFor } from '@/components/layout/seo'
 import styles from './page.module.css'
 
 type ProductDoc = {
@@ -141,6 +141,7 @@ export default async function ProductPage({
       priceCurrency: 'EUR',
       availability: 'https://schema.org/InStock',
       itemCondition: 'https://schema.org/NewCondition',
+      ...OFFER_TERMS,
     },
   }
 

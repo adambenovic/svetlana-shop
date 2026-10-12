@@ -5,10 +5,10 @@ import { Configurator } from '@/components/configurator/Configurator'
 import { SELECTION_KEYS, resolveSelection } from '@/components/configurator/selection'
 import partsData from '@/public/parts.json'
 import type { PartsData } from '@/types/parts'
-import { productPriceMap } from '@/lib/prices'
+import { lampImages, productPriceMap } from '@/lib/prices'
 import { getExchangeRates } from '@/lib/server-pricing'
 import { getTranslations } from 'next-intl/server'
-import { alternatesFor, absoluteUrl, openGraphFor } from '@/components/layout/seo'
+import { BASE_URL, OFFER_TERMS, OG_IMAGE, alternatesFor, absoluteUrl, openGraphFor } from '@/components/layout/seo'
 
 export async function generateMetadata({
   params,
@@ -105,12 +105,36 @@ export default async function ConfiguratorPage({
     ],
   }
 
+  // The configurator is the shop's main product page: price is the default
+  // configuration's (the base price), charged in EUR.
+  const prices = productPriceMap(product, rates)
+  const render = lampImages({ ...initial })
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: typeof product.title === 'string' && product.title ? product.title : 'Svetlana Lampe',
+    description: tMeta('configurator_description'),
+    image: [OG_IMAGE.url, render.imageUrl, render.baseImageUrl]
+      .filter((u): u is string => !!u)
+      .map(u => new URL(u, BASE_URL).toString()),
+    brand: { '@type': 'Brand', name: 'Svetlana Lampe' },
+    offers: {
+      '@type': 'Offer',
+      url: absoluteUrl(locale, '/configurator'),
+      price: ((prices.EUR ?? 0) / 100).toFixed(2),
+      priceCurrency: 'EUR',
+      availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
+      ...OFFER_TERMS,
+    },
+  }
+
   return (
     <div className="page-width" style={{ paddingTop: 48, paddingBottom: 48 }}>
+      {/* `<` escaped so CMS text containing "</script>" cannot end the block. */}
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([productJsonLd, breadcrumbJsonLd]).replace(/</g, '\\u003c') }}
       />
       <h1 className="visually-hidden">{t('page_heading')}</h1>
       {/* Selection resolved here, so the server HTML is the finished configurator

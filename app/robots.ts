@@ -1,14 +1,10 @@
 import type { MetadataRoute } from 'next'
-import { getPathname } from '@/i18n/navigation'
-import { routing } from '@/i18n/routing'
 import { BASE_URL } from '@/components/layout/seo'
 
-// Cart and checkout (incl. checkout/success, a sub-path) in every locale's
-// localized form: /kosik, /de/warenkorb, /pokladna, /en/checkout, …
-const transactionalPaths = routing.locales.flatMap(locale =>
-  (['/cart', '/checkout'] as const).map(href => getPathname({ href, locale })),
-)
-
+// Only /api/ is blocked. Pages that must stay out of the index (cart, checkout,
+// admin) are crawlable on purpose and say `noindex` themselves: Google cannot
+// read a noindex on a URL robots.txt blocks, so it indexes such URLs bare
+// ("Indexed, though blocked by robots.txt").
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
@@ -18,7 +14,7 @@ export default function robots(): MetadataRoute.Robots {
         // crawlable for image search and Product rich results (the longer,
         // more specific allow wins over the /api/ disallow).
         allow: ['/', '/api/media/file/'],
-        disallow: ['/admin', '/api/', ...transactionalPaths],
+        disallow: ['/api/'],
       },
     ],
     sitemap: `${BASE_URL}/sitemap.xml`,
